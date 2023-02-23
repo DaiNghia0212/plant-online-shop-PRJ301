@@ -57,12 +57,15 @@ public class AuthenticationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "login": {
                 request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
-//                response.sendRedirect("/WEB-INF/pages/authentication/login.jsp");
+                break;
+            }
+            case "register": {
+                request.getRequestDispatcher("/WEB-INF/pages/authentication/register.jsp").forward(request, response);
+                break;
             }
             default:
         }
@@ -79,7 +82,6 @@ public class AuthenticationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "login": {

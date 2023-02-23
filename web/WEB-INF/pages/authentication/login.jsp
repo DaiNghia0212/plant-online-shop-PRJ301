@@ -28,6 +28,7 @@
                     <td></td><td><button type="submit">Login</button></td>
                 </tr>
             </table>
+            <a href="register.do">Or sign up</a>
         </form>
     </body>
 </html>
