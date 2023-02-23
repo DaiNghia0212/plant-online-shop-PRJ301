@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author daing
  */
-@WebServlet(name = "FrontController", urlPatterns = {"*do"})
+@WebServlet(name = "FrontController", urlPatterns = {"*.do"})
 public class FrontController extends HttpServlet {
 
     /**
