@@ -51,7 +51,6 @@ public class HomeController extends HttpServlet {
         switch (action) {
             case "index": {
                 request.getRequestDispatcher("WEB-INF/pages/home/index.jsp").forward(request, response);
-                break;
             }
             default:
         }
