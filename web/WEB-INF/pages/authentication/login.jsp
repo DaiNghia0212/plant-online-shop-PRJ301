@@ -29,7 +29,10 @@
                 </tr>
             </table>
             <a href="register.do">Or sign up</a>
+<<<<<<< HEAD
             <p>${message}</p>
+=======
+>>>>>>> 9b24420 (resolve conflict)
         </form>
     </body>
 </html>
