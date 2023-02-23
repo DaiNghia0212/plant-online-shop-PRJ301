@@ -10,5 +10,39 @@ package models.category;
  * @author daing
  */
 public class Category {
-    
+    private int cateid;
+    private String catename;
+
+    // constructor
+    public Category() {
+    }
+
+    // constructor with parameters inputted
+    public Category(int cateid, String catename) {
+        this.cateid = cateid;
+        this.catename = catename;
+    }
+
+    // setter and getter
+    public int getCateid() {
+        return cateid;
+    }
+
+    public void setCateid(int cateid) {
+        this.cateid = cateid;
+    }
+
+    public String getCatename() {
+        return catename;
+    }
+
+    public void setCatename(String catename) {
+        this.catename = catename;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "Category{" + "cateid=" + cateid + ", catename=" + catename + '}';
+    }
 }
