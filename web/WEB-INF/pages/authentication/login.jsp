@@ -29,6 +29,7 @@
                 </tr>
             </table>
             <a href="register.do">Or sign up</a>
+            <p>${message}</p>
         </form>
     </body>
 </html>

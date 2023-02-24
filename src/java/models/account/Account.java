@@ -10,10 +10,10 @@ package models.account;
  * @author daing
  */
 public class Account {
-    private int accid;
+    private int id;
     private String email;
     private String password;
-    private String fullname;
+    private String name;
     private String phone;
     private int status;
     private int roles;
@@ -21,22 +21,22 @@ public class Account {
     public Account() {
     }
 
-    public Account(int accid, String email, String password, String fullname, String phone, int status, int roles) {
-        this.accid = accid;
+    public Account(int id, String email, String password, String name, String phone, int status, int roles) {
+        this.id = id;
         this.email = email;
         this.password = password;
-        this.fullname = fullname;
+        this.name = name;
         this.phone = phone;
         this.status = status;
         this.roles = roles;
     }
 
-    public int getAccid() {
-        return accid;
+    public int getId() {
+        return id;
     }
 
-    public void setAccid(int accid) {
-        this.accid = accid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -55,12 +55,12 @@ public class Account {
         this.password = password;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getName() {
+        return name;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {
@@ -89,7 +89,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "accid=" + accid + ", email=" + email + ", password=" + password + ", fullname=" + fullname
+        return "Account{" + "id=" + id + ", email=" + email + ", password=" + password + ", fullname=" + name
                 + ", phone=" + phone + ", status=" + status + ", roles=" + roles + '}';
     }
 }

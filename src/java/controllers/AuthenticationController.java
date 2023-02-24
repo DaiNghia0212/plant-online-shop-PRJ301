@@ -7,11 +7,14 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.account.Account;
+import models.account.AccountFacade;
 
 /**
  *
@@ -85,17 +88,29 @@ public class AuthenticationController extends HttpServlet {
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "login": {
-                String inputEmail = request.getParameter("email");
-                String inputPassword = request.getParameter("password");
-//        String password = get password from database
-                if (inputPassword.equals("123")) {
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
+                Account account = null;
+                try {
+                    account = AccountFacade.findByEmail(email);
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                    // Need to show the error 500 page
+                }
+                if (account != null && password.equals(account.getPassword())) {
                     response.sendRedirect(request.getContextPath() + "/home/index.do");
                 } else {
-                    request.setAttribute("message", "Wrong email or password");
+                    if (account == null) {
+                        request.setAttribute("message", "Invalid email");
+                    } else {
+                        request.setAttribute("message", "Wrong password");
+                    }
                     request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
                 }
+                break;
             }
             default:
+                // need to show the error 404 page
         }
     }
 
