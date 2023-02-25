@@ -10,23 +10,34 @@ package models.product;
  * @author daing
  */
 public class Product {
-    private int producId;
+
+    private int id;
     private String name;
     private int price;
-    private String imgpath;
+    private int quantity;
+    private String imagePath;
     private String description;
-    private int status;
-    private int cateid;
-    private String catename;
+    private int categoryId;
 
+    public Product() {
+    }
 
+    public Product(int id, String name, int price, int quantity, String imagePath, String description, int categoryId) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.imagePath = imagePath;
+        this.description = description;
+        this.categoryId = categoryId;
+    }
 
     public int getId() {
-        return producId;
+        return id;
     }
 
     public void setId(int id) {
-        this.producId = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -45,12 +56,20 @@ public class Product {
         this.price = price;
     }
 
-    public String getImgpath() {
-        return imgpath;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setImgpath(String imgpath) {
-        this.imgpath = imgpath;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImage_path(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getDescription() {
@@ -61,32 +80,11 @@ public class Product {
         this.description = description;
     }
 
-    public int getStatus() {
-        return status;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getCateid() {
-        return cateid;
-    }
-
-    public void setCateid(int cateid) {
-        this.cateid = cateid;
-    }
-
-    public String getCatename() {
-        return catename;
-    }
-
-    public void setCatename(String catename) {
-        this.catename = catename;
-    }
-
-    @Override
-    public String toString() {
-        return "Plant{" + "id=" + producId + ", name=" + name + ", price=" + price + ", imgpath=" + imgpath + ", description=" + description + ", status=" + status + ", cateid=" + cateid + ", catename=" + catename + '}';
+    public void setCategory_id(int categoryId) {
+        this.categoryId = categoryId;
     }
 }
