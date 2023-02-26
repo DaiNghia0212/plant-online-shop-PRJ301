@@ -92,7 +92,7 @@ public class AuthenticationController extends HttpServlet {
                 String password = request.getParameter("password");
                 Account account = null;
                 try {
-                    account = AccountFacade.findByEmail(email);
+                    account = AccountFacade.selectByEmail(email);
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                     // Need to show the error 500 page
@@ -109,8 +109,38 @@ public class AuthenticationController extends HttpServlet {
                 }
                 break;
             }
+            case "register": {
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
+                String name = request.getParameter("name");
+                String phone = request.getParameter("phone");
+                int status = 1;
+                int role = 0;
+                Account account = new Account(email, password, name, phone, status, role);
+                try {
+                    AccountFacade.insert(account);
+//                    show successfully register page
+                      response.sendRedirect(request.getContextPath() + "/home/index.do");
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                    // Need to show the error 500 page
+                }
+                break;
+            }
+            case "logout": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                try {
+                    Account account = AccountFacade.selectById(id);
+                    account.setStatus(0);
+                    AccountFacade.update(account);
+                    response.sendRedirect(request.getContextPath() + "/auth/login.do");
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                break;
+            }
             default:
-                // need to show the error 404 page
+            // need to show the error 404 page
         }
     }
 

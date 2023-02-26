@@ -10,25 +10,35 @@ package models.account;
  * @author daing
  */
 public class Account {
+
     private int id;
     private String email;
     private String password;
     private String name;
     private String phone;
     private int status;
-    private int roles;
+    private int role;
 
     public Account() {
     }
 
-    public Account(int id, String email, String password, String name, String phone, int status, int roles) {
+    public Account(String email, String password, String name, String phone, int status, int role) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.status = status;
+        this.role = role;
+    }
+
+    public Account(int id, String email, String password, String name, String phone, int status, int role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.status = status;
-        this.roles = roles;
+        this.role = role;
     }
 
     public int getId() {
@@ -79,17 +89,11 @@ public class Account {
         this.status = status;
     }
 
-    public int getRoles() {
-        return roles;
+    public int getRole() {
+        return role;
     }
 
-    public void setRoles(int roles) {
-        this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" + "id=" + id + ", email=" + email + ", password=" + password + ", fullname=" + name
-                + ", phone=" + phone + ", status=" + status + ", roles=" + roles + '}';
+    public void setRole(int role) {
+        this.role = role;
     }
 }
