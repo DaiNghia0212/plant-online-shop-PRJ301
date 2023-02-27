@@ -60,7 +60,6 @@ public class ImageController extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         String imagePath = request.getParameter("path");
-        System.out.println(imagePath);
         request.getRequestDispatcher(imagePath).forward(request, response);
     }
 

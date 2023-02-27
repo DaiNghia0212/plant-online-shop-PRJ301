@@ -16,6 +16,7 @@
         <h1>Plant Shop Product Page</h1>
         <c:forEach var="product" items="${products}">
             <p>${product.name}: $ ${product.price}</p>
+            <img src="<c:url value="/images?path=${product.imagePath}"/>" style="width: 20%"/>
         </c:forEach>
     </body>
 </html>
