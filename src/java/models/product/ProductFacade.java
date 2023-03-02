@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import models.DBContext;
+import static org.eclipse.jdt.internal.compiler.parser.Parser.name;
 
 /**
  *
@@ -97,18 +98,39 @@ public class ProductFacade {
 //        return plant;
 //    }
 
-    // delete product by id
-//    public static int delete(int id) throws Exception {
-//        int result = 0;
-//        Connection cn = DBContext.getConnection();
-//        if (cn != null) {
-//            String sql = "DELETE FROM PlantShopp.dbo.products\n"
-//                    + "	WHERE id= ?;";
-//            PreparedStatement pst = cn.prepareStatement(sql);
-//            pst.setInt(1, id);
-//            result = pst.executeUpdate();
-//            cn.close();
-//        }
-//        return result;
-//    }
+//     delete product by id
+    public static int delete(int id) throws Exception {
+        int result = 0;
+        Connection cn = DBContext.getConnection();
+        if (cn != null) {
+            String sql = "DELETE FROM products\n"
+                    + "	WHERE id= ?;";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setInt(1, id);
+            result = pst.executeUpdate();
+            cn.close();
+        }
+        return result;
+    }
+ 
+  //update product
+        public static int updateProducts(String name,int price,int quantity,String imagePath,String description,int categoryId) throws Exception {
+        int result = 0;
+        Connection cn = DBContext.getConnection();
+        if (cn != null) {
+            String sql = "update dbo.products set  name='?',price='?',quantity='?',image_path='?',description='?',category_id='?' FROM products  where [id] = ?;";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            
+            pst.setString(1, name);
+            pst.setInt(2, price);
+            pst.setInt(3,quantity);
+            pst.setString(4, imagePath);
+            pst.setString(5,description);
+            pst.setInt(6,categoryId);
+            result = pst.executeUpdate();
+            cn.close();
+        }
+        return result;
+    }
+
 }
