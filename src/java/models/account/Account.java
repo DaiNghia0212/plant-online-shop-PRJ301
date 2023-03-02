@@ -16,28 +16,25 @@ public class Account {
     private String password;
     private String name;
     private String phone;
-    private int status;
     private int role;
 
     public Account() {
     }
 
-    public Account(String email, String password, String name, String phone, int status, int role) {
+    public Account(String email, String password, String name, String phone, int role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
-        this.status = status;
         this.role = role;
     }
 
-    public Account(int id, String email, String password, String name, String phone, int status, int role) {
+    public Account(int id, String email, String password, String name, String phone, int role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
-        this.status = status;
         this.role = role;
     }
 
@@ -79,14 +76,6 @@ public class Account {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public int getRole() {

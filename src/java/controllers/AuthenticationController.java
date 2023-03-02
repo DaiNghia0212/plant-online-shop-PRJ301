@@ -7,12 +7,15 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.account.Account;
 import models.account.AccountFacade;
 
@@ -32,22 +35,10 @@ public class AuthenticationController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet AuthenticationController</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet AuthenticationController at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-//    }
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -63,11 +54,21 @@ public class AuthenticationController extends HttpServlet {
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "login": {
-                request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
+                HttpSession session = request.getSession();
+                if (session.getAttribute("account") == null) {
+                    request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                }
                 break;
             }
             case "register": {
-                request.getRequestDispatcher("/WEB-INF/pages/authentication/register.jsp").forward(request, response);
+                HttpSession session = request.getSession();
+                if (session.getAttribute("account") == null) {
+                    request.getRequestDispatcher("/WEB-INF/pages/authentication/registration.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                }
                 break;
             }
             default:
@@ -86,25 +87,27 @@ public class AuthenticationController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = (String) request.getAttribute("action");
+        AccountFacade accountFacade = new AccountFacade();
         switch (action) {
             case "login": {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                Account account = null;
                 try {
-                    account = AccountFacade.selectByEmail(email);
-                } catch (SQLException e) {
+                    Account account = accountFacade.login(email, password);
+                    String remember = request.getParameter("remember");
+                    if (remember != null) {
+                        ServletContext context = request.getServletContext();
+                        context.setAttribute("account", account);
+                    } else {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("account", account);
+                    }
+                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                } catch (SQLException | NoSuchAlgorithmException e) {
                     System.out.println(e.getMessage());
                     // Need to show the error 500 page
-                }
-                if (account != null && password.equals(account.getPassword())) {
-                    response.sendRedirect(request.getContextPath() + "/home/index.do");
-                } else {
-                    if (account == null) {
-                        request.setAttribute("message", "Invalid email");
-                    } else {
-                        request.setAttribute("message", "Wrong password");
-                    }
+                } catch (Exception ex) {
+                    request.setAttribute("message", ex.getMessage());
                     request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
                 }
                 break;
@@ -112,33 +115,38 @@ public class AuthenticationController extends HttpServlet {
             case "register": {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                String name = request.getParameter("name");
+                String firstName = request.getParameter("first_name");
+                String lastName = request.getParameter("last_name");
                 String phone = request.getParameter("phone");
-                int status = 1;
                 int role = 0;
-                Account account = new Account(email, password, name, phone, status, role);
+                Account account = new Account(email, password, firstName + " " + lastName, phone, role);
                 try {
-                    AccountFacade.insert(account);
+                    account = accountFacade.register(account);
+                    HttpSession session = request.getSession();
+                    session.setAttribute("account", account);
 //                    show successfully register page
-                      response.sendRedirect(request.getContextPath() + "/home/index.do");
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
+                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                } catch (SQLException | NoSuchAlgorithmException ex) {
+                    System.out.println(ex.getMessage());
                     // Need to show the error 500 page
+                } catch (Exception ex) {
+                    request.setAttribute("message", ex.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/pages/authentication/registration.jsp").forward(request, response);
                 }
                 break;
             }
             case "logout": {
-                int id = Integer.parseInt(request.getParameter("id"));
-                try {
-                    Account account = AccountFacade.selectById(id);
-                    account.setStatus(0);
-                    AccountFacade.update(account);
-                    response.sendRedirect(request.getContextPath() + "/auth/login.do");
-                } catch (SQLException e) {
-                    System.out.println(e);
+                ServletContext context = request.getServletContext();
+                HttpSession session = request.getSession();
+                if (context.getAttribute("account") != null) {
+                    context.removeAttribute("account");
+                } else if (session.getAttribute("account") != null) {
+                    session.removeAttribute("account");
                 }
+                response.sendRedirect(request.getContextPath() + "/product/index.do");
                 break;
             }
+
             default:
             // need to show the error 404 page
         }

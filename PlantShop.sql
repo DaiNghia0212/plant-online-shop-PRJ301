@@ -15,10 +15,9 @@ GO
 create table accounts(
     id int identity(1,1) primary key not null,
     email varchar(30) unique not null,
-    "password" varchar(30) not null,
+    "password" char(64) not null,
     name nvarchar(30) not null,
     phone varchar(12) not null,
-    status int not null check(status =1 or status=0), -- 1:active; 0:inactive
     role int not null check(role=1 or role=0)   -- 1:admin, 0:user
 )
 GO
@@ -52,8 +51,11 @@ create table order_details(
     quantity int check(quantity>=1) not null,
     CONSTRAINT pk_order_detail PRIMARY KEY (order_id, product_id)
 )
-insert into accounts(email, password, name, phone, status, role)
-values ('admin@gmail.com', '12345', 'admin', '0987654321', 1, 1);
+--insert admin account 
+--email: admin@gmail.com
+--password: 12345
+insert into accounts(email, password, name, phone, role)
+values ('admin@gmail.com', '5994471ABB01112AFCC18159F6CC74B4F511B99806DA59B3CAF5A9C173CACFC5', 'admin', '0987654321', 1);
 
 insert into categories(name)
 values 
