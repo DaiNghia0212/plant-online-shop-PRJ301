@@ -23,7 +23,7 @@ import models.account.AccountFacade;
  *
  * @author daing
  */
-@WebServlet(name = "Authentication", urlPatterns = {"/auth"})
+@WebServlet(name = "Authentication", urlPatterns = {"/authentication"})
 public class AuthenticationController extends HttpServlet {
 
     /**
@@ -56,7 +56,7 @@ public class AuthenticationController extends HttpServlet {
             case "login": {
                 HttpSession session = request.getSession();
                 if (session.getAttribute("account") == null) {
-                    request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
                 } else {
                     response.sendRedirect(request.getContextPath() + "/product/index.do");
                 }
@@ -65,7 +65,7 @@ public class AuthenticationController extends HttpServlet {
             case "register": {
                 HttpSession session = request.getSession();
                 if (session.getAttribute("account") == null) {
-                    request.getRequestDispatcher("/WEB-INF/pages/authentication/registration.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
                 } else {
                     response.sendRedirect(request.getContextPath() + "/product/index.do");
                 }
@@ -108,7 +108,7 @@ public class AuthenticationController extends HttpServlet {
                     // Need to show the error 500 page
                 } catch (Exception ex) {
                     request.setAttribute("message", ex.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/pages/authentication/login.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
                 }
                 break;
             }
@@ -131,7 +131,7 @@ public class AuthenticationController extends HttpServlet {
                     // Need to show the error 500 page
                 } catch (Exception ex) {
                     request.setAttribute("message", ex.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/pages/authentication/registration.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
                 }
                 break;
             }
