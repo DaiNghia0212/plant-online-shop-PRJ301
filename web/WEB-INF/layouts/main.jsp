@@ -14,31 +14,31 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/Favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/assets/img/Favicon.ico"/>">
         <!-- bootstrap min -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/bootstrap.min.css"/>">
         <!-- fontawesome  -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/all.min.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/fontawesome.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/fontawesome.min.css">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/all.min.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/fontawesome.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/fontawesome.min.css"/>">
         <!-- OwlCarousel2  -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.carousel.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.carousel.min.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.theme.default.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/owl.theme.default.min.css">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/owl.carousel.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/owl.carousel.min.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/owl.theme.default.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/owl.theme.default.min.css"/>">
         <!-- fancybox  -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/jquery.fancybox.css">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/jquery.fancybox.css"/>">
         <!-- animate  -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/animate.min.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/media.css">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/animate.min.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/media.css"/>">
         <!-- style  -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/daterangepicker.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/magnific-popup.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/style.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/slick-theme.css">
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/slick.css">
-        <!-- responsive  -->
-        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/responsive.css">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/daterangepicker.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/magnific-popup.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/style.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/slick-theme.css"/>">
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/slick.css"/>">
+        <!-- responsive -->
+        <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/responsive.css"/>">
         <!-- googleapis  -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap"
@@ -525,12 +525,12 @@
                                 </div>
                                 <div class="categorie collapse" id="fh_product">
                                     <ul>
-                                        <li><a href="about-us.html">About</a></li>
-                                        <li><a href="information.html">Delivery Infomations</a></li>
-                                        <li><a href="policy.html">Privacy Policy</a></li>
-                                        <li><a href="service.html">Custom Service</a></li>
-                                        <li><a href="condition.html">Terms &amp; Condition</a></li>
-                                        <li><a href="contact-us.html">Contact Us</a></li>
+                                        <li><a href="<c:url value=""/>about-us.html">About</a></li>
+                                        <li><a href="<c:url value=""/>information.html">Delivery Infomations</a></li>
+                                        <li><a href="<c:url value=""/>policy.html">Privacy Policy</a></li>
+                                        <li><a href="<c:url value=""/>service.html">Custom Service</a></li>
+                                        <li><a href="<c:url value=""/>condition.html">Terms &amp; Condition</a></li>
+                                        <li><a href="<c:url value=""/>contact-us.html">Contact Us</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -583,18 +583,18 @@
             <!-- scroll -->
             <a href="#" id="scroll"></a>
             <!-- jquery-3.4.1 -->
-            <script src="assets/js/jquery-3.4.1.min.js"></script>
+            <script src="<c:url value="/assets/js/jquery-3.4.1.min.js"/>"></script>
             <!-- owl.carousel -->
-            <script src="assets/js/owl.carousel.js"></script>
+            <script src="<c:url value="/assets/js/owl.carousel.js"/>"></script>
             <!-- bootstrap.min -->
-            <script src="assets/js/bootstrap.min.js"></script>
+            <script src="<c:url value="/assets/js/bootstrap.min.js"/>"></script>
             <!-- popper.min -->
-            <script src="assets/js/popper.min.js"></script>
+            <script src="<c:url value="/assets/js/popper.min.js"/>"></script>
             <!-- wow.js - v1.2.1 -->
-            <script src="assets/js/wow.min.js"></script>
+            <script src="<c:url value="/assets/js/wow.min.js"/>"></script>
             <!-- Font Awesome Free 5.15.1 -->
-            <script src="assets/js/all.min.js"></script>
+            <script src="<c:url value="/assets/js/all.min.js"/>"></script>
             <!-- custom js -->
-            <script src="assets/js/custom.js"></script>
+            <script src="<c:url value="/assets/js/custom.js"/>"></script>
     </body>
 </html>
