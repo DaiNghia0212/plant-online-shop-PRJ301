@@ -10,33 +10,40 @@ package models.account;
  * @author daing
  */
 public class Account {
-    private int accid;
+
+    private int id;
     private String email;
     private String password;
-    private String fullname;
+    private String name;
     private String phone;
-    private int status;
-    private int roles;
+    private int role;
 
     public Account() {
     }
 
-    public Account(int accid, String email, String password, String fullname, String phone, int status, int roles) {
-        this.accid = accid;
+    public Account(String email, String password, String name, String phone, int role) {
         this.email = email;
         this.password = password;
-        this.fullname = fullname;
+        this.name = name;
         this.phone = phone;
-        this.status = status;
-        this.roles = roles;
+        this.role = role;
     }
 
-    public int getAccid() {
-        return accid;
+    public Account(int id, String email, String password, String name, String phone, int role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.role = role;
     }
 
-    public void setAccid(int accid) {
-        this.accid = accid;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -55,12 +62,12 @@ public class Account {
         this.password = password;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getName() {
+        return name;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {
@@ -71,25 +78,11 @@ public class Account {
         this.phone = phone;
     }
 
-    public int getStatus() {
-        return status;
+    public int getRole() {
+        return role;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public int getRoles() {
-        return roles;
-    }
-
-    public void setRoles(int roles) {
-        this.roles = roles;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" + "accid=" + accid + ", email=" + email + ", password=" + password + ", fullname=" + fullname
-                + ", phone=" + phone + ", status=" + status + ", roles=" + roles + '}';
+    public void setRole(int role) {
+        this.role = role;
     }
 }

@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author daing
  */
-@WebServlet(name = "ImageController", urlPatterns = {"/images/*"})
-public class ImageController extends HttpServlet {
+@WebServlet(name = "HomeController", urlPatterns = {"/home"})
+public class HomeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,18 +32,6 @@ public class ImageController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImageController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ImageController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,8 +47,14 @@ public class ImageController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        String imagePath = request.getParameter("path");
-        request.getRequestDispatcher(imagePath).forward(request, response);
+        String action = (String) request.getAttribute("action");
+        switch (action) {
+            case "index": {
+                request.getRequestDispatcher("WEB-INF/pages/home/index.jsp").forward(request, response);
+                break;
+            }
+            default:
+        }
     }
 
     /**
@@ -74,7 +68,7 @@ public class ImageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
     }
 
     /**
