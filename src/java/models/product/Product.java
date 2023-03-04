@@ -5,6 +5,8 @@
  */
 package models.product;
 
+import java.util.Date;
+
 /**
  *
  * @author daing
@@ -18,17 +20,21 @@ public class Product {
     private String imagePath;
     private String description;
     private int categoryId;
+    private Date createdAt;
+    private Date updatedAt;
 
     public Product() {
     }
 
-    public Product(int id, String name, int price, int quantity, String imagePath, String description, int categoryId) {
+    public Product(int id, String name, int price, int quantity, String imagePath, String description,  Date createdAt, Date updatedAt, int categoryId) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.imagePath = imagePath;
         this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.categoryId = categoryId;
     }
 
@@ -78,6 +84,22 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public int getCategoryId() {

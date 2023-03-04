@@ -10,39 +10,33 @@ package models.category;
  * @author daing
  */
 public class Category {
-    private int cateid;
-    private String catename;
+    private int id;
+    private String name;
 
     // constructor
     public Category() {
     }
 
     // constructor with parameters inputted
-    public Category(int cateid, String catename) {
-        this.cateid = cateid;
-        this.catename = catename;
+    public Category(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     // setter and getter
-    public int getCateid() {
-        return cateid;
+    public int getId() {
+        return id;
     }
 
-    public void setCateid(int cateid) {
-        this.cateid = cateid;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getCatename() {
-        return catename;
+    public String getName() {
+        return name;
     }
 
-    public void setCatename(String catename) {
-        this.catename = catename;
-    }
-
-    // toString method
-    @Override
-    public String toString() {
-        return "Category{" + "cateid=" + cateid + ", catename=" + catename + '}';
+    public void setName(String name) {
+        this.name = name;
     }
 }

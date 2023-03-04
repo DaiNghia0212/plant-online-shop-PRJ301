@@ -9,13 +9,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.category.Category;
+import models.category.CategoryFacade;
 import models.product.Product;
 import models.product.ProductFacade;
+import org.apache.catalina.tribes.util.Arrays;
 
 /**
  *
@@ -37,16 +42,6 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProductController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProductController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 
@@ -64,35 +59,75 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
         String action = (String) request.getAttribute("action");
+        ProductFacade productFacade = new ProductFacade();
         switch (action) {
             case "index": {
+                String offset = request.getParameter("offset");
+                String limit = request.getParameter("limit");
                 String search = request.getParameter("search");
-                String orderBy = request.getParameter("orderBy");
-                String orderType = request.getParameter("orderType");
-                int offset = Integer.parseInt(request.getParameter("offset"));
-                int limit = Integer.parseInt(request.getParameter("limit"));
-                if (search == null) {
-                    search = "";
+                String[] categoriesFilter = request.getParameterValues("categories");
+                String selectedOrder = request.getParameter("order");
+                TreeMap<String, String> orders = new TreeMap<>();
+                orders.put("name-ascending", "Name, A to Z");
+                orders.put("name-descending", "Name, Z to A");
+                orders.put("price-ascending", "Price, low to high");
+                orders.put("price-descending", "Price, high to low");
+                if (offset == null) {
+                    offset = "0";
                 }
-                if (orderBy == null) {
-                    orderBy = "id";
+                if (limit == null) {
+                    limit = "6";
                 }
-                if (orderType == null) {
-                    orderType = "ascending";
+                String orderBy = "updated_at";
+                String orderType = "ascending";
+                if (selectedOrder != null && orders.containsKey(selectedOrder)) {
+                    orderBy = selectedOrder.substring(0, selectedOrder.indexOf("-"));
+                    orderType = selectedOrder.substring(selectedOrder.indexOf("-") + 1, selectedOrder.length());
                 }
-                if ((orderBy.equals("name") || orderBy.equals("price") || orderBy.equals("id")) && (orderType.equals("ascending") || orderType.equals("descending"))) {
-                    ArrayList<Product> products = new ArrayList<>();
-                    try {
-                        products = ProductFacade.getProducts(search, orderBy, orderType, offset, limit);
-                    } catch (SQLException ex) {
-                        System.out.println(ex);
+                ArrayList<Integer> checkedCategories = new ArrayList<>();
+                if (categoriesFilter != null) {
+                    for (String categoriesFilter1 : categoriesFilter) {
+                        checkedCategories.add(Integer.parseInt(categoriesFilter1));
                     }
-                    request.setAttribute("products", products);
-                    request.getRequestDispatcher("/WEB-INF/pages/product/index.jsp").forward(request, response);
-                } else {
-                    // send 400 error page
                 }
+                HashMap<String, Object> productsMap = new HashMap<>();
+                ArrayList<Category> categories = new ArrayList<>();
+                CategoryFacade categoryFacade = new CategoryFacade();
+                try {
+                    productsMap = productFacade.getProducts(search, checkedCategories, orderBy, orderType, Integer.parseInt(offset), Integer.parseInt(limit));
+                    categories = categoryFacade.selectAll();
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+                int totalPage = (int) productsMap.get("total") / 6;
+                request.setAttribute("search", search);
+                request.setAttribute("checkedCategories", checkedCategories);
+                request.setAttribute("orders", orders);
+                request.setAttribute("selectedOrder", selectedOrder);
+                request.setAttribute("products", productsMap.get("products"));
+                request.setAttribute("totalProduct", (int) productsMap.get("total"));
+                request.setAttribute("totalPage", totalPage);
+                request.setAttribute("categories", categories);
+                request.getRequestDispatcher("/WEB-INF/pages/product/index.jsp").forward(request, response);
                 break;
+            }
+            case "product-detail": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                Product product = null;
+                Category category = null;
+                ArrayList<Product> relatedProducts = new ArrayList<>();
+                CategoryFacade categoryFacade = new CategoryFacade();
+                try {
+                    product = productFacade.getProductById(id);
+                    category = categoryFacade.getCategoryById(product.getCategoryId());
+                    relatedProducts = productFacade.getRelatedProducts(product.getCategoryId());
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+                request.setAttribute("product", product);
+                request.setAttribute("category", category);
+                request.setAttribute("relatedProducts", relatedProducts);
+                request.getRequestDispatcher("/WEB-INF/pages/product/product-detail.jsp").forward(request, response);
             }
             default:
             // show error 404 page
