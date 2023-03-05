@@ -53,7 +53,7 @@
                     <div class="invalid-feedback">Please Enter your phone number.</div>
                 </div>
                 <c:if test="${message != null}">
-                    <div class="invalid-feedback">${message}.</div>
+                    <div class="error-message">${message}.</div>
                 </c:if>
                 <div><button id="clearButton" type="reset" class="btn btn-primary rese float-left mt-3">reset</button><input type="submit" name="submit" class="btn btn-primary mt-3 float-right" value="Save"></div>
             </form>

@@ -57,7 +57,6 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
         String action = (String) request.getAttribute("action");
         ProductFacade productFacade = new ProductFacade();
         switch (action) {
@@ -79,7 +78,7 @@ public class ProductController extends HttpServlet {
                     limit = "6";
                 }
                 String orderBy = "updated_at";
-                String orderType = "ascending";
+                String orderType = "descending";
                 if (selectedOrder != null && orders.containsKey(selectedOrder)) {
                     orderBy = selectedOrder.substring(0, selectedOrder.indexOf("-"));
                     orderType = selectedOrder.substring(selectedOrder.indexOf("-") + 1, selectedOrder.length());
@@ -99,7 +98,9 @@ public class ProductController extends HttpServlet {
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }
-                int totalPage = (int) productsMap.get("total") / 6;
+                int totalPage = (int) Math.ceil((int) productsMap.get("total") / Double.parseDouble(limit));
+                int currentPage = (Integer.parseInt(offset) / Integer.parseInt(limit)) + 1;
+                request.setAttribute("currentPage", currentPage);
                 request.setAttribute("search", search);
                 request.setAttribute("checkedCategories", checkedCategories);
                 request.setAttribute("orders", orders);
@@ -108,7 +109,7 @@ public class ProductController extends HttpServlet {
                 request.setAttribute("totalProduct", (int) productsMap.get("total"));
                 request.setAttribute("totalPage", totalPage);
                 request.setAttribute("categories", categories);
-                request.getRequestDispatcher("/WEB-INF/pages/product/index.jsp").forward(request, response);
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 break;
             }
             case "product-detail": {
@@ -126,8 +127,8 @@ public class ProductController extends HttpServlet {
                 }
                 request.setAttribute("product", product);
                 request.setAttribute("category", category);
-                request.setAttribute("relatedProducts", relatedProducts);
-                request.getRequestDispatcher("/WEB-INF/pages/product/product-detail.jsp").forward(request, response);
+                request.setAttribute("products", relatedProducts);
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
             }
             default:
             // show error 404 page

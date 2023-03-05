@@ -1,3 +1,5 @@
+const LIMIT = 6;
+
 const categoriesForm = document.getElementById("category-form");
 categoriesForm.addEventListener("submit", handleSubmit);
 
@@ -35,12 +37,12 @@ function handleClick(event) {
   const hiddenOffsetInput = document.createElement("input");
   hiddenOffsetInput.type = "hidden";
   hiddenOffsetInput.name = "offset";
-  hiddenOffsetInput.value = Number.parseInt(event.target.value) * 6;
+  hiddenOffsetInput.value = (Number.parseInt(event.target.value) - 1) * LIMIT;
   categoriesForm.appendChild(hiddenOffsetInput);
   const hiddenLimitInput = document.createElement("input");
   hiddenLimitInput.type = "hidden";
   hiddenLimitInput.name = "limit";
-  hiddenLimitInput.value = 6;
+  hiddenLimitInput.value = LIMIT;
   categoriesForm.appendChild(hiddenLimitInput);
   const hiddenOrderInput = document.createElement("input");
   hiddenOrderInput.type = "hidden";

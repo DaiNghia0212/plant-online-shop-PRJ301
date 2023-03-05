@@ -117,11 +117,27 @@ body {
     width: 100%;
     height: 100%;
     z-index: 9999;
-    background: url('../../assets/img/loader.gif') no-repeat center center #fff;
+    background: url('../../assets/images/loader.gif') no-repeat center center #fff;
 }
 
 .invalid-feedback {
     display: none;
+    color: #ff0031;
+    font-size: 11px;
+    margin-top: 5px;
+    text-align: left;
+    font-weight: 400;
+    padding-left: 12px;
+    background: #ffebeb;
+    width: 100%;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin-bottom: 0;
+}
+
+.error-message {
     color: #ff0031;
     font-size: 11px;
     margin-top: 5px;
@@ -331,7 +347,7 @@ select {
 }
 
 .checked {
-    background-image: url("../../assets/img/svg/verified.svg");
+    background-image: url("../../assets/images/svg/verified.svg");
     background-size: 100%;
     width: 40px;
     height: 40px;
@@ -381,7 +397,7 @@ select {
     content: '';
     height: 34px;
     width: 30px;
-    background: url("../../assets/img/svg/user.svg") no-repeat;
+    background: url("../../assets/images/svg/user.svg") no-repeat;
     background-size: 28px;
     left: 0;
     background-position: center;
@@ -390,7 +406,7 @@ select {
 }
 
 .my_account:hover::before {
-    background: url("../../assets/img/svg/user-hover.svg") no-repeat;
+    background: url("../../assets/images/svg/user-hover.svg") no-repeat;
     background-position: center;
     background-size: 28px;
 }
@@ -497,7 +513,7 @@ ul.all-page-drop li a {
     background-size: 10px;
     font-size: 13px;
     background-repeat: no-repeat;
-    background-image: url('../../assets/img/lng_down_arrow.png');
+    background-image: url('../../assets/images/lng_down_arrow.png');
     -moz-appearance: none !important;
     appearance: none !important;
     cursor: pointer;
@@ -527,7 +543,7 @@ ul.all-page-drop li a {
     height: 44px;
     background-position: 135px;
     background-repeat: no-repeat;
-    background-image: url('../../assets/img/down_arrow.png');
+    background-image: url('../../assets/images/down_arrow.png');
     -moz-appearance: none !important;
     appearance: none !important;
     cursor: pointer;
@@ -702,7 +718,7 @@ ul.all-page-drop li a {
     content: '';
     height: 28px;
     width: 28px;
-    background: url("../../assets/img/svg/cart.svg") no-repeat;
+    background: url("../../assets/images/svg/cart.svg") no-repeat;
     background-size: 100%;
     left: 0;
     background-position: center;
@@ -712,7 +728,7 @@ ul.all-page-drop li a {
 }
 
 .my-cart:hover .Price-amount::before {
-    background: url("../../assets/img/svg/cart-hover.svg") no-repeat;
+    background: url("../../assets/images/svg/cart-hover.svg") no-repeat;
     background-position-x: 0%;
     background-position-y: 0%;
     background-size: auto;
@@ -1442,27 +1458,27 @@ del {
 }
 
 .button-group .symbol.pro_compare {
-    background-image: url("../../assets/img/svg/compare.svg");
+    background-image: url("../../assets/images/svg/compare.svg");
 }
 
 .button-group .symbol.pro_compare:hover {
-    background-image: url("../../assets/img/svg/compare-hover.svg");
+    background-image: url("../../assets/images/svg/compare-hover.svg");
 }
 
 .button-group .symbol.pro_eye {
-    background-image: url("../../assets/img/svg/eye.svg");
+    background-image: url("../../assets/images/svg/eye.svg");
 }
 
 .button-group .symbol.pro_eye:hover {
-    background-image: url("../../assets/img/svg/eye-hover.svg");
+    background-image: url("../../assets/images/svg/eye-hover.svg");
 }
 
 .button-group .symbol.pro_heart {
-    background-image: url("../../assets/img/svg/heart.svg");
+    background-image: url("../../assets/images/svg/heart.svg");
 }
 
 .button-group .symbol.pro_heart:hover {
-    background-image: url("../../assets/img/svg/heart-hover.svg");
+    background-image: url("../../assets/images/svg/heart-hover.svg");
 }
 
 .pro-heading {
@@ -1857,13 +1873,13 @@ del {
 }
 
 .add {
-    background: url("../../assets/img/location.png") no-repeat left 6px;
+    background: url("../../assets/images/location.png") no-repeat left 6px;
     padding-left: 30px;
     background-size: 20px;
 }
 
 .call_ic {
-    background-image: url("../../assets/img/phone.png");
+    background-image: url("../../assets/images/phone.png");
     padding-left: 30px;
     background-size: 17px;
 }
@@ -1873,7 +1889,7 @@ del {
 }
 
 .mail_ic {
-    background-image: url("../../assets/img/email.png");
+    background-image: url("../../assets/images/email.png");
     padding-left: 30px;
     background-size: 17px;
 }
@@ -2643,7 +2659,7 @@ del {
     color: #fff;
 }
 
-.page-item.active .page-link {
+.page-item.active.page-link {
     background-color: #6ea820;
     border-color: transparent;
 }
@@ -2808,14 +2824,14 @@ del {
 /*------------------------------------------------------------------------ video sec  ------------------------------------------------------*/
 
 .video_bg {
-    background-image: url('../../assets/img/video.png');
+    background-image: url('../../assets/images/home/video.png');
     background-size: cover;
     background-position: center center;
 }
 
 .perfect-choice {
     text-align: center;
-    /* color: #fff; */
+    color: #fff;
     font-family: "Playball";
     font-size: 54px;
 }
@@ -3014,7 +3030,7 @@ del {
 }
 
 .blog-img-1 {
-    background: url('../../assets/img/Testi-1.png') no-repeat center center;
+    background: url('../../assets/images/Testi-1.png') no-repeat center center;
     height: 40px;
     width: 40px;
     z-index: 123;
@@ -3100,7 +3116,7 @@ del {
     position: fixed;
     right: 30px;
     bottom: 30px;
-    background: url('../../assets/img/svg/scroll.svg') no-repeat center center;
+    background: url('../../assets/images/svg/scroll.svg') no-repeat center center;
     height: 30px;
     width: 30px;
     z-index: 1000;
@@ -3130,7 +3146,7 @@ del {
 }
 
 #left {
-    background: url('../../assets/img/svg/left-arrow.svg') no-repeat center center;
+    background: url('../../assets/images/svg/left-arrow.svg') no-repeat center center;
     height: 15px;
     width: 15px;
     position: absolute;
@@ -3141,7 +3157,7 @@ del {
 }
 
 #right {
-    background: url('../../assets/img/svg/right-arrow.svg') no-repeat center center;
+    background: url('../../assets/images/svg/right-arrow.svg') no-repeat center center;
     height: 15px;
     width: 15px;
     position: absolute;
@@ -3547,35 +3563,35 @@ del {
 }
 
 .service.service-1 .icon-image {
-    background-image: url("../../assets/img/svg/customer.svg");
+    background-image: url("../../assets/images/svg/customer.svg");
 }
 
 .service-1:hover .icon-image {
-    background-image: url("../../assets/img/svg/customer-hover.svg");
+    background-image: url("../../assets/images/svg/customer-hover.svg");
 }
 
 .service.service-2 .icon-image {
-    background-image: url("../../assets/img/svg/money.svg");
+    background-image: url("../../assets/images/svg/money.svg");
 }
 
 .service.service-2:hover .icon-image {
-    background-image: url("../../assets/img/svg/money-hover.svg");
+    background-image: url("../../assets/images/svg/money-hover.svg");
 }
 
 .service.service-3 .icon-image {
-    background-image: url("../../assets/img/svg/ship.svg");
+    background-image: url("../../assets/images/svg/ship.svg");
 }
 
 .service.service-3:hover .icon-image {
-    background-image: url("../../assets/img/svg/ship-hover.svg");
+    background-image: url("../../assets/images/svg/ship-hover.svg");
 }
 
 .service.service-4 .icon-image {
-    background-image: url("../../assets/img/svg/gift.svg");
+    background-image: url("../../assets/images/svg/gift.svg");
 }
 
 .service.service-4:hover .icon-image {
-    background-image: url("../../assets/img/svg/gift-hover.svg");
+    background-image: url("../../assets/images/svg/gift-hover.svg");
 }
 
 .service:hover .icon-image {

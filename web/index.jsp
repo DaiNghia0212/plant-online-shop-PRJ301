@@ -5,5 +5,5 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:forward page="/product/index.do" />
+<jsp:forward page="/home/index.do" />
 

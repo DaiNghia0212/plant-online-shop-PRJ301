@@ -40,9 +40,9 @@
                     <label class="form-check-label" for="user_check">Remember me</label>
                 </div>
                 <c:if test="${message != null}">
-                    <div class="invalid-feedback">${message}.</div>
+                    <div class="error-message">${message}.</div>
                 </c:if>
-                <input type="submit" name="submit" class="btn btn-primary mb-3" value="submit">
+                <input type="submit" name="submit" class="btn btn-primary mb-3 mt-3" value="submit">
                 <div class="pass_acc border-top pt-3">
                     <!--<span class="forgot_password font-weight-bolder"><a href="forgot.html">Forgot your password? </a></span>-->
                     <span class="no_account float-right font-weight-bolder"><a href="register.do">No account? Create one here</a></span>

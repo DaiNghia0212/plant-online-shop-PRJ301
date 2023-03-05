@@ -10,8 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import models.DBContext;
@@ -22,20 +22,18 @@ import models.DBContext;
  */
 public class ProductFacade {
 
-    public static int insert(String name, int price, int quantity, String imagePath, String description, int categoryId)
-            throws SQLException {
-        int result = 0;
+    public static int insert(Product product) throws SQLException {
         Connection con = DBContext.getConnection();
         String sql = "INSERT INTO products(name, price, quantity, image_path, description, categoryId)\n"
                 + "VALUES(?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
-        preparedStatement.setString(1, name);
-        preparedStatement.setInt(2, price);
-        preparedStatement.setInt(3, quantity);
-        preparedStatement.setString(4, imagePath);
-        preparedStatement.setString(5, description);
-        preparedStatement.setInt(6, categoryId);
-        result = preparedStatement.executeUpdate();
+        preparedStatement.setString(1, product.getName());
+        preparedStatement.setInt(2, product.getPrice());
+        preparedStatement.setInt(3, product.getQuantity());
+        preparedStatement.setString(4, product.getImagePath());
+        preparedStatement.setString(5, product.getDescription());
+        preparedStatement.setInt(7, product.getCategoryId());
+        int result = preparedStatement.executeUpdate();
         con.close();
         return result;
     }
@@ -49,7 +47,7 @@ public class ProductFacade {
                 + "FROM products\n"
                 + "%s\n"
                 + "ORDER BY products.%s %s\n"
-                + "OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+                + "OFFSET ? ROWS\n";
         String sql2 = "SELECT COUNT(*) as total FROM products\n"
                 + "%s\n";
         if (orderType.equals("ascending")) {
@@ -61,16 +59,18 @@ public class ProductFacade {
         if (search != null) {
             whereStatement = whereStatement + " AND products.name LIKE '%" + search.trim() + "%'";
         }
-        if (!categoriesList.isEmpty()) {
+        if (categoriesList != null && !categoriesList.isEmpty()) {
             String categories = categoriesList.toString();
             whereStatement = whereStatement + " AND products.category_id in (" + categories.substring(1, categories.length() - 1) + ")";
         }
         sql1 = String.format(sql1, whereStatement, orderBy, orderType);
         sql2 = String.format(sql2, whereStatement);
         Statement statement = con.createStatement();
+        if (fetch != -1) {
+            sql1 = sql1 + "FETCH FIRST " + fetch + " ROWS ONLY\n";
+        }
         PreparedStatement preparedStatement = con.prepareStatement(sql1);
         preparedStatement.setInt(1, offset);
-        preparedStatement.setInt(2, fetch);
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
             int id = result.getInt("id");
@@ -160,19 +160,21 @@ public class ProductFacade {
     }
 
     //update product
-    public static int updateProducts(String name, int price, int quantity, String imagePath, String description, int categoryId) throws Exception {
+    public static int updateProduct(Product product) throws Exception {
         int result = 0;
         Connection cn = DBContext.getConnection();
         if (cn != null) {
-            String sql = "update dbo.products set  name='?',price='?',quantity='?',image_path='?',description='?',category_id='?' FROM products  where [id] = ?;";
+            String sql = "update dbo.products set  name='?',price='?',quantity='?',image_path='?',description='?', udpated_at = ?, category_id='?' FROM products  where [id] = ?;";
             PreparedStatement pst = cn.prepareStatement(sql);
-
-            pst.setString(1, name);
-            pst.setInt(2, price);
-            pst.setInt(3, quantity);
-            pst.setString(4, imagePath);
-            pst.setString(5, description);
-            pst.setInt(6, categoryId);
+            pst.setString(1, product.getName());
+            pst.setInt(2, product.getPrice());
+            pst.setInt(3, product.getQuantity());
+            pst.setString(4, product.getImagePath());
+            pst.setString(5, product.getDescription());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            pst.setString(6, sdf.format(product.getUpdatedAt()));
+            pst.setInt(7, product.getCategoryId());
+            pst.setInt(8, product.getId());
             result = pst.executeUpdate();
             cn.close();
         }

@@ -50,7 +50,7 @@
 	{
 		/*height: 256px;*/
 		width: 281px;
-		background-image: url("../img/8.jpg");
+		background-image: url("../images/8.jpg");
 	}
 	.button_5
 	{
@@ -167,7 +167,7 @@
 	{
 		height: 372px;
 		width: 200px;
-		background-image: url("../img/8.jpg");
+		background-image: url("../images/8.jpg");
 	}
 	.button_5
 	{
@@ -270,7 +270,7 @@
 	{
 		height: 250px;
 		width: 481px;
-		background-image: url("../img/8.jpg");
+		background-image: url("../images/8.jpg");
 		margin-top: 25px;
 	}
 }
@@ -340,6 +340,6 @@
 	{
 		/*height: 256px;*/
 		width: 515px;
-		background-image: url("../img/8.jpg");
+		background-image: url("../images/8.jpg");
 	}
 }

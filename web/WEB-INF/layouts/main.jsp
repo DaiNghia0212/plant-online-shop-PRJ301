@@ -14,7 +14,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/assets/img/Favicon.ico"/>">
+        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/assets/images/Favicon.ico"/>">
         <!-- bootstrap min -->
         <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/bootstrap.min.css"/>">
         <!-- fontawesome  -->
@@ -59,7 +59,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-4 col-xs-12 mb-3  ">
-                                <img src="assets/img/product/product_13.jpg" class="fst-image mx-auto d-block img-fluid border rounded" alt="product_13">
+                                <img src="assets/images/product/product_13.jpg" class="fst-image mx-auto d-block img-fluid border rounded" alt="product_13">
                             </div>
                             <div class="col-sm-8 col-xs-12 ">
                                 <h6 class="font-weight-bold">Hummingbird printed t-shirt</h6>
@@ -103,49 +103,51 @@
         </div>
         <!-- cart_model -->
         <!-- eye-model -->
-        <div class="modal fade" id="eye_model" tabindex="-1"  aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-5 col-12">
-                                <img src="assets/img/product/product_13.jpg" class="fst-image mx-auto d-block img-fluid border rounded" alt="product_13">
-                            </div>
-                            <div class="col-sm-7 col-12">
-                                <h5 class="font-weight-bold border-bottom me_name">Aliquam Top Erat Volutpat</h5>
-                                <div class="font-weight-bold border-bottom me_price">$19.12</div>
-                                <div class="my-2 border-bottom me_des">Fashion has been creating well-designed collections since 2010. </div>
-                                <div class="me_quan">
-                                    <div class="sp_counter ">
-                                        <div class="input-group">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[1]"><span class="minus">-</span></button>
-                                            </span>
-                                            <input type="number" name="quant[1]" class="form-control input-number" value="1" min="1" max="10">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[1]"><span class="plus">+</span></button>
-                                            </span>
+        <c:forEach var="product" items="${products}">
+            <div class="modal fade product-${product.id}" id="eye_model" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-5 col-12">
+                                    <img src="<c:url value="${product.imagePath}"/>" class="fst-image mx-auto d-block img-fluid border rounded" alt="product_13">
+                                </div>
+                                <div class="col-sm-7 col-12">
+                                    <h5 class="font-weight-bold border-bottom me_name">${product.name}</h5>
+                                    <div class="font-weight-bold border-bottom me_price">$${product.price}</div>
+                                    <div class="my-2 border-bottom me_des">${product.description}</div>
+                                    <div class="me_quan">
+                                        <div class="sp_counter ">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[${product.id}]"><span class="minus">-</span></button>
+                                                </span>
+                                                <input type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="1" max="${product.quantity}">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[${product.id}]"><span class="plus">+</span></button>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <span>
+                                            <a href="cart.html" class="btn btn-primary primary mt-3">add to cart</a>
+                                        </span>
                                     </div>
-                                    <span>
-                                        <a href="cart.html" class="btn btn-primary primary mt-3">add to cart</a>
-                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </c:forEach>
         <!-- eye_model -->
         <!-- compare-model -->
-        <div class="modal fade" id="compare_model" tabindex="-1"  aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade" id="compare_model" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -153,36 +155,28 @@
                         </button>
                     </div>
                     <div class="modal-body text-center">
-                        <p>
-                            <svg width="30px" height="30px">
-                            <use xlink:href="#checked"></use>
-                            </svg>
-                        </p>
+                        <p class="checked"></p>
                         <h5>Compare list updated!</h5>
-                        <p class="text-muted font-weight-bold">Product successfully removed from the product comparison!</p>
-                        <div class="text-danger font-weight-bold">Go to Compare</div>
+                        <p class="text-muted font-weight-bolder">Product successfully removed from the product comparison!</p>
+                        <div class="text-danger font-weight-bolder"><a href="compare.html">Go to Compare</a></div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- compare_model -->
         <!-- heart-model -->
-        <div class="modal fade" id="heart_model" tabindex="-1"  aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
+        <div class="modal fade" id="heart_model" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body text-center">
-                        <p>
-                            <svg width="30px" height="30px">
-                            <use xlink:href="#checked"></use>
-                            </svg>
-                        </p>
-                        <p class="text-muted font-weight-bold">You must be logged in to manage your wishlist.</p>
-                        <div class="text-danger font-weight-bold">Go to wishlist</div>
+                        <p class="checked"></p>
+                        <p class="text-muted font-weight-bolder">You must be logged in to manage your wishlist.</p>
+                        <div class="text-danger font-weight-bolder"><a href="wishlist.html">Go to wishlist</a></div>
                     </div>
                 </div>
             </div>
@@ -269,24 +263,24 @@
                 <div class="header-top-container">
                     <div class="row header_row">
                         <div class="col-xl-2 col-lg-2 col-6  head-logo pl-md-0">
-                            <div class="text-left header-top-left pt-2"><a href="index.html"><img src="assets/img/logo.png" class="img-responsive img" alt="logo"></a></div>
+                            <div class="text-left header-top-left pt-2"><a href="<c:url value="/home/index.do"/>"><img src="<c:url value="/assets/images/logo.png"/>" class="img-responsive img" alt="logo"></a></div>
                         </div>
                         <!-- head-logo -->
                         <div class="col-xl-10 col-lg-10 col-6  head-navbar">
                             <div class="d-flex navbar">
                                 <div class="text-center col-xl-8 col-lg-7 col-md-12">  
                                     <ul class="main-menu navbar">
-                                        <li><a href="index.html">Home</a></li>
-                                        <li><a href="shop-left-sidebar.html">shop</a></li>
-                                        <li><a href="about-us.html">about us</a></li>
+                                        <li><a href="<c:url value="/home/index.do"/>">Home</a></li>
+                                        <li><a href="<c:url value="/product/index.do"/>">shop</a></li>
+                                        <li><a href="<c:url value="/home/about-us.do"/>">about us</a></li>
                                         <li>
                                             <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">more <!--<svg class="svg-inline--fa fa-angle-down fa-w-10" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z"></path></svg>--><i class="fas fa-angle-down"></i></a>
                                             <ul class="dropdown-menu all-page-drop">
-                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="information.html">delivery informations</a></li>
-                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="policy.html">privacy policy</a></li>
-                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="service.html">custom service</a></li>
-                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="condition.html">term & condition</a></li>
-                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="contact-us.html">contact us</a></li>
+                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="<c:url value="/home/information.do"/>">delivery informations</a></li>
+                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="<c:url value="/home/policy.do"/>">privacy policy</a></li>
+                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="<c:url value="/home/service.do"/>">custom service</a></li>
+                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="<c:url value="/home/condition.do"/>">term & condition</a></li>
+                                                <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="<c:url value="/home/contact-us.do"/>">contact us</a></li>
                                             </ul>
                                         </li>
 
@@ -299,10 +293,19 @@
                                             <span class="dropdown-toggle my_account" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <a href="#"></a>
                                             </span>
-                                            <span class="dropdown-menu r_menu dropdown-menu-right">
-                                                <a class="dropdown-item font-weight-bolderer" href="login.html">log in</a>
-                                                <a class="dropdown-item font-weight-bolderer" href="registration.html">register</a>
-                                            </span>
+                                            <c:choose>
+                                                <c:when test="${account != null}">
+                                                    <span class="dropdown-menu r_menu dropdown-menu-right">
+                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/logout.do"/>">logout</a>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="dropdown-menu r_menu dropdown-menu-right">
+                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/login.do"/>">log in</a>
+                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/register.do"/>">register</a>
+                                                    </span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </li>
                                         <!--  <li class="d-lg-none d-md-inline-block user">
                                               <div class="head_ border rounded bg-white text-left">
@@ -323,7 +326,7 @@
                                                         <div class="media">
 
                                                             <div>
-                                                                <a href="#"><img src="assets/img/product/product_13.jpg" class="fst-image img-fluid align-self-center" alt="product_13"></a>
+                                                                <a href="#"><img src="assets/images/product/product_13.jpg" class="fst-image img-fluid align-self-center" alt="product_13"></a>
                                                             </div>
                                                             <div class="media-body">
                                                                 <h6 class="mt-0 f_15">Media heading</h6>
@@ -336,7 +339,7 @@
                                                         <div class="media ">
 
                                                             <div>
-                                                                <a href="#"><img src="assets/img/product/product_21.jpg" class="fst-image img-fluid align-self-center" alt="product_21"></a>
+                                                                <a href="#"><img src="assets/images/product/product_21.jpg" class="fst-image img-fluid align-self-center" alt="product_21"></a>
                                                             </div>
                                                             <div class="media-body">
                                                                 <h6 class="mt-0 f_15">Media heading</h6>
@@ -351,8 +354,8 @@
                                                         <span class="float-right">$230.00</span>
                                                     </li>
                                                     <li class="d-block font-weight-bolderer pt-2">
-                                                        <span class="text-left"><a href="cart.html">view cart</a></span>
-                                                        <span class="float-right"><a href="checkout.html">check out</a></span>
+                                                        <span class="text-left"><a href="<c:url value="/cart/index.do"/>">view cart</a></span>
+                                                        <span class="float-right"><a href="<c:url value="/payment/index.do"/>">check out</a></span>
                                                     </li>
                                                 </ul>
                                                 <p class="text-center cartempty">Your Shopping cart is empty!</p>
@@ -379,15 +382,15 @@
                         <div class="navbar-header d-xl-none d-lg-none">
                             <button type="button" class="btn-navbar navbar-toggle" onclick="openNav()" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fas fa-bars"></i></button>
                         </div>
-                        <div id="mySidenav" class="sidenav  ">
+                        <div id="mySidenav" class="sidenav">
                             <div class="close-nav d-xl-none d-lg-none">
                                 <span class="categories">Menu</span>
                                 <a href="javascript:void(0)" class="closebtn pull-right" onclick="closeNav()"><i class="fas fa-times"></i></a>
                             </div>
                             <ul class="vertical_main_menu h_menu navbar navbar-nav">
-                                <li><a href="index.html">Home</a></li>
+                                <li><a href="<c:url value="/home/index.do"/>">Home</a></li>
                                 <li class="">
-                                    <a class="dropdown-toggle" href="shop-left-sidebar.html"  role="button" data-toggle="dropdown" aria-expanded="false">shop&nbsp;<span class="float-right"><i class="fas fa-angle-down"></i></span></a>
+                                    <a class="dropdown-toggle" href="<c:url value="/product/index.do"/>"  role="button" data-toggle="dropdown" aria-expanded="false">shop&nbsp;<span class="float-right"><i class="fas fa-angle-down"></i></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">left sidebar</a></li>
                                         <li><a class="dropdown-item font-weight-bolderer" href="shop-right-sidebar.html">right sidebar</a></li>
@@ -579,22 +582,22 @@
                 <!-- row second_footer -->
             </div>
         </div>
-            <!-- footer end -->
-            <!-- scroll -->
-            <a href="#" id="scroll"></a>
-            <!-- jquery-3.4.1 -->
-            <script src="<c:url value="/assets/js/jquery-3.4.1.min.js"/>"></script>
-            <!-- owl.carousel -->
-            <script src="<c:url value="/assets/js/owl.carousel.js"/>"></script>
-            <!-- bootstrap.min -->
-            <script src="<c:url value="/assets/js/bootstrap.min.js"/>"></script>
-            <!-- popper.min -->
-            <script src="<c:url value="/assets/js/popper.min.js"/>"></script>
-            <!-- wow.js - v1.2.1 -->
-            <script src="<c:url value="/assets/js/wow.min.js"/>"></script>
-            <!-- Font Awesome Free 5.15.1 -->
-            <script src="<c:url value="/assets/js/all.min.js"/>"></script>
-            <!-- custom js -->
-            <script src="<c:url value="/assets/js/custom.js"/>"></script>
+        <!-- footer end -->
+        <!-- scroll -->
+        <a href="#" id="scroll"></a>
+        <!-- jquery-3.4.1 -->
+        <script src="<c:url value="/assets/js/jquery-3.4.1.min.js"/>"></script>
+        <!-- owl.carousel -->
+        <script src="<c:url value="/assets/js/owl.carousel.js"/>"></script>
+        <!-- bootstrap.min -->
+        <script src="<c:url value="/assets/js/bootstrap.min.js"/>"></script>
+        <!-- popper.min -->
+        <script src="<c:url value="/assets/js/popper.min.js"/>"></script>
+        <!-- wow.js - v1.2.1 -->
+        <script src="<c:url value="/assets/js/wow.min.js"/>"></script>
+        <!-- Font Awesome Free 5.15.1 -->
+        <script src="<c:url value="/assets/js/all.min.js"/>"></script>
+        <!-- custom js -->
+        <script src="<c:url value="/assets/js/custom.js"/>"></script>
     </body>
 </html>

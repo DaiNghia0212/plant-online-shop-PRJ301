@@ -39,6 +39,7 @@ public class AuthenticationController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -56,19 +57,30 @@ public class AuthenticationController extends HttpServlet {
             case "login": {
                 HttpSession session = request.getSession();
                 if (session.getAttribute("account") == null) {
-                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                    response.sendRedirect(request.getContextPath() + "/home/index.do");
                 }
                 break;
             }
             case "register": {
                 HttpSession session = request.getSession();
                 if (session.getAttribute("account") == null) {
-                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                    response.sendRedirect(request.getContextPath() + "/home/index.do");
                 }
+                break;
+            }
+            case "logout": {
+                ServletContext context = request.getServletContext();
+                HttpSession session = request.getSession();
+                if (context.getAttribute("account") != null) {
+                    context.removeAttribute("account");
+                } else if (session.getAttribute("account") != null) {
+                    session.removeAttribute("account");
+                }
+                response.sendRedirect(request.getContextPath() + "/home/index.do");
                 break;
             }
             default:
@@ -102,13 +114,13 @@ public class AuthenticationController extends HttpServlet {
                         HttpSession session = request.getSession();
                         session.setAttribute("account", account);
                     }
-                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                    response.sendRedirect(request.getContextPath() + "/home/index.do");
                 } catch (SQLException | NoSuchAlgorithmException e) {
                     System.out.println(e.getMessage());
                     // Need to show the error 500 page
                 } catch (Exception ex) {
                     request.setAttribute("message", ex.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 }
                 break;
             }
@@ -125,28 +137,16 @@ public class AuthenticationController extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("account", account);
 //                    show successfully register page
-                    response.sendRedirect(request.getContextPath() + "/product/index.do");
+                    response.sendRedirect(request.getContextPath() + "/home/index.do");
                 } catch (SQLException | NoSuchAlgorithmException ex) {
                     System.out.println(ex.getMessage());
                     // Need to show the error 500 page
                 } catch (Exception ex) {
                     request.setAttribute("message", ex.getMessage());
-                    request.getRequestDispatcher("/WEB-INF/layouts/main.jsp").forward(request, response);
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 }
                 break;
             }
-            case "logout": {
-                ServletContext context = request.getServletContext();
-                HttpSession session = request.getSession();
-                if (context.getAttribute("account") != null) {
-                    context.removeAttribute("account");
-                } else if (session.getAttribute("account") != null) {
-                    session.removeAttribute("account");
-                }
-                response.sendRedirect(request.getContextPath() + "/product/index.do");
-                break;
-            }
-
             default:
             // need to show the error 404 page
         }

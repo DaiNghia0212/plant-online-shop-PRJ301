@@ -6,13 +6,14 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- Shop Page-->
 <div id="shop_page" class="shop-page animate__animated animate__fadeInUp">
     <div class="sp_header bg-white p-3">
         <div class="container custom_container ">
             <div class="row ">
                 <div class="col-12 ">
                     <ul>
-                        <li class="d-inline-block font-weight-bolder"><a href="index.html">home</a></li>
+                        <li class="d-inline-block font-weight-bolder"><a href="<c:url value="/home/index.do"/>">home</a></li>
                         <li class="d-inline-block hr_ font-weight-bolder"><a href="#">shop</a></li>
                     </ul>
                 </div>
@@ -45,8 +46,8 @@
                                         <span class="text-right float-right font-weight-bolder"></span>
                                     </label>
                                 </c:forEach>
-                                <button id="submitButton"  type="submit">
-                                    Search
+                                <button id="submitButton" class="btn btn-primary" type="submit">
+                                    filter
                                 </button>
                             </div>
                         </div>
@@ -54,6 +55,10 @@
                 </form>
             </div>
             <div class="col-lg-9 col-md-8">
+                <form id="search-form" class="needs-validation shop_page-form input-group mb-3" novalidate>
+                    <input type="search" name="search" placeholder="Enter product name" value="${search}" class="form-control rounded border" aria-label="Search" aria-describedby="search-addon"/>
+                    <button type="submit" class="btn btn-primary">search</button>
+                </form>
                 <div class="row shop_grid_list_row mb-5 bg-white p-2 p-md-1 mb-lg-3 mx-0">
                     <div class="col-xl-2 col-sm-2 col-4 pl-0">
                         <a href="#" id="grid" class="btn">
@@ -69,12 +74,9 @@
                     <div class="col-xl-6 col-sm-10 col-8 pr-0 sortpro">
                         <div class="sort-by text-right">
                             <div class="sort">
-                                <form id="search-form" class="needs-validation shop_page-form" novalidate>
-                                    <input name="search" type="text" placeholder="Enter product name" value="${search}"/>
-                                </form>
                                 <form id="order-form" class="needs-validation shop_page-form" novalidate>
                                     <select name="order" class="custom-select" id="order-selection">
-                                        <option value="" selected>Newest</option>
+                                        <option value="" selected>Latest</option>
                                         <c:forEach var="order" items="${orders}">
                                             <c:choose>
                                                 <c:when test="${selectedOrder.equals(order.key)}">
@@ -93,31 +95,34 @@
                 </div>
                 <div id="products" class="row">
                     <c:forEach var="product" items="${products}">
-                        <div class="item col-xl-3">
+                        <div class="item col-lg-4 col-md-6">
                             <div class="product_thumb bg-white rounded">
-                                <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">
-                                    <img src="<c:url value="${product.imagePath}"/>"
-                                         class="fst-image mx-auto d-block img-fluid" alt="product_1"
-                                         />
-                                </a>
-                            </div>
-                            <div class="text-center main_text pt-3">
-                                <div>
-                                    <div class="star mb-2">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                <div class="pro_image">
+                                    <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>"><img src="<c:url value="${product.imagePath}"/>" class="fst-image mx-auto d-block img-fluid" alt="product_7a"></a>
+                                </div>
+                                <div class="text-center main_text pt-3">
+                                    <div>
+                                        <div class="button-group">
+                                            <!--<a href="#"  class="symbol pro_heart" data-toggle="modal" data-target="#heart_model"></a>-->
+                                            <a href="#" class="symbol pro_eye"  data-toggle="modal" data-target=".product-${product.id}"></a>
+                                            <!--<a href="#" class="symbol pro_compare" data-toggle="modal" data-target="#compare_model "></a>-->	
+                                        </div>
+                                        <div class="star mb-2">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                        <h2 class="pro-heading  font-weight-bolder mb-1	">
+                                            <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">${product.name}</a>
+                                        </h2>
+                                        <span class="text-center prices">$${product.price}</span>
+                                        <p class="description mt-1 text-muted">${product.description}</p>
+                                        <a href="#" class="symbol add_to_cart" data-toggle="modal" data-target="#cart_model">
+                                            + ADD TO CART
+                                        </a>
                                     </div>
-                                    <h2 class="pro-heading  font-weight-bolder mb-1	">
-                                        <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">${product.name}</a>
-                                    </h2>
-                                    <span class="text-center prices">$${product.price}</span>
-                                    <p class="description mt-1 text-muted">${product.description}</p>
-                                    <a href="#" class="symbol add_to_cart" data-toggle="modal" data-target="#cart_model">
-                                        + ADD TO CART
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -135,19 +140,28 @@
                             <c:forEach begin="0" end="${totalPage + 1}" step="1" var="pageNumber">
                                 <c:choose>
                                     <c:when test="${pageNumber == 0}">
-                                        <li class="page-item pagination-item" value="1">
+                                        <li class="page-item pagination-item page-link" value="1">
                                             &laquo;
                                         </li>
                                     </c:when>
                                     <c:when test="${pageNumber == totalPage + 1}">
-                                        <li class="page-item pagination-item" value="${totalPage}">
+                                        <li class="page-item pagination-item page-link" value="${totalPage}">
                                             &raquo;
                                         </li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li class="page-item pagination-item" value="${pageNumber}">
-                                            ${pageNumber}
-                                        </li>
+                                        <c:choose>
+                                            <c:when test="${currentPage == pageNumber}">
+                                                <li class="page-item pagination-item page-link active" value="${pageNumber}">
+                                                    ${pageNumber}
+                                                </li>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <li class="page-item pagination-item page-link" value="${pageNumber}">
+                                                    ${pageNumber}
+                                                </li>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>

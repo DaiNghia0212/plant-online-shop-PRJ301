@@ -1020,13 +1020,13 @@
 		max-width: 23%;
 	}
 	.mail_ic {
-	    background: url("../../assets/img/email.png")no-repeat left 2px;
+	    background: url("../../assets/images/email.png")no-repeat left 2px;
 	    background-size: 17px;
 	    height: 20px;
 	    display: inline-block;
 	}
 	.call_ic{
-		background: url("../../assets/img/phone.png")no-repeat left 2px;
+		background: url("../../assets/images/phone.png")no-repeat left 2px;
 		 background-size: 17px;
 	    height: 20px;
 	    display: inline-block;	
@@ -1519,7 +1519,7 @@
 	}
 	.s_filter h6 .toggle.collapsed::after,
 	.s_filter .h6 .toggle.collapsed::after {
-		background: url('../../assets/img/svg/plus.svg') no-repeat center center;
+		background: url('../../assets/images/svg/plus.svg') no-repeat center center;
 		height: 15px;
 		width: 15px;
 		position: absolute;
@@ -1530,7 +1530,7 @@
 	}
 	.footer h5 .toggle.collapsed::after,
 	.footer .h5 .toggle.collapsed::after {
-		background: url('../../assets/img/svg/plus_f.svg') no-repeat center center;
+		background: url('../../assets/images/svg/plus_f.svg') no-repeat center center;
 		height: 15px;
 		width: 15px;
 		position: absolute;
@@ -1549,7 +1549,7 @@
 	}
 	.s_filter h6 .toggle::after,
 	.s_filter .h6 .toggle::after {
-		background: url('../../assets/img/svg/minus.svg') no-repeat center center;
+		background: url('../../assets/images/svg/minus.svg') no-repeat center center;
 		height: 15px;
 		width: 15px;
 		position: absolute;
@@ -1560,7 +1560,7 @@
 	}
 	.footer h5 .toggle::after,
 	.footer .h5 .toggle::after {
-		background: url('../../assets/img/svg/minus_f.svg') no-repeat center center;
+		background: url('../../assets/images/svg/minus_f.svg') no-repeat center center;
 		height: 15px;
 		width: 15px;
 		position: absolute;

@@ -7,11 +7,16 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.product.Product;
+import models.product.ProductFacade;
 
 /**
  *
@@ -50,7 +55,53 @@ public class HomeController extends HttpServlet {
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "index": {
-                request.getRequestDispatcher("WEB-INF/pages/home/index.jsp").forward(request, response);
+                ProductFacade productFacade = new ProductFacade();
+                HashMap<String, Object> productsMap = new HashMap<>();
+                try {
+                    productsMap = productFacade.getProducts("", null, "updated_at", "descending", 0, 12);
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+                ArrayList popularProducts = new ArrayList();
+                int count = 0;
+                ArrayList<Product> list = new ArrayList<>();
+                for (Product product : (ArrayList<Product>) productsMap.get("products")) {
+                    list.add(product);
+                    count++;
+                    if (count >= 2) {
+                        count = 0;
+                        popularProducts.add(list);
+                        list = new ArrayList<>();
+                    }
+                }
+
+                request.setAttribute("products", productsMap.get("products"));
+                request.setAttribute("popularProducts", popularProducts);
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
+            }
+            case "about-us": {
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
+            }
+            case "information": {
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
+            }
+            case "policy": {
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
+            }
+            case "service": {
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
+            }
+            case "condition": {
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
+            }
+            case "contact-us": {
+                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 break;
             }
             default:
