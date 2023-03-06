@@ -46,62 +46,6 @@
     </head>
 
     <body>
-        <!-- cart-model -->
-        <div class="modal fade" id="cart_model" tabindex="-1"  aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title f_13 font-weight-bold">Product successfully added to your shopping cart</div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-4 col-xs-12 mb-3  ">
-                                <img src="assets/images/product/product_13.jpg" class="fst-image mx-auto d-block img-fluid border rounded" alt="product_13">
-                            </div>
-                            <div class="col-sm-8 col-xs-12 ">
-                                <h6 class="font-weight-bold">Hummingbird printed t-shirt</h6>
-                                <div class="font-weight-bold pb-1">$19.12</div>
-                                <span class="font-weight-bold f_13 pb-1">Size: S</span><br>
-                                <span class="font-weight-bold f_13 pb-1">Color: White</span><br>
-                                <span class="font-weight-bold f_13 pb-1">Qty: 2</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class=" col-12 ">
-                                <div class="border rounded final_payment">
-                                    <div class="card-body  border-bottom">
-                                        <p class="text-muted">5 items</p>
-                                        <p class="font-weight-bolder">show details</p>
-                                        <div>
-                                            <span class="font-weight-bold">subtotal</span>
-                                            <span class="float-right font-weight-bold">$94.00</span>
-                                        </div>
-                                        <div>
-                                            <span class="font-weight-bold">shipping</span>
-                                            <span class="float-right font-weight-bold">$9.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body ">
-                                        <div>
-                                            <span class="font-weight-bold">total(tax excl.)</span>
-                                            <span class="float-right font-weight-bold">$94.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-primary mt-2 f_13 px-3 py-2 rounded" data-dismiss="modal">close</a>
-                        <a href="checkout.html" class="btn btn-primary mt-2 f_13 px-3 py-2 rounded">continue</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- cart_model -->
         <!-- eye-model -->
         <c:forEach var="product" items="${products}">
             <div class="modal fade product-${product.id}" id="eye_model" tabindex="-1"  aria-hidden="true">
@@ -145,118 +89,6 @@
             </div>
         </c:forEach>
         <!-- eye_model -->
-        <!-- compare-model -->
-        <div class="modal fade" id="compare_model" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog  modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p class="checked"></p>
-                        <h5>Compare list updated!</h5>
-                        <p class="text-muted font-weight-bolder">Product successfully removed from the product comparison!</p>
-                        <div class="text-danger font-weight-bolder"><a href="compare.html">Go to Compare</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- compare_model -->
-        <!-- heart-model -->
-        <div class="modal fade" id="heart_model" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content ">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p class="checked"></p>
-                        <p class="text-muted font-weight-bolder">You must be logged in to manage your wishlist.</p>
-                        <div class="text-danger font-weight-bolder"><a href="wishlist.html">Go to wishlist</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- heart_model -->
-        <!-- shipping -->
-        <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content ">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <ul>
-                            <li>Fashion has been creating well-designed collections since 2010. </li>
-                            <li>The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which every item is a vital part of a woman's wardrobe. </li>
-                            <li>The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. </li>
-                            <li>All the beautiful pieces are made in Italy and manufactured with the greatest attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- shipping -->
-        <!-- ask about product -->
-        <div class="modal fade" id="question_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title " id="exampleModalLabel">shipping</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body que_form">
-                        <h6>have a any question?</h6>
-                        <form>
-                            <div>
-                                <div class="col-12 sp_form pl-0 pb-3">
-                                    <textarea class="form-control"  rows="3" placeholder="Enter Your Message"></textarea>
-                                </div>
-                                <div class="col-12 sp_form pl-0 pb-3">
-                                    <input type="text" class="form-control" placeholder="Enter Your Name">
-                                </div>
-                                <div class="col-12 sp_form pl-0 pb-3">
-                                    <input type="email" class="form-control" placeholder="Enter Your Mail">
-                                </div>
-                                <div class="col-12 sp_form pl-0 pb-3 ">
-                                    <input type="tel" pattern=".{10}" class="form-control" id="other_number" oninput="check(this)" required placeholder="Enter Your Phone">
-                                </div>
-                                <div class="col-12 sp_form pl-0 pb-3">
-                                    <button type="submit" class="btn btn-primary">submit review</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ask about product -->
-        <!-- add to wishlist -->
-        <div class="modal fade" id="wish_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        Please login and you will add product to your wishlist
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Sign In</button>
-                        <button type="submit" class="btn btn-primary">Register</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- add to wishlist -->
         <!-- header area -->
         <header>
             <div class="header-top py-4 border-bottom sticky-md-top">
@@ -307,59 +139,14 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </li>
-                                        <!--  <li class="d-lg-none d-md-inline-block user">
-                                              <div class="head_ border rounded bg-white text-left">
-                                                 <a class=" md_login" href="#"></a>
-                                              </div>
-                                              </li> -->
                                         <li class="dropdown d-inline-block my-cart md_acco">
-                                            <a href="#" class="cart-qty">
+                                            <a href="<c:url value="/cart/index.do"/>" class="cart-qty">
                                                 <span class="cart-contents">
                                                 </span>
-                                                <span class="d-lg-inline-block d-md-none d-sm-none d-none align-middle font-weight-bolderer"></span><span class="price_cart d-md-inline-block align-middle font-weight-bolderer">2</span>
+                                                <span class="d-lg-inline-block d-md-none d-sm-none d-none align-middle font-weight-bolderer"></span><span class="price_cart d-md-inline-block align-middle font-weight-bolderer"><!--cart quantity--></span>
+                                                <span class="dropdown-toggle Price-amount" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                </span>
                                             </a>
-                                            <span class="dropdown-toggle Price-amount" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            </span>
-                                            <div class="dropdown-menu s_cart dropdown-menu-right">
-                                                <ul class="shopping-cart p-2 ">
-                                                    <li class="pb-2 d-block cart-remove cart_cross">
-                                                        <div class="media">
-
-                                                            <div>
-                                                                <a href="#"><img src="assets/images/product/product_13.jpg" class="fst-image img-fluid align-self-center" alt="product_13"></a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6 class="mt-0 f_15">Media heading</h6>
-                                                                <p><span class="f_13">1 x $ 299.00</span></p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="pb-2 d-block cart-remove border-bottom pl-0 cart_cross wblastcart">
-                                                        <!-- <span class=""></span> -->
-                                                        <div class="media ">
-
-                                                            <div>
-                                                                <a href="#"><img src="assets/images/product/product_21.jpg" class="fst-image img-fluid align-self-center" alt="product_21"></a>
-                                                            </div>
-                                                            <div class="media-body">
-                                                                <h6 class="mt-0 f_15">Media heading</h6>
-                                                                <p><span>1 x $ 299.00</span></p>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-
-
-                                                    <li class="d-block text-muted font-weight-bolderer p-2 border-bottom">
-                                                        <span class="text-left">subtotal:</span>
-                                                        <span class="float-right">$230.00</span>
-                                                    </li>
-                                                    <li class="d-block font-weight-bolderer pt-2">
-                                                        <span class="text-left"><a href="<c:url value="/cart/index.do"/>">view cart</a></span>
-                                                        <span class="float-right"><a href="<c:url value="/payment/index.do"/>">check out</a></span>
-                                                    </li>
-                                                </ul>
-                                                <p class="text-center cartempty">Your Shopping cart is empty!</p>
-                                            </div>
                                         </li>
                                     </ul>
                                 </div>
@@ -528,12 +315,12 @@
                                 </div>
                                 <div class="categorie collapse" id="fh_product">
                                     <ul>
-                                        <li><a href="<c:url value=""/>about-us.html">About</a></li>
-                                        <li><a href="<c:url value=""/>information.html">Delivery Infomations</a></li>
-                                        <li><a href="<c:url value=""/>policy.html">Privacy Policy</a></li>
-                                        <li><a href="<c:url value=""/>service.html">Custom Service</a></li>
-                                        <li><a href="<c:url value=""/>condition.html">Terms &amp; Condition</a></li>
-                                        <li><a href="<c:url value=""/>contact-us.html">Contact Us</a></li>
+                                        <li><a href="<c:url value="/home/about-us.do"/>">About</a></li>
+                                        <li><a href="<c:url value="/home/information.do"/>">Delivery Infomations</a></li>
+                                        <li><a href="<c:url value="/home/policy.do"/>">Privacy Policy</a></li>
+                                        <li><a href="<c:url value="/home/service.do"/>">Custom Service</a></li>
+                                        <li><a href="<c:url value="/home/condition.do"/>">Terms &amp; Condition</a></li>
+                                        <li><a href="<c:url value="/home/contact-us.do"/>">Contact Us</a></li>
                                     </ul>
                                 </div>
                             </div>

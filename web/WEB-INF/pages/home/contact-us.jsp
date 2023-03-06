@@ -2,6 +2,18 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- contact page -->
 <section class="contact-page">
+    <div class="sp_header ">
+        <div class="container custom_container ">
+            <div class="row ">
+                <div class="col-12 ">
+                    <ul class="p-md-3 p-2 bg-light">
+                        <li class="d-inline-block font-weight-bolder"><a href="<c:url value="/home/index.do"/>">home</a></li>
+                        <li class="d-inline-block  font-weight-bolder"><a href="#" class="hr_">Contact us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-sm-12 title_outer">

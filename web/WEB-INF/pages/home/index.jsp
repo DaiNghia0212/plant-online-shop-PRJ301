@@ -67,22 +67,6 @@
             <h5 class="font-weight-bolderer d-inline-block">popular Products</h5>
         </div>
         <div class="row">
-            <div class="col-12 d-flex justify-content-center">
-                <ul class="nav nav-tabs mb-4" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="featured_tab" role="tab" data-toggle="tab" href="#featured_"
-                           aria-selected="true">Featured</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="latest_tab" role="tab" data-toggle="tab" href="#latest_"
-                           aria-selected="true">Latest</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="bags_tab" data-toggle="tab" role="tab" href="#bags"
-                           aria-selected="false">bestseller</a>
-                    </li>
-                </ul>
-            </div>
             <div class="col-12">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="featured_" role="tabpanel" aria-labelledby="featured_tab">
@@ -101,145 +85,20 @@
                                                                 alt="product_1a"
                                                                 />
                                                         </a>
-                                                        <!-- <a href="single-product.html">
-                                                        <img
-                                                            src="assets/images/product/Japanese Black Pine Bonsai_1.1.webp"
-                                                            class="second-img mx-auto d-block img-fluid" alt="product_1b"></a>-->
                                                     </div>
                                                     <div class="text-center">
                                                         <div class="button-group">
-                                                            <!--                                                    <a href="#" class="symbol pro_heart" data-toggle="modal"
-                                                                                                                   data-target="#heart_model"></a>-->
-                                                            <a href="#" class="symbol pro_eye" data-toggle="modal"
-                                                               data-target=".product-${product.id}"></a>
-                                                            <!--                                                    <a href="#" class="symbol pro_compare" data-toggle="modal"
-                                                                                                                   data-target="#compare_model "></a>-->
-                                                        </div>
-                                                        <div class="main_text">
-                                                            <h2 class="text-center pro-heading my-2"><a href="single-product.html"
-                                                                                                        class="font-weight-bolderer">${product.name}</a></h2>
-                                                            <div class="star">
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                            </div>
-                                                            <span class="text-center prices">
-                                                                <span
-                                                                    class="font-weight-bolderer price">$${product.price}
-                                                                </span>
-                                                            </span>
-                                                            <a href="#" class="symbol add_to_cart" data-toggle="modal"
-                                                               data-target="#cart_model">
-                                                                + ADD TO CART
+                                                            <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>" class="symbol pro_eye" data-toggle="modal"
+                                                               data-target=".product-${product.id}">
                                                             </a>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </div>
-                                    <!-- item -->
-                                </c:forEach>
-                            </div>
-                            <!-- owl-carousel-1 -->
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="latest_" role="tabpanel" aria-labelledby="latest_tab">
-                        <div class="row">
-                            <div id="product_carousel1" class="owl-carousel  owl-theme pro_thumb">
-                                <c:forEach var="products" items="${popularProducts}">
-                                    <div class="item">
-                                        <c:forEach var="product" items="${products}">
-                                            <div class="col-12">
-                                                <div class="product_thumb bg-white rounded">
-                                                    <div class="pro_image">
-                                                        <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">
-                                                            <img
-                                                                src="<c:url value="${product.imagePath}"/>"
-                                                                class="fst-image mx-auto d-block img-fluid"
-                                                                alt="product_1a"
-                                                                />
-                                                        </a>
-                                                        <!-- <a href="single-product.html">
-                                                        <img
-                                                            src="assets/images/product/Japanese Black Pine Bonsai_1.1.webp"
-                                                            class="second-img mx-auto d-block img-fluid" alt="product_1b"></a>-->
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <div class="button-group">
-                                                            <!--                                                    <a href="#" class="symbol pro_heart" data-toggle="modal"
-                                                                                                                   data-target="#heart_model"></a>-->
-                                                            <a href="#" class="symbol pro_eye" data-toggle="modal"
-                                                               data-target=".product-${product.id}"></a>
-                                                            <!--                                                    <a href="#" class="symbol pro_compare" data-toggle="modal"
-                                                                                                                   data-target="#compare_model "></a>-->
-                                                        </div>
                                                         <div class="main_text">
-                                                            <h2 class="text-center pro-heading my-2"><a href="single-product.html"
-                                                                                                        class="font-weight-bolderer">${product.name}</a></h2>
-                                                            <div class="star">
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                            </div>
-                                                            <span class="text-center prices">
-                                                                <span
-                                                                    class="font-weight-bolderer price">$${product.price}
-                                                                </span>
-                                                            </span>
-                                                            <a href="#" class="symbol add_to_cart" data-toggle="modal"
-                                                               data-target="#cart_model">
-                                                                + ADD TO CART
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </div>
-                                    <!-- item -->
-                                </c:forEach>
-                            </div>
-                            <!-- owl-carousel-1 -->
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="bags" role="tabpanel" aria-labelledby="bags_tab">
-                        <div class="row">
-                            <div id="product_carousel3" class="owl-carousel owl-theme pro_thumb">
-                                <c:forEach var="products" items="${popularProducts}">
-                                    <div class="item">
-                                        <c:forEach var="product" items="${products}">
-                                            <div class="col-12">
-                                                <div class="product_thumb bg-white rounded">
-                                                    <div class="pro_image">
-                                                        <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">
-                                                            <img
-                                                                src="<c:url value="${product.imagePath}"/>"
-                                                                class="fst-image mx-auto d-block img-fluid"
-                                                                alt="product_1a"
-                                                                />
-                                                        </a>
-                                                        <!-- <a href="single-product.html">
-                                                        <img
-                                                            src="assets/images/product/Japanese Black Pine Bonsai_1.1.webp"
-                                                            class="second-img mx-auto d-block img-fluid" alt="product_1b"></a>-->
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <div class="button-group">
-                                                            <!--                                                    <a href="#" class="symbol pro_heart" data-toggle="modal"
-                                                                                                                   data-target="#heart_model"></a>-->
-                                                            <a href="#" class="symbol pro_eye" data-toggle="modal"
-                                                               data-target=".product-${product.id}"></a>
-                                                            <!--                                                    <a href="#" class="symbol pro_compare" data-toggle="modal"
-                                                                                                                   data-target="#compare_model "></a>-->
-                                                        </div>
-                                                        <div class="main_text">
-                                                            <h2 class="text-center pro-heading my-2"><a href="single-product.html"
-                                                                                                        class="font-weight-bolderer">${product.name}</a></h2>
+                                                            <h2 class="text-center pro-heading my-2">
+                                                                <a href="single-product.html"
+                                                                   class="font-weight-bolderer">
+                                                                    ${product.name}
+                                                                </a>
+                                                            </h2>
                                                             <div class="star">
                                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                                 <i class="fa fa-star" aria-hidden="true"></i>
