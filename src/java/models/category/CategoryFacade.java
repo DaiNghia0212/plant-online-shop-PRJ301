@@ -31,6 +31,7 @@ public class CategoryFacade {
             Category category = new Category(id, name);
             list.add(category);
         }
+        con.close();
         return list;
     }
 
@@ -43,8 +44,10 @@ public class CategoryFacade {
         if (rs.next()) {
             String name = rs.getString("name");
             Category category = new Category(id, name);
+            con.close();
             return category;
         }
+        con.close();
         return null;
     }
 }

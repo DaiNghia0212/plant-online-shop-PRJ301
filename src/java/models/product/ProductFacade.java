@@ -113,6 +113,7 @@ public class ProductFacade {
             Date updatedAt = rs.getDate("updated_at");
             int cateid = rs.getInt("category_id");
             Product product = new Product(id, name, price, quantity, imgpath, description, createdAt, updatedAt, cateid);
+            cn.close();
             return product;
         }
         cn.close();
@@ -141,6 +142,7 @@ public class ProductFacade {
             Product product = new Product(id, name, price, quantity, imgpath, description, createdAt, updatedAt, cateid);
             list.add(product);
         }
+        cn.close();
         return list;
     }
 //     delete product by id
@@ -154,8 +156,8 @@ public class ProductFacade {
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setInt(1, id);
             result = pst.executeUpdate();
-            cn.close();
         }
+        cn.close();
         return result;
     }
 
@@ -176,8 +178,8 @@ public class ProductFacade {
             pst.setInt(7, product.getCategoryId());
             pst.setInt(8, product.getId());
             result = pst.executeUpdate();
-            cn.close();
         }
+        cn.close();
         return result;
     }
 
