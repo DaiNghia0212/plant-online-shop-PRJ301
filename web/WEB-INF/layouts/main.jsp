@@ -8,13 +8,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html class="" lang="en">
-
     <head>
         <title>Plantly</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/assets/images/Favicon.ico"/>">
+        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/assets/icon/Favicon.ico"/>">
         <!-- bootstrap min -->
         <link rel="stylesheet" type="text/css" href="<c:url value="/assets/css/bootstrap.min.css"/>">
         <!-- fontawesome  -->
@@ -46,49 +45,24 @@
     </head>
 
     <body>
-        <!-- eye-model -->
-        <c:forEach var="product" items="${products}">
-            <div class="modal fade product-${product.id}" id="eye_model" tabindex="-1"  aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-sm-5 col-12">
-                                    <img src="<c:url value="${product.imagePath}"/>" class="fst-image mx-auto d-block img-fluid border rounded" alt="product_13">
-                                </div>
-                                <div class="col-sm-7 col-12">
-                                    <h5 class="font-weight-bold border-bottom me_name">${product.name}</h5>
-                                    <div class="font-weight-bold border-bottom me_price">$${product.price}</div>
-                                    <div class="my-2 border-bottom me_des">${product.description}</div>
-                                    <div class="me_quan">
-                                        <div class="sp_counter ">
-                                            <div class="input-group">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="quant[${product.id}]"><span class="minus">-</span></button>
-                                                </span>
-                                                <input type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="1" max="${product.quantity}">
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="quant[${product.id}]"><span class="plus">+</span></button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <span>
-                                            <a href="cart.html" class="btn btn-primary primary mt-3">add to cart</a>
-                                        </span>
-                                    </div>
-                                </div>
+        <!-- cart-model -->
+        <!--        <div class="modal fade" id="cart_model" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p class="checked"></p>
+                                <p class="text-muted font-weight-bolder">Successfully add product to cart.</p>
+                                <div class="text-danger font-weight-bolder"><a href="<c:url value="/cart/index.do"/>">Go to cart</a></div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </c:forEach>
-        <!-- eye_model -->
+                </div>-->
+        <!-- cart_model -->
         <!-- header area -->
         <header>
             <div class="header-top py-4 border-bottom sticky-md-top">
@@ -98,7 +72,7 @@
                             <div class="text-left header-top-left pt-2"><a href="<c:url value="/home/index.do"/>"><img src="<c:url value="/assets/images/logo.png"/>" class="img-responsive img" alt="logo"></a></div>
                         </div>
                         <!-- head-logo -->
-                        <div class="col-xl-10 col-lg-10 col-6  head-navbar">
+                        <div class="col-xl-10 col-lg-10 col-6 head-navbar">
                             <div class="d-flex navbar">
                                 <div class="text-center col-xl-8 col-lg-7 col-md-12">  
                                     <ul class="main-menu navbar">
@@ -134,7 +108,7 @@
                                                 <c:otherwise>
                                                     <span class="dropdown-menu r_menu dropdown-menu-right">
                                                         <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/login.do"/>">log in</a>
-                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/register.do"/>">register</a>
+                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/register.do"/>">Registration</a>
                                                     </span>
                                                 </c:otherwise>
                                             </c:choose>
@@ -143,7 +117,10 @@
                                             <a href="<c:url value="/cart/index.do"/>" class="cart-qty">
                                                 <span class="cart-contents">
                                                 </span>
-                                                <span class="d-lg-inline-block d-md-none d-sm-none d-none align-middle font-weight-bolderer"></span><span class="price_cart d-md-inline-block align-middle font-weight-bolderer"><!--cart quantity--></span>
+                                                <span class="d-lg-inline-block d-md-none d-sm-none d-none align-middle font-weight-bolderer"></span>
+                                                <c:if test="${cartSize != null}">
+                                                    <span class="price_cart d-md-inline-block align-middle font-weight-bolderer">${cartSize}</span>
+                                                    </c:if>
                                                 <span class="dropdown-toggle Price-amount" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 </span>
                                             </a>
@@ -155,129 +132,44 @@
 
                         </div>  
                         <!-- head-navbar -->
+                        <!-- vertical menu and slider -->
+                        <div id="home_vertical_menu">
+                            <div class="row ">
+                                <div class="col-lg-3 vertical_menu">
+                                    <div class="v_menu bg-white rounded">
+                                        <div class="cat_menu bg-warning rounded-top"><a href="#" class="pe-auto text-uppercase d-md-none d-sm-none d-none d-lg-block font-weight-bold"><i class="fas fa-bars"></i>all categories</a></div>
+                                        <div class="navbar-header d-xl-none d-lg-none">
+                                            <button type="button" class="btn-navbar navbar-toggle" onclick="openNav()" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fas fa-bars"></i></button>
+                                        </div>
+                                        <div id="mySidenav" class="sidenav">
+                                            <div class="close-nav d-xl-none d-lg-none">
+                                                <span class="categories">Menu</span>
+                                                <a href="javascript:void(0)" class="closebtn pull-right" onclick="closeNav()"><i class="fas fa-times"></i></a>
+                                            </div>
+                                            <ul class="vertical_main_menu h_menu navbar navbar-nav">
+                                                <li><a href="<c:url value="/home/index.do"/>">Home</a></li>
+                                                <li class="">
+                                                    <a href="<c:url value="/product/index.do"/>"  role="button">shop</a>
+                                                </li>
+                                                <li><a href="<c:url value="/home/information.do"/>">delivery informations</a></li>
+                                                <li><a href="<c:url value="/home/policy.do"/>">privacy policy</a></li>
+                                                <li><a href="<c:url value="/home/service.do"/>">custom service</a></li>
+                                                <li><a href="<c:url value="/home/condition.do"/>">term & condition</a></li>
+                                                <li><a href="<c:url value="/home/contact-us.do"/>">contact us</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- v_menu bg-white rounded -->
+                                </div>
+                            </div>
+                            <!-- row -->
+                        </div>
+                        <!-- vertical menu and slider end -->
                     </div>
                 </div>
             </div>
         </header>
         <!-- header area end -->
-        <!-- vertical menu and slider -->
-        <div id="home_vertical_menu">
-            <div class="row ">
-                <div class="col-lg-3 vertical_menu">
-                    <div class="v_menu bg-white rounded">
-                        <div class="cat_menu bg-warning rounded-top"><a href="#" class="pe-auto text-uppercase d-md-none d-sm-none d-none d-lg-block font-weight-bold"><i class="fas fa-bars"></i>all categories</a></div>
-                        <div class="navbar-header d-xl-none d-lg-none">
-                            <button type="button" class="btn-navbar navbar-toggle" onclick="openNav()" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fas fa-bars"></i></button>
-                        </div>
-                        <div id="mySidenav" class="sidenav">
-                            <div class="close-nav d-xl-none d-lg-none">
-                                <span class="categories">Menu</span>
-                                <a href="javascript:void(0)" class="closebtn pull-right" onclick="closeNav()"><i class="fas fa-times"></i></a>
-                            </div>
-                            <ul class="vertical_main_menu h_menu navbar navbar-nav">
-                                <li><a href="<c:url value="/home/index.do"/>">Home</a></li>
-                                <li class="">
-                                    <a class="dropdown-toggle" href="<c:url value="/product/index.do"/>"  role="button" data-toggle="dropdown" aria-expanded="false">shop&nbsp;<span class="float-right"><i class="fas fa-angle-down"></i></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">left sidebar</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-right-sidebar.html">right sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown mega_menu m1_menu level-1 font-weight-bolderer">
-                                    <a class="dropdown-toggle" href="single-product.html"  role="button" data-toggle="dropdown" aria-expanded="false">portfolio&nbsp;<span class="float-right"><i class="fas fa-angle-down"></i></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <ul class="row mx-0">
-                                                <li class="mg_menu col-lg-6 col-md-12 ">
-                                                    <ul>
-                                                        <li class="h_title text-uppercase font-weight-bolder border-bottom">portfolio grid 2</li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="portfolio-grid-2.html">portfolio grid 2</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="portfolio-grid-3.html">portfolio grid 3</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="portfolio-grid-4.html">portfolio grid 4</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="mesonary-grid-2.html">mesonary grid 2</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="mesonary-grid-3.html">mesonary grid 3</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="mesonary-grid-4.html">mesonary grid 4</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mg_menu col-lg-6 col-md-12">
-                                                    <ul>
-                                                        <li class="h_title text-uppercase font-weight-bolder border-bottom">theme elements</li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="title.html">title</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="category-style.html">category</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="services.html">services</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="product-tab.html">product tab</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="multi-slider-product.html">multi slider product</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a class="dropdown-toggle" href="blog.html"  role="button" data-toggle="dropdown" aria-expanded="false">
-                                        blog&nbsp;<span class="float-right mt-1"><i class="fas fa-angle-down"></i></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item font-weight-bolderer" href="blog.html">blog</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="blog-left-sidebar.html">left sidebar</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="blog-right-sidebar.html">right sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown mega_menu level-1 font-weight-bolderer">
-                                    <a class="dropdown-toggle" href="single-product.html"  role="button" data-toggle="dropdown" aria-expanded="false">Category&nbsp;<span class="float-right mt-1"><i class="fas fa-angle-down"></i></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <ul class="row mx-0">
-                                                <li class="mg_menu col-lg-4 col-md-12 ">
-                                                    <ul>
-                                                        <li class="h_title text-uppercase font-weight-bolder border-bottom">Pot</li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Pigmyweeds</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Indoor Plants</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">outdoor Plants</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Flamingo plant</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Succulent Plant</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mg_menu col-lg-4 col-md-12">
-                                                    <ul>
-                                                        <li class="h_title text-uppercase font-weight-bolder border-bottom">Plants</li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Nerve Plant</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Flowering Plants</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Plant Seed</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Luck Plants</a></li>
-                                                        <li><a class="dropdown-item font-weight-bolderer" href="shop-left-sidebar.html">Plant House</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown level-1 font-weight-bolderer">
-                                    <a class="dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-expanded="false">pages&nbsp;<span class="float-right mt-1"><i class="fas fa-angle-down"></i></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item font-weight-bolderer" href="about-us.html">about us</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="login.html">login</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="registration.html">registration</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="single-product.html">single product</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="single-blog.html">single blog</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="cart.html">cart</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="compare.html">compare</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="wishlist.html">wishlist</a></li>
-                                        <li><a class="dropdown-item font-weight-bolderer" href="checkout.html">check out</a></li>
-                                        <!-- <li><a class="dropdown-item font-weight-bolderer" href="forgot.html">forgot password</a></li> -->
-                                    </ul>
-                                </li>
-                                <li class="level-1 font-weight-bolderer"><a href="contact-us.html">contact-us</a></li
-                                >
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- v_menu bg-white rounded -->
-                </div>
-            </div>
-            <!-- row -->
-        </div>
-        <!-- container  menu_slider mt-4 -->
-        <!-- vertical menu and slider end -->
         <jsp:include page="../pages/${controller}/${action}.jsp"/>
         <!-- footer -->
         <div class="footer animate__animated animate__fadeInUp">

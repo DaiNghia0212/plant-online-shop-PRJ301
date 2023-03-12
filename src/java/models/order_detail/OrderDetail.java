@@ -13,11 +13,21 @@ public class OrderDetail {
     private int orderId;
     private int productId;
     private int quantity;
+    private double price;
 
-    public OrderDetail(int orderId, int productId, int quantity) {
+    public OrderDetail(int orderId, int productId, int quantity, double price) {
         this.orderId = orderId;
         this.productId = productId;
         this.quantity = quantity;
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public int getOrderId() {

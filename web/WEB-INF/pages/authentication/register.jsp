@@ -23,19 +23,12 @@
     <div class="container custom_container">
         <h1 class="text-center h1_">Create your account</h1>
         <div id="Registration" class="page-content card card-block p-3 p-sm-4  ">
-            <form class="needs-validation " method="post" action="register.do" novalidate >
+            <form class="needs-validation" method="post" action="<c:url value="/authentication/register.do"/>" novalidate >
                 <p>Already have an account?<a href="login.do"> Log in instead!</a></p>
-                <div class="d-flex">
-                    <div class="form-group col-md-6 pl-0 ">
-                        <label for="f_name" class="font-weight-bolder">First name</label>
-                        <input type="text" class="form-control" id="f_name" name="first_name" required>
-                        <div class="invalid-feedback">Please Enter your First name.</div>
-                    </div>
-                    <div class="form-group col-md-6 pr-0 " >
-                        <label for="l_name" class="font-weight-bolder">Last name</label>
-                        <input type="text" class="form-control" id="l_name" name="last_name" required>
-                        <div class="invalid-feedback">Please Enter your Last name.</div>
-                    </div>
+                <div class="form-group">
+                    <label for="f_name" class="font-weight-bolder">Name</label>
+                    <input type="text" class="form-control" id="f_name" name="name" required>
+                    <div class="invalid-feedback">Please Enter your Name.</div>
                 </div>
                 <div class="form-group">
                     <label for="r_email" class="font-weight-bolder">Email address</label>
@@ -55,7 +48,7 @@
                 <c:if test="${message != null}">
                     <div class="error-message">${message}.</div>
                 </c:if>
-                <div><button id="clearButton" type="reset" class="btn btn-primary rese float-left mt-3">reset</button><input type="submit" name="submit" class="btn btn-primary mt-3 float-right" value="Save"></div>
+                <div><button id="clearButton" type="reset" class="btn btn-primary rese float-left mt-3">reset</button><input type="submit" name="submit" class="btn btn-primary mt-3 float-right" value="Register"></div>
             </form>
         </div>
     </div>

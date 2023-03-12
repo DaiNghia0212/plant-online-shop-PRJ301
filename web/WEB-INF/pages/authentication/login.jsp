@@ -23,7 +23,7 @@
     <div class="container custom_container ">
         <h3 class="text-center">Log in to your account</h3>
         <div id="login" class="page-content card card-block p-3 p-sm-4 ">
-            <form class="needs-validation" action="login.do" method="post" novalidate >
+            <form class="needs-validation" action="<c:url value="/authentication/login.do"/>" method="post" novalidate >
                 <div class="form-group">
                     <label for="user_email" class="font-weight-bolder">Email address</label>
                     <input type="email" class="form-control" id="user_email" name="email" aria-describedby="emailHelp" required>

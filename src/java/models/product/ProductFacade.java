@@ -28,7 +28,7 @@ public class ProductFacade {
                 + "VALUES(?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, product.getName());
-        preparedStatement.setInt(2, product.getPrice());
+        preparedStatement.setDouble(2, product.getPrice());
         preparedStatement.setInt(3, product.getQuantity());
         preparedStatement.setString(4, product.getImagePath());
         preparedStatement.setString(5, product.getDescription());
@@ -75,7 +75,7 @@ public class ProductFacade {
         while (result.next()) {
             int id = result.getInt("id");
             String name = result.getString("name");
-            int price = result.getInt("price");
+            double price = result.getDouble("price");
             int quantity = result.getInt("quantity");
             String imagePath = result.getString("image_path");
             String description = result.getString("description");
@@ -105,7 +105,7 @@ public class ProductFacade {
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
             String name = rs.getString("name");
-            int price = rs.getInt("price");
+            double price = rs.getDouble("price");
             int quantity = rs.getInt("quantity");
             String imgpath = rs.getString("image_path");
             String description = rs.getString("description");
@@ -119,19 +119,18 @@ public class ProductFacade {
         return null;
     }
 
-    public ArrayList<Product> getRelatedProducts(int categoryId) throws SQLException {
+    public ArrayList<Product> getRelatedProducts(int id, int categoryId) throws SQLException {
         Connection cn = DBContext.getConnection();
         ArrayList<Product> list = new ArrayList<>();
-        String sql = "SELECT *\n"
-                + "FROM products\n"
-                + "WHERE products.category_id = ?";
+        String sql = "SELECT * FROM products WHERE products.id != ? AND products.category_id = ?";
         PreparedStatement pst = cn.prepareStatement(sql);
-        pst.setInt(1, categoryId);
+        pst.setInt(1, id);
+        pst.setInt(2, categoryId);
         ResultSet rs = pst.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt("id");
+            id = rs.getInt("id");
             String name = rs.getString("name");
-            int price = rs.getInt("price");
+            double price = rs.getDouble("price");
             int quantity = rs.getInt("quantity");
             String imgpath = rs.getString("image_path");
             String description = rs.getString("description");
@@ -160,18 +159,18 @@ public class ProductFacade {
     }
 
     //update product
-    public static int updateProduct(Product product) throws Exception {
+    public int updateProduct(Product product) throws Exception {
         int result = 0;
         Connection cn = DBContext.getConnection();
         if (cn != null) {
-            String sql = "update dbo.products set  name='?',price='?',quantity='?',image_path='?',description='?', udpated_at = ?, category_id='?' FROM products  where [id] = ?;";
+            String sql = "update dbo.products set  name=?,price=?,quantity=?,image_path=?,description=?, udpated_at = ?, category_id=? FROM products  where [id] = ?;";
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setString(1, product.getName());
-            pst.setInt(2, product.getPrice());
+            pst.setDouble(2, product.getPrice());
             pst.setInt(3, product.getQuantity());
             pst.setString(4, product.getImagePath());
             pst.setString(5, product.getDescription());
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             pst.setString(6, sdf.format(product.getUpdatedAt()));
             pst.setInt(7, product.getCategoryId());
             pst.setInt(8, product.getId());

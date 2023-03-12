@@ -16,11 +16,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.cart.Cart;
+import models.cart.Item;
 import models.category.Category;
 import models.category.CategoryFacade;
 import models.product.Product;
 import models.product.ProductFacade;
-import org.apache.catalina.tribes.util.Arrays;
 
 /**
  *
@@ -41,8 +43,6 @@ public class ProductController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -92,8 +92,17 @@ public class ProductController extends HttpServlet {
                 HashMap<String, Object> productsMap = new HashMap<>();
                 ArrayList<Category> categories = new ArrayList<>();
                 CategoryFacade categoryFacade = new CategoryFacade();
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
                 try {
                     productsMap = productFacade.getProducts(search, checkedCategories, orderBy, orderType, Integer.parseInt(offset), Integer.parseInt(limit));
+                    ArrayList<Product> products = (ArrayList<Product>) productsMap.get("products");
+                    for (Product product : products) {
+                        Item addedItem = cart.getItem(product.getId());
+                        if (addedItem != null) {
+                            product.setQuantity(product.getQuantity() - addedItem.getQuantity());
+                        }
+                    }
                     categories = categoryFacade.selectAll();
                 } catch (SQLException ex) {
                     System.out.println(ex);
@@ -118,10 +127,22 @@ public class ProductController extends HttpServlet {
                 Category category = null;
                 ArrayList<Product> relatedProducts = new ArrayList<>();
                 CategoryFacade categoryFacade = new CategoryFacade();
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
+                Item addedItem = cart.getItem(id);
+                if (addedItem != null) {
+                    request.setAttribute("addedItem", addedItem);
+                }
                 try {
                     product = productFacade.getProductById(id);
                     category = categoryFacade.getCategoryById(product.getCategoryId());
-                    relatedProducts = productFacade.getRelatedProducts(product.getCategoryId());
+                    relatedProducts = productFacade.getRelatedProducts(id, product.getCategoryId());
+                    for (Product relatedProduct : relatedProducts) {
+                        addedItem = cart.getItem(relatedProduct.getId());
+                        if (addedItem != null) {
+                            relatedProduct.setQuantity(relatedProduct.getQuantity() - addedItem.getQuantity());
+                        }
+                    }
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }

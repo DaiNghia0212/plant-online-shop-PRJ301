@@ -6,12 +6,19 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.account.Account;
+import models.cart.Cart;
+import models.cart.Item;
+import models.product.Product;
+import models.product.ProductFacade;
 
 /**
  *
@@ -32,18 +39,6 @@ public class CartController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CartController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CartController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,12 +53,46 @@ public class CartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        processRequest(request, response);
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "index": {
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
+                double total = cart.getTotal();
+                request.setAttribute("total", total);
                 request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                break;
             }
+            case "delete": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
+                cart.remove(id);
+                response.sendRedirect(request.getContextPath() + "/cart/index.do");
+                break;
+            }
+            case "empty": {
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
+                cart.empty();
+                response.sendRedirect(request.getContextPath() + "/cart/index.do");
+                break;
+            }
+            case "checkout": {
+                HttpSession session = request.getSession();
+                ServletContext context = request.getServletContext();
+                Cart cart = (Cart) session.getAttribute("cart");
+                if ((session.getAttribute("account") != null || context.getAttribute("account") != null) && !cart.getItems().isEmpty()) {
+                    double total = cart.getTotal();
+                    request.setAttribute("total", total);
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/authentication/login.do");
+                }
+                break;
+            }
+            default:
         }
     }
 
@@ -79,6 +108,39 @@ public class CartController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String action = (String) request.getAttribute("action");
+        ProductFacade productFacade = new ProductFacade();
+        switch (action) {
+            case "add": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                int quantity = Integer.parseInt(request.getParameter(String.format("quant[%d]", id)));
+                try {
+                    Product product = productFacade.getProductById(id);
+                    Item item = new Item(product, quantity);
+                    HttpSession session = request.getSession();
+                    Cart cart = (Cart) session.getAttribute("cart");
+                    cart.add(item);
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+                response.sendRedirect(request.getContextPath() + "/cart/index.do");
+                break;
+            }
+            case "update": {
+                int id = Integer.parseInt(request.getParameter("id"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
+                if (quantity == 0) {
+                    cart.remove(id);
+                } else {
+                    cart.update(id, quantity);
+                }
+                response.sendRedirect(request.getContextPath() + "/cart/index.do");
+                break;
+            }
+            default:
+        }
     }
 
     /**
@@ -90,5 +152,4 @@ public class CartController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

@@ -7,20 +7,25 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
+import java.sql.SQLException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.account.Account;
+import models.cart.Cart;
+import models.order.Order;
+import models.order.OrderFacade;
 
 /**
  *
- * @author PC
+ * @author daing
  */
-@WebServlet(name = "updateCartController", urlPatterns = {"/updateCart"})
-public class updateCartController extends HttpServlet {
+@WebServlet(name = "OrderController", urlPatterns = {"/order"})
+public class OrderController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,26 +39,6 @@ public class updateCartController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-                try (PrintWriter out = response.getWriter()) {
-            String id = request.getParameter("id");
-            String newQuantity = request.getParameter("quantity");
-            HttpSession session = request.getSession();
-            if (session != null) {
-                HashMap<String, Integer> cart = (HashMap) session.getAttribute("cart");
-                if(cart != null){
-                    boolean found = cart.containsKey(id);
-                    if(found){
-                        cart.put(id,Integer.parseInt(newQuantity));
-                        session.setAttribute("cart",cart);
-                        //tra ve trang view cart
-//                        response.sendRedirect("viewCart.jsp");
-                    }
-                    
-                }
-                
-            }
-            
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -83,6 +68,34 @@ public class updateCartController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String action = (String) request.getAttribute("action");
+        OrderFacade orderFacade = new OrderFacade();
+        switch (action) {
+            case "create": {
+                HttpSession session = request.getSession();
+                ServletContext context = request.getServletContext();
+                Cart cart = (Cart) session.getAttribute("cart");
+                Account account = (Account) session.getAttribute("account");
+                if (account == null) {
+                    account = (Account) context.getAttribute("account");
+                }
+                if (account != null && !cart.getItems().isEmpty()) {
+                    String address = request.getParameter("address");
+                    int status = 1;
+                    Order order = new Order(status, address, account.getId());
+                    try {
+                        orderFacade.createOrder(order, cart);
+                        cart.empty();
+                        session.setAttribute("cart", cart);
+                    } catch (Exception ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    response.sendRedirect(request.getContextPath() + "/home/index.do");
+                }
+                break;
+            }
+            default:
+        }
     }
 
     /**
