@@ -6,6 +6,22 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${addToCartStatus == 'success'}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successfully add product to cart</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
+<c:if test="${addToCartStatus == 'fail'}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Fail add product to cart</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
 <!-- single product header area -->
 <div>
     <div id="single_product" class="single_product_page animate__animated animate__fadeInUp">
@@ -88,7 +104,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary primary">
+                                <button class="btn btn-primary primary" name="page" value="/product/product-detail.do?id=${product.id}">
                                     add to cart
                                 </button> 
                             </form>
@@ -136,13 +152,13 @@
         <!-- row -->
         <div class="row">
             <div id="related_product_carousel" class="srelated_product_carousel owl-carousel owl-theme pro_thumb">
-                <c:forEach var="product" items="${products}">
+                <c:forEach var="relatedProduct" items="${products}">
                     <div class="item">
                         <div class="col-12">
                             <div class="product_thumb bg-white rounded">
                                 <div class="pro_image">
-                                    <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">
-                                        <img src="<c:url value="${product.imagePath}"/>"
+                                    <a href="<c:url value="/product/product-detail.do?id=${relatedProduct.id}"/>">
+                                        <img src="<c:url value="${relatedProduct.imagePath}"/>"
                                              class="fst-image mx-auto d-block img-fluid" alt="product_1"
                                              />
                                     </a>
@@ -150,22 +166,22 @@
                                 <div class="text-center">
                                     <div class="main_text">
                                         <h2 class="text-center pro-heading my-2">
-                                            <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>" class="font-weight-bolder">
-                                                ${product.name}
+                                            <a href="<c:url value="/product/product-detail.do?id=${relatedProduct.id}"/>" class="font-weight-bolder">
+                                                ${relatedProduct.name}
                                             </a>
                                         </h2>
-                                        <span class="text-center prices font-weight-bolder price">$${product.price}</span>
-                                        <c:if test="${product.quantity > 0}">
+                                        <span class="text-center prices font-weight-bolder price">$${relatedProduct.price}</span>
+                                        <c:if test="${relatedProduct.quantity > 0}">
                                             <form action="<c:url value="/cart/add.do"/>" method="post">
-                                                <input type="number" value="${product.id}" name="id" hidden/>
-                                                <input hidden type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="0" max="${product.quantity}"/>
-                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
+                                                <input type="number" value="${relatedProduct.id}" name="id" hidden/>
+                                                <input hidden type="number" name="quant[${relatedProduct.id}]" class="form-control input-number" value="1" min="0" max="${relatedProduct.quantity}"/>
+                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal" name="page" value="/product/product-detail.do?id=${product.id}"
                                                         data-target="#cart_model">
                                                     + ADD TO CART
                                                 </button>
                                             </form> 
                                         </c:if>
-                                        <c:if test="${product.quantity == 0}">
+                                        <c:if test="${relatedProduct.quantity == 0}">
                                             <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
                                                     data-target="#cart_model">
                                                 Cannot add more to cart

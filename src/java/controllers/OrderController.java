@@ -87,7 +87,9 @@ public class OrderController extends HttpServlet {
                         orderFacade.createOrder(order, cart);
                         cart.empty();
                         session.setAttribute("cart", cart);
+                        session.setAttribute("checkoutStatus", "success");
                     } catch (Exception ex) {
+                        session.setAttribute("checkoutStatus", "fail");
                         System.out.println(ex.getMessage());
                     }
                     response.sendRedirect(request.getContextPath() + "/home/index.do");

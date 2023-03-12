@@ -118,7 +118,7 @@
                                             <form action="<c:url value="/cart/add.do"/>" method="post">
                                                 <input type="number" value="${product.id}" name="id" hidden/>
                                                 <input hidden type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="0" max="${product.quantity}"/>
-                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
+                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal" name="page" value="/product/index.do"
                                                         data-target="#cart_model">
                                                     + ADD TO CART
                                                 </button>

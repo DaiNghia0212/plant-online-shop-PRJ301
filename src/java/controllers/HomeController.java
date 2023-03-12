@@ -83,7 +83,11 @@ public class HomeController extends HttpServlet {
                         list = new ArrayList<>();
                     }
                 }
-
+                String checkoutStatus = (String) session.getAttribute("checkoutStatus");
+                if (checkoutStatus != null) {
+                    session.removeAttribute("checkoutStatus");
+                    request.setAttribute("checkoutStatus", checkoutStatus);
+                }
                 request.setAttribute("products", productsMap.get("products"));
                 request.setAttribute("popularProducts", popularProducts);
                 request.getRequestDispatcher(Config.LAYOUT).forward(request, response);

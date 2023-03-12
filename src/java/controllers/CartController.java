@@ -114,6 +114,7 @@ public class CartController extends HttpServlet {
             case "add": {
                 int id = Integer.parseInt(request.getParameter("id"));
                 int quantity = Integer.parseInt(request.getParameter(String.format("quant[%d]", id)));
+                String fromPage = request.getParameter("page");
                 try {
                     Product product = productFacade.getProductById(id);
                     Item item = new Item(product, quantity);
@@ -123,7 +124,7 @@ public class CartController extends HttpServlet {
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }
-                response.sendRedirect(request.getContextPath() + "/cart/index.do");
+                response.sendRedirect(request.getContextPath() + fromPage);
                 break;
             }
             case "update": {

@@ -2,6 +2,22 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <!-- Home Page -->
 <!-- services -->
+<c:if test="${checkoutStatus == 'success'}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successfully checkout</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
+<c:if test="${checkoutStatus == 'fail'}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Fail to checkout</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
 <div class="container ">
     <div class="main_services">
         <div class="row">
@@ -103,7 +119,7 @@
                                                                 <form action="<c:url value="/cart/add.do"/>" method="post">
                                                                     <input type="number" value="${product.id}" name="id" hidden/>
                                                                     <input hidden type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="0" max="${product.quantity}"/>
-                                                                    <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
+                                                                    <button style="border: none" class="symbol add_to_cart" data-toggle="modal" name="page" value="/home/index.do"
                                                                             data-target="#cart_model">
                                                                         + ADD TO CART
                                                                     </button>
