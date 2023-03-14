@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import models.DBContext;
@@ -18,7 +19,7 @@ import models.cart.Cart;
 import models.cart.Item;
 import models.order_detail.OrderDetail;
 import models.product.Product;
-import models.product.ProductFacade;
+
 
 /**
  *
@@ -86,5 +87,29 @@ public class OrderFacade {
             throw new Exception(ex.getMessage());
         }
         con.close();
+    }
+        public static ArrayList<Order> getOrderByTime() throws SQLException {
+                ArrayList<Order> list = new ArrayList<>();
+
+        Connection cn = DBContext.getConnection();
+        if (cn != null) {
+            String sql = "SELECT id from orders WHERE order_date > ? AND order_date <? \n"
+                    + "SELECT SUM(price) from order_details where order_id = ? \n";
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs!=null){
+                while (rs.next()){
+                    int id=rs.getInt("id");
+                    Date orderDate=rs.getDate("orderDate");
+                    int status=rs.getInt("status");
+                    String address=rs.getString("address");
+                    int accId=rs.getInt("accId");
+                    Order order=new Order(id, (java.sql.Date) orderDate, status, address, accId);
+                    list.add(order);
+                }
+            }
+            cn.close();
+        }
+    return list;
     }
 }
