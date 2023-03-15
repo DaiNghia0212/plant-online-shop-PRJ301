@@ -43,13 +43,8 @@ public class ProductFacade {
         ArrayList<Product> list = new ArrayList<>();
         int total = 0;
         Connection con = DBContext.getConnection();
-        String sql1 = "SELECT *\n"
-                + "FROM products\n"
-                + "%s\n"
-                + "ORDER BY products.%s %s\n"
-                + "OFFSET ? ROWS\n";
-        String sql2 = "SELECT COUNT(*) as total FROM products\n"
-                + "%s\n";
+        String sql1 = "SELECT * FROM products %s ORDER BY products.%s %s OFFSET ? ROWS \n";
+        String sql2 = "SELECT COUNT(*) as total FROM products %s";
         if (orderType.equals("ascending")) {
             orderType = "ASC";
         } else {
