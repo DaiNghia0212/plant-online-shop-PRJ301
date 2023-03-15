@@ -22,10 +22,6 @@
         <link rel="stylesheet" href="<c:url value="/assets/icon/bootstrap-icons-1.4.0/bootstrap-icons.min.css"/>" type="text/css">
         <!-- Bootstrap Docs -->
         <link rel="stylesheet" href="<c:url value="/assets/css/bootstrap-docs.css"/>" type="text/css">
-        <!-- Range slider -->
-        <link rel="stylesheet" href="<c:url value="/assets/libs/range-slider/css/ion.rangeSlider.min.css"/>" type="text/css">
-        <!-- Slick -->
-        <link rel="stylesheet" href="<c:url value="/assets/libs/slick/slick.css"/>" type="text/css">
 
         <!-- Main style file -->
         <link rel="stylesheet" href="<c:url value="/assets/css/app.css"/>" type="text/css">
@@ -150,17 +146,10 @@
 
         <!-- Bundle scripts -->
         <script src="<c:url value="/assets/libs/bundle.js"/>"></script>
-        <!-- Apex chart -->
-        <!--<script src="<c:url value="/assets/libs/charts/apex/apexcharts.min.js"/>"></script>-->
-        <!-- Slick -->
-        <script src="<c:url value="/assets/libs/slick/slick.min.js"/>"></script>
-        <!-- Examples -->
-        <script src="<c:url value="/assets/js/dashboard.js"/>"></script>
-        <script src="<c:url value="/assets/js/products.js"/>"></script>
-        <script src="<c:url value="/assets/js/invoices.js"/>"></script>
-        <!-- Range slider -->
-        <script src="<c:url value="/assets/libs/range-slider/js/ion.rangeSlider.min.js"/>"></script>
         <!-- Main Javascript file -->
         <script src="<c:url value="/assets/js/app.min.js"/>"></script>
+                <script src="<c:url value="/assets/js/dashboard.js"/>"></script>
+        <script src="<c:url value="/assets/js/products.js"/>"></script>
+        <script src="<c:url value="/assets/js/invoices.js"/>"></script>
     </body>
 </html>
