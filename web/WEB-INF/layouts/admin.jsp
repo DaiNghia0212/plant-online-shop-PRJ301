@@ -19,16 +19,16 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
         <!-- Bootstrap icons -->
-        <link rel="stylesheet" href="<c:url value="/assets/dist/icons/bootstrap-icons-1.4.0/bootstrap-icons.min.css"/>" type="text/css">
+        <link rel="stylesheet" href="<c:url value="/assets/icon/bootstrap-icons-1.4.0/bootstrap-icons.min.css"/>" type="text/css">
         <!-- Bootstrap Docs -->
-        <link rel="stylesheet" href="<c:url value="/assets/dist/css/bootstrap-docs.css"/>" type="text/css">
+        <link rel="stylesheet" href="<c:url value="/assets/css/bootstrap-docs.css"/>" type="text/css">
         <!-- Range slider -->
         <link rel="stylesheet" href="<c:url value="/assets/libs/range-slider/css/ion.rangeSlider.min.css"/>" type="text/css">
         <!-- Slick -->
         <link rel="stylesheet" href="<c:url value="/assets/libs/slick/slick.css"/>" type="text/css">
 
         <!-- Main style file -->
-        <link rel="stylesheet" href="<c:url value="/assets/dist/css/app.css"/>" type="text/css">
+        <link rel="stylesheet" href="<c:url value="/assets/css/app.css"/>" type="text/css">
     </head>
     <body>
         <!-- preloader -->
@@ -139,28 +139,28 @@
                 </div>
                 <!-- Logo -->
                 <a href="index.html" class="logo">
-                    <img width="100" src="./assets/img/logo.png" alt="logo">
+                    <img width="100" src="<c:url value="/assets/images/logo.png"/>" alt="logo"/>
                 </a>
                 <!-- ./ Logo -->
-
-                <div class="page-title" style="font-weight: 1000;">OVERVIEW</div>
-
             </div>
             <!-- ./ header -->
             <jsp:include page="../pages/admin/${action}.jsp"/>
-            <!-- Bundle scripts -->
-            <script src="<c:url value="/assets/libs/bundle.js"/>"></script>
-            <!-- Apex chart -->
-            <script src="<c:url value="/assets/libs/charts/apex/apexcharts.min.js"/>"></script>
-            <!-- Slick -->
-            <script src="<c:url value="/assets/libs/slick/slick.min.js"/>"></script>
-            <!-- Examples -->
-            <script src="<c:url value="/assets/dist/js/examples/dashboard.js"/>"></script>
-            <script src="<c:url value="/assets/dist/js/examples/products.js"/>"></script>
-            <script src="<c:url value="/assets/dist/js/examples/invoices.js"/>"></script>
-            <!-- Range slider -->
-            <script src="<c:url value="/assets/libs/range-slider/js/ion.rangeSlider.min.js"/>"></script>
-            <!-- Main Javascript file -->
-            <script src="<c:url value="/assets/dist/js/app.min.js"/>"></script>
+        </div>
+        <!-- ./ layout-wrapper -->
+
+        <!-- Bundle scripts -->
+        <script src="<c:url value="/assets/libs/bundle.js"/>"></script>
+        <!-- Apex chart -->
+        <!--<script src="<c:url value="/assets/libs/charts/apex/apexcharts.min.js"/>"></script>-->
+        <!-- Slick -->
+        <script src="<c:url value="/assets/libs/slick/slick.min.js"/>"></script>
+        <!-- Examples -->
+        <script src="<c:url value="/assets/js/dashboard.js"/>"></script>
+        <script src="<c:url value="/assets/js/products.js"/>"></script>
+        <script src="<c:url value="/assets/js/invoices.js"/>"></script>
+        <!-- Range slider -->
+        <script src="<c:url value="/assets/libs/range-slider/js/ion.rangeSlider.min.js"/>"></script>
+        <!-- Main Javascript file -->
+        <script src="<c:url value="/assets/js/app.min.js"/>"></script>
     </body>
 </html>
