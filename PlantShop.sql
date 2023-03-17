@@ -33,17 +33,16 @@ create table products(
     quantity int check(quantity>=0) not null default 0,
     image_path varchar(255),
     description ntext,
-	created_at date not null default GETDATE(),
-	updated_at date  not null default GETDATE(),
+	created_at datetime not null default GETDATE(),
+	updated_at datetime  not null default GETDATE(),
     category_id int foreign key references categories(id)
 )
 GO
 create table orders(
     id int identity(1,1) primary key,
-    order_date date not null,
-    delivery_date date not null,
+    order_date datetime not null default GETDATE(),
     status int check(status =1 or status=2 or status=3) not null,--1:processing, 2: completed, 3:cancel
-    address nvarchar(100) not null,
+    address nvarchar(255) not null,
     account_id int foreign key references accounts(id)
 )
 GO
@@ -51,6 +50,7 @@ create table order_details(
     order_id int foreign key references orders(id),
     product_id int foreign key references products(id),
     quantity int check(quantity>=1) not null,
+	price decimal(9,2) check(price>=0) not null default 0,
     CONSTRAINT pk_order_detail PRIMARY KEY (order_id, product_id)
 )
 --insert admin account 

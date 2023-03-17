@@ -15,6 +15,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.cart.Cart;
+import models.cart.Item;
 import models.product.Product;
 import models.product.ProductFacade;
 
@@ -65,7 +68,13 @@ public class HomeController extends HttpServlet {
                 ArrayList popularProducts = new ArrayList();
                 int count = 0;
                 ArrayList<Product> list = new ArrayList<>();
+                HttpSession session = request.getSession();
+                Cart cart = (Cart) session.getAttribute("cart");
                 for (Product product : (ArrayList<Product>) productsMap.get("products")) {
+                    Item addedItem = cart.getItem(product.getId());
+                    if (addedItem != null) {
+                        product.setQuantity(product.getQuantity() - addedItem.getQuantity());
+                    }
                     list.add(product);
                     count++;
                     if (count >= 2) {
@@ -74,7 +83,11 @@ public class HomeController extends HttpServlet {
                         list = new ArrayList<>();
                     }
                 }
-
+                String checkoutStatus = (String) session.getAttribute("checkoutStatus");
+                if (checkoutStatus != null) {
+                    session.removeAttribute("checkoutStatus");
+                    request.setAttribute("checkoutStatus", checkoutStatus);
+                }
                 request.setAttribute("products", productsMap.get("products"));
                 request.setAttribute("popularProducts", popularProducts);
                 request.getRequestDispatcher(Config.LAYOUT).forward(request, response);

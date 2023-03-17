@@ -2,6 +2,22 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <!-- Home Page -->
 <!-- services -->
+<c:if test="${checkoutStatus == 'success'}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successfully checkout</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
+<c:if test="${checkoutStatus == 'fail'}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Fail to checkout</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
 <div class="container ">
     <div class="main_services">
         <div class="row">
@@ -87,34 +103,34 @@
                                                         </a>
                                                     </div>
                                                     <div class="text-center">
-                                                        <div class="button-group">
-                                                            <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>" class="symbol pro_eye" data-toggle="modal"
-                                                               data-target=".product-${product.id}">
-                                                            </a>
-                                                        </div>
                                                         <div class="main_text">
                                                             <h2 class="text-center pro-heading my-2">
-                                                                <a href="single-product.html"
+                                                                <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>"
                                                                    class="font-weight-bolderer">
                                                                     ${product.name}
                                                                 </a>
                                                             </h2>
-                                                            <div class="star">
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                            </div>
                                                             <span class="text-center prices">
                                                                 <span
                                                                     class="font-weight-bolderer price">$${product.price}
                                                                 </span>
                                                             </span>
-                                                            <a href="#" class="symbol add_to_cart" data-toggle="modal"
-                                                               data-target="#cart_model">
-                                                                + ADD TO CART
-                                                            </a>
+                                                            <c:if test="${product.quantity > 0}">
+                                                                <form action="<c:url value="/cart/add.do"/>" method="post">
+                                                                    <input type="number" value="${product.id}" name="id" hidden/>
+                                                                    <input hidden type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="0" max="${product.quantity}"/>
+                                                                    <button style="border: none" class="symbol add_to_cart" data-toggle="modal" name="page" value="/home/index.do"
+                                                                            data-target="#cart_model">
+                                                                        + ADD TO CART
+                                                                    </button>
+                                                                </form> 
+                                                            </c:if>
+                                                            <c:if test="${product.quantity == 0}">
+                                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
+                                                                        data-target="#cart_model">
+                                                                    Cannot add more to cart
+                                                                </button>
+                                                            </c:if>
                                                         </div>
                                                     </div>
                                                 </div>

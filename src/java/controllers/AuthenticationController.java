@@ -55,20 +55,22 @@ public class AuthenticationController extends HttpServlet {
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "login": {
+                ServletContext context = request.getServletContext();
                 HttpSession session = request.getSession();
-                if (session.getAttribute("account") == null) {
-                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
-                } else {
+                if (session.getAttribute("account") != null || context.getAttribute("account") != null) {
                     response.sendRedirect(request.getContextPath() + "/home/index.do");
+                } else {
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 }
                 break;
             }
             case "register": {
+                ServletContext context = request.getServletContext();
                 HttpSession session = request.getSession();
-                if (session.getAttribute("account") == null) {
-                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
-                } else {
+                if (session.getAttribute("account") != null || context.getAttribute("account") != null) {
                     response.sendRedirect(request.getContextPath() + "/home/index.do");
+                } else {
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 }
                 break;
             }
@@ -127,11 +129,10 @@ public class AuthenticationController extends HttpServlet {
             case "register": {
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
-                String firstName = request.getParameter("first_name");
-                String lastName = request.getParameter("last_name");
+                String name = request.getParameter("name");
                 String phone = request.getParameter("phone");
                 int role = 0;
-                Account account = new Account(email, password, firstName + " " + lastName, phone, role);
+                Account account = new Account(email, password, name, phone, role);
                 try {
                     account = accountFacade.register(account);
                     HttpSession session = request.getSession();

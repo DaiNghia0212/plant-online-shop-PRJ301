@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.cart.Cart;
 
 /**
  *
@@ -37,6 +39,17 @@ public class FrontController extends HttpServlet {
         String action = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
         request.setAttribute("controller", controller);
         request.setAttribute("action", action);
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
+        }
+        int cartSize = cart.getItems().size();
+        if (cartSize != 0)
+            session.setAttribute("cartSize", cart.getItems().size());
+        else
+            session.removeAttribute("cartSize");
         request.getRequestDispatcher(controller).forward(request, response);
     }
 

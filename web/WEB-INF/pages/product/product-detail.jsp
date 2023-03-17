@@ -6,6 +6,22 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${addToCartStatus == 'success'}">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successfully add product to cart</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
+<c:if test="${addToCartStatus == 'fail'}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Fail add product to cart</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
 <!-- single product header area -->
 <div>
     <div id="single_product" class="single_product_page animate__animated animate__fadeInUp">
@@ -61,48 +77,55 @@
                                     </li>
                                 </ul>
                             </div>
-                        <div class="sp_rating">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </div>
-                        <div class="sp_c_count1">
-                            <div class="number">
-                                <div class="sp_counter ">
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-number p-0" disabled="disabled" data-type="minus" data-field="quant[${product.id}]"><span class="minus">-</span></button>
-                                        </span>
-                                        <input type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="1" max="${product.quantity}">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default btn-number p-0" data-type="plus" data-field="quant[${product.id}]"><span class="plus">+</span></button>
-                                        </span>
+                            <form id="add_to_cart-form" action="<c:url value="/cart/add.do"/>" method="post">
+                                <div class="sp_c_count1">
+                                    <div class="number">
+                                        <div class="sp_counter ">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-number p-0" disabled="disabled" data-type="minus" data-field="quant[${product.id}]"><span class="minus">-</span></button>
+                                                </span>
+                                                <input type="number" name="id" value="${product.id}" hidden/>
+                                                <c:if test="${addedItem != null}">
+                                                    <c:if test="${(product.quantity - addedItem.quantity) > 0}">
+                                                        <input type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="1" max="${product.quantity - addedItem.quantity}"/>
+                                                    </c:if>
+                                                    <c:if test="${(product.quantity - addedItem.quantity) <= 0}">
+                                                        <input type="number" name="quant[${product.id}]" class="form-control input-number" value="0" min="0" max="0"/>
+                                                    </c:if>
+                                                </c:if>
+                                                <c:if test="${addedItem == null}">
+                                                    <input type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="1" max="${product.quantity}"/>
+                                                </c:if>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-number p-0" data-type="plus" data-field="quant[${product.id}]"><span class="plus">+</span></button>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <button class="btn btn-primary primary" name="page" value="/product/product-detail.do?id=${product.id}">
+                                    add to cart
+                                </button> 
+                            </form>
                         </div>
-                        <span class="sp_c_count2 m-2">
-                            <a href="cart.html" class="btn btn-primary primary">add to cart</a>
-                        </span>
-                    </div>
-                    <div class="sp_buy mt-3">
-                        <button type="button" class="btn btn-primary primary">buy it now</button>
-                    </div>
-                    <div class="sp_collapse_block my-4">
-                        <div class="accordion" id="collapse_block">
-                            <div class="card">
-                                <div class="card-header" id="heading_One">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link btn-block text-left tags-title" type="button" data-toggle="collapse" data-target="#collapse_One" aria-expanded="true" aria-controls="collapse_One">
-                                            DESCRIPTION<span class="float-right"><i class="fas fa-angle-down"></i></span>
-                                        </button>
-                                    </h2>
-                                </div>
-                                <div id="collapse_One" class="collapse show" aria-labelledby="heading_One" data-parent="#collapse_block">
-                                    <div class="card-body">
-                                        ${product.description}
+                        <!--                    <div class="sp_buy mt-3">
+                                                <button type="button" class="btn btn-primary primary">buy it now</button>
+                                            </div>-->
+                        <div class="sp_collapse_block my-4">
+                            <div class="accordion" id="collapse_block">
+                                <div class="card">
+                                    <div class="card-header" id="heading_One">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-link btn-block text-left tags-title" type="button" data-toggle="collapse" data-target="#collapse_One" aria-expanded="true" aria-controls="collapse_One">
+                                                DESCRIPTION<span class="float-right"><i class="fas fa-angle-down"></i></span>
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="collapse_One" class="collapse show" aria-labelledby="heading_One" data-parent="#collapse_block">
+                                        <div class="card-body">
+                                            ${product.description}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -112,70 +135,69 @@
             </div>
         </div>
     </div>
-</div>
 
 
-<!-- single product img and detail -->
-<!-- related product -->
-<div class="container custom_container t_pro_container fadeInUp">
-    <div class="row">
-        <div class="col-12">
-            <div class="title_outer">
-                <h5 class="font-weight-bolder mb-4 d-inline-block">related products</h5>
+    <!-- single product img and detail -->
+    <!-- related product -->
+    <div class="container custom_container t_pro_container fadeInUp">
+        <div class="row">
+            <div class="col-12">
+                <div class="title_outer">
+                    <h5 class="font-weight-bolder mb-4 d-inline-block">related products</h5>
+                </div>
+                <!-- title_outer -->
             </div>
-            <!-- title_outer -->
+            <!-- col-12 -->
         </div>
-        <!-- col-12 -->
-    </div>
-    <!-- row -->
-    <div class="row">
-        <div id="related_product_carousel" class="srelated_product_carousel owl-carousel owl-theme pro_thumb">
-            <c:forEach var="product" items="${products}">
-                <div class="item">
-                    <div class="col-12">
-                        <div class="product_thumb bg-white rounded">
-                            <div class="pro_image">
-                                <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">
-                                    <img src="<c:url value="${product.imagePath}"/>"
-                                         class="fst-image mx-auto d-block img-fluid" alt="product_1"
-                                         />
-                                </a>
-                            </div>
-                            <div class="text-center">
-                                <div class="button-group">
-                                    <!--<a href="#"  class="symbol pro_heart" data-toggle="modal" data-target="#heart_model"></a>-->
-                                    <a href="#" class="symbol pro_eye"  data-toggle="modal" data-target=".product-${product.id}"></a>
-                                    <!--<a href="#" class="symbol pro_compare" data-toggle="modal" data-target="#compare_model "></a>-->	
-                                </div>
-
-                                <div class="main_text">
-                                    <h2 class="text-center pro-heading my-2">
-                                        <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>" class="font-weight-bolder">
-                                            ${product.name}
-                                        </a>
-                                    </h2>
-                                    <div class="star">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <span class="text-center prices font-weight-bolder price">$${product.price}</span>
-                                    <a href="#" class="symbol add_to_cart" data-toggle="modal" data-target="#cart_model">
-                                        + ADD TO CART
+        <!-- row -->
+        <div class="row">
+            <div id="related_product_carousel" class="srelated_product_carousel owl-carousel owl-theme pro_thumb">
+                <c:forEach var="relatedProduct" items="${products}">
+                    <div class="item">
+                        <div class="col-12">
+                            <div class="product_thumb bg-white rounded">
+                                <div class="pro_image">
+                                    <a href="<c:url value="/product/product-detail.do?id=${relatedProduct.id}"/>">
+                                        <img src="<c:url value="${relatedProduct.imagePath}"/>"
+                                             class="fst-image mx-auto d-block img-fluid" alt="product_1"
+                                             />
                                     </a>
                                 </div>
+                                <div class="text-center">
+                                    <div class="main_text">
+                                        <h2 class="text-center pro-heading my-2">
+                                            <a href="<c:url value="/product/product-detail.do?id=${relatedProduct.id}"/>" class="font-weight-bolder">
+                                                ${relatedProduct.name}
+                                            </a>
+                                        </h2>
+                                        <span class="text-center prices font-weight-bolder price">$${relatedProduct.price}</span>
+                                        <c:if test="${relatedProduct.quantity > 0}">
+                                            <form action="<c:url value="/cart/add.do"/>" method="post">
+                                                <input type="number" value="${relatedProduct.id}" name="id" hidden/>
+                                                <input hidden type="number" name="quant[${relatedProduct.id}]" class="form-control input-number" value="1" min="0" max="${relatedProduct.quantity}"/>
+                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal" name="page" value="/product/product-detail.do?id=${product.id}"
+                                                        data-target="#cart_model">
+                                                    + ADD TO CART
+                                                </button>
+                                            </form> 
+                                        </c:if>
+                                        <c:if test="${relatedProduct.quantity == 0}">
+                                            <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
+                                                    data-target="#cart_model">
+                                                Cannot add more to cart
+                                            </button>
+                                        </c:if>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </c:forEach>
-            <!-- item --> 
+                </c:forEach>
+                <!-- item --> 
+            </div>
+            <!-- product_carousel2 -->
         </div>
-        <!-- product_carousel2 -->
     </div>
-</div>
 </div>
 <!-- related product end -->
 <!-- single_product_page -->

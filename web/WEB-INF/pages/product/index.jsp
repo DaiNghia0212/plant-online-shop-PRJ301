@@ -28,7 +28,7 @@
                         <h2 class="text-uppercase card-title  font-weight-bolder d-md-block d-none">filter by</h2>
                         <div class="s_filter">
                             <h6 class="text-uppercase border-bottom font-weight-bold">categories
-                                <button class="toggle collapsed" data-toggle="collapse" data-target="#shop_size_collapse">        
+                                <button type="button" class="toggle collapsed" data-toggle="collapse" data-target="#shop_size_collapse">        
                                 </button>
                             </h6>
                             <div class="collapse" id="shop_size_collapse">
@@ -102,11 +102,6 @@
                                 </div>
                                 <div class="text-center main_text pt-3">
                                     <div>
-                                        <div class="button-group">
-                                            <!--<a href="#"  class="symbol pro_heart" data-toggle="modal" data-target="#heart_model"></a>-->
-                                            <a href="#" class="symbol pro_eye"  data-toggle="modal" data-target=".product-${product.id}"></a>
-                                            <!--<a href="#" class="symbol pro_compare" data-toggle="modal" data-target="#compare_model "></a>-->	
-                                        </div>
                                         <div class="star mb-2">
                                             <i class="fa fa-star" aria-hidden="true"></i>
                                             <i class="fa fa-star" aria-hidden="true"></i>
@@ -119,9 +114,22 @@
                                         </h2>
                                         <span class="text-center prices">$${product.price}</span>
                                         <p class="description mt-1 text-muted">${product.description}</p>
-                                        <a href="#" class="symbol add_to_cart" data-toggle="modal" data-target="#cart_model">
-                                            + ADD TO CART
-                                        </a>
+                                        <c:if test="${product.quantity > 0}">
+                                            <form action="<c:url value="/cart/add.do"/>" method="post">
+                                                <input type="number" value="${product.id}" name="id" hidden/>
+                                                <input hidden type="number" name="quant[${product.id}]" class="form-control input-number" value="1" min="0" max="${product.quantity}"/>
+                                                <button style="border: none" class="symbol add_to_cart" data-toggle="modal" name="page" value="/product/index.do"
+                                                        data-target="#cart_model">
+                                                    + ADD TO CART
+                                                </button>
+                                            </form> 
+                                        </c:if>
+                                        <c:if test="${product.quantity == 0}">
+                                            <button style="border: none" class="symbol add_to_cart" data-toggle="modal"
+                                                    data-target="#cart_model">
+                                                Cannot add more to cart
+                                            </button>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>
