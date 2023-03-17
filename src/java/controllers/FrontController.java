@@ -7,12 +7,14 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.account.Account;
 import models.cart.Cart;
 
 /**
@@ -40,6 +42,11 @@ public class FrontController extends HttpServlet {
         request.setAttribute("controller", controller);
         request.setAttribute("action", action);
         HttpSession session = request.getSession();
+        ServletContext context = request.getServletContext();
+        if (context.getAttribute("account") != null) {
+            Account account = (Account) context.getAttribute("account");
+            request.setAttribute("account", account);
+        }
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
             cart = new Cart();

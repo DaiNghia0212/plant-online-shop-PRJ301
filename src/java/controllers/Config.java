@@ -11,4 +11,5 @@ package controllers;
  */
 public class Config {
     public final static String LAYOUT = "/WEB-INF/layouts/main.jsp";
+    public final static String ADMIN_LAYOUT = "WEB-INF/layouts/admin.jsp";
 }
