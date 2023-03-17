@@ -18,7 +18,6 @@ import models.cart.Cart;
 import models.cart.Item;
 import models.order_detail.OrderDetail;
 import models.product.Product;
-import models.product.ProductFacade;
 
 /**
  *

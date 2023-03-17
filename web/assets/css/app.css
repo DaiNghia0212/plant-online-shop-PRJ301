@@ -1662,6 +1662,7 @@ textarea.form-control-lg {
   display: block;
   width: 100%;
   padding: 0.675rem 2.25rem 0.675rem 1.25rem;
+  margin-right: 10px;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
@@ -3420,11 +3421,12 @@ textarea.form-control-lg {
 .page-item:not(:first-child) .page-link {
   margin-left: -1px; }
 
-.page-item.active .page-link {
+.page-item.active.page-link {
   z-index: 3;
   color: #fff;
   background-color: #ff6e40;
-  border-color: #ff6e40; }
+  border-color: #ff6e40;
+}
 
 .page-item.disabled .page-link {
   color: #6c757d;
@@ -8612,7 +8614,7 @@ table.dataTable thead .sorting_desc:after {
     font-weight: 500; }
   .table td {
     vertical-align: middle;
-    white-space: nowrap; }
+  }
   .table .dropdown-menu {
     margin-top: 0; }
   .table.table-lg td {

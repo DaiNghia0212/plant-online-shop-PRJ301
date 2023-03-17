@@ -76,7 +76,6 @@
                             <div class="sort">
                                 <form id="order-form" class="needs-validation shop_page-form" novalidate>
                                     <select name="order" class="custom-select" id="order-selection">
-                                        <option value="" selected>Latest</option>
                                         <c:forEach var="order" items="${orders}">
                                             <c:choose>
                                                 <c:when test="${selectedOrder.equals(order.key)}">

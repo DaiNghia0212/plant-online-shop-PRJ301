@@ -21,528 +21,242 @@
         </nav>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-md-flex gap-4 align-items-center">
-                        <div class="d-none d-md-flex">All Products</div>
-                        <div class="d-md-flex gap-4 align-items-center">
-                            <form class="mb-3 mb-md-0">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <select class="form-select">
-                                            <option>Sort by</option>
-                                            <option value="desc">Desc</option>
-                                            <option value="asc">Asc</option>
-                                            <option value="asc">Pets frienfly</option>
-                                            <option value="asc">Feng shui</option>
-                                            <option value="asc">Low light</option>
 
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select class="form-select">
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="30">30</option>
-                                            <option value="40">40</option>
-                                            <option value="50">50</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </form>
+    <form id="main-form" class="mb-3 mb-md-0">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-custom table-lg mb-0" id="products">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="product" items="${products}">
+                                <tr>
+
+                                    <td>
+                                        <a href="#">${product.id}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#">
+                                            <img src="<c:url value="${product.imagePath}"/>" class="rounded" width="40"
+                                                 alt="...">
+                                        </a>
+                                    </td>
+                                    <td>${product.name}</td>
+                                    <td>
+                                        <c:if test="${product.quantity > 0}">
+                                            <span class="text-success">In Stock</span>
+                                        </c:if>
+                                        <c:if test="${product.quantity == 0}">
+                                            <span class="text-danger">Out of Stock</span>
+                                        </c:if>
+                                    </td>
+                                    <td>$${product.price}</td>
+                                    <td class="text-end">${product.quantity}</td>
+                                    <td class="text-end">
+                                        <div class="d-flex">
+                                            <div class="dropdown ms-auto">
+                                                <a href="#" data-bs-toggle="dropdown"
+                                                   class="btn btn-floating"
+                                                   aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-three-dots"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a href="#" class="dropdown-item">Edit</a>
+                                                    <a href="#" class="dropdown-item">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <c:if test="${totalPage != 0}">
+                    <nav class="mt-4" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <c:forEach begin="0" end="${totalPage + 1}" step="1" var="pageNumber">
+                                <c:choose>
+                                    <c:when test="${pageNumber == 0}">
+                                        <li class="pagination-item page-item page-link" value="1">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </li>
+                                    </c:when>
+                                    <c:when test="${pageNumber == totalPage + 1}">
+                                        <li class="pagination-item page-item page-link" value="${totalPage}">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:choose>
+                                            <c:when test="${currentPage == pageNumber}">
+                                                <li class="pagination-item page-item active page-link" value="${pageNumber}">
+                                                    ${pageNumber}
+                                                </li>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <li class="pagination-item page-item page-link" value="${pageNumber}">
+                                                    ${pageNumber}
+                                                </li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </ul>
+                    </nav>
+                </c:if>
+            </div>
+            <!-- filter -->
+            <div class="col-md-4">
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                             aria-expanded="true" data-bs-target="#keywordsCollapseExample" role="button">
+                            <div>Keywords</div>
+                            <div class="bi bi-chevron-down"></div>
                         </div>
-                        <!-- <div class="dropdown ms-auto">
-                            <a href="#" data-bs-toggle="dropdown"
-                               class="btn btn-primary dropdown-toggle"
-                               aria-haspopup="true" aria-expanded="false">Actions</a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a href="#" class="dropdown-item">Action</a>
-                                <a href="#" class="dropdown-item">Another action</a>
-                                <a href="#" class="dropdown-item">Something else here</a>
+                        <div class="collapse show mt-4" id="keywordsCollapseExample">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" placeholder="Pot, Japanese..." value="${search}">
+                                <button class="btn btn-outline-light" type="button">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-md-flex gap-4 align-items-center">
+                            <div class="d-none d-md-flex">Sort by</div>
+                            <div class="d-md-flex gap-4 align-items-center">
+                                <div class="row g-2">
+                                    <select class="form-select" name="order" onchange="this.form.submit()">
+                                        <c:forEach var="order" items="${orders}">
+                                            <c:choose>
+                                                <c:when test="${selectedOrder.equals(order.key)}">
+                                                    <option value="${order.key}" selected>${order.value}</option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option value="${order.key}">${order.value}</option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                    <!--                                    <div class="col-md-6">
+                                                                            <select class="form-select">
+                                                                                <option value="10">10</option>
+                                                                                <option value="20">20</option>
+                                                                                <option value="30">30</option>
+                                                                                <option value="40">40</option>
+                                                                                <option value="50">50</option>
+                                                                            </select>
+                                                                        </div>-->
+                                </div>
+                            </div>
+                            <!-- <div class="dropdown ms-auto">
+                                <a href="#" data-bs-toggle="dropdown"
+                                   class="btn btn-primary dropdown-toggle"
+                                   aria-haspopup="true" aria-expanded="false">Actions</a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="#" class="dropdown-item">Action</a>
+                                    <a href="#" class="dropdown-item">Another action</a>
+                                    <a href="#" class="dropdown-item">Something else here</a>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                             aria-expanded="true" data-bs-target="#categoriesCollapseExample" role="button">
+                            <div>Categories</div>
+                            <div class="bi bi-chevron-down"></div>
+                        </div>
+                        <div class="collapse show mt-4" id="categoriesCollapseExample">
+                            <div class="d-flex flex-column gap-3">
+                                <c:forEach var="category" items="${categories}">
+                                    <div class="form-check">
+                                        <c:choose>
+                                            <c:when test="${checkedCategories.contains(category.id)}">
+                                                <input class="form-check-input" name="categories" type="checkbox" value="${category.id}" checked id="category-${catgory.id}">
+                                                <label class="form-check-label" for="category-${catgory.id}">
+                                                    ${category.name}
+                                                </label>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input class="form-check-input" name="categories" type="checkbox" value="${category.id}" id="category-${catgory.id}">
+                                                <label class="form-check-label" for="category-${catgory.id}">
+                                                    ${category.name}
+                                                </label>
+                                            </c:otherwise></c:choose>
+                                        </div>
+                                </c:forEach>
+                                <button id="submitButton" class="btn btn-primary" type="submit">
+                                    Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                             aria-expanded="true" data-bs-target="#colorsCollapseExample" role="button">
+                            <div>Colors</div>
+                            <div class="bi bi-chevron-down"></div>
+                        </div>
+                        <div class="collapse show mt-4" id="colorsCollapseExample">
+                            <div class="color-filter-group d-flex gap-3">
+                                <input class="form-check-input" type="checkbox" value="#1fa0c6" aria-label="...">
+                                <input class="form-check-input" type="checkbox" checked value="green" aria-label="...">
+                                <input class="form-check-input" type="checkbox" checked value="#c61faa" aria-label="...">
+                                <input class="form-check-input" type="checkbox" value="#1fc662" aria-label="...">
+                                <input class="form-check-input" type="checkbox" value="#9dc61f" aria-label="...">
+                                <input class="form-check-input" type="checkbox" checked value="#c67b1f" aria-label="...">
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
             </div>
-            <div class="table-responsive">
-                <table class="table table-custom table-lg mb-0" id="products">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input class="form-check-input select-all" type="checkbox"
-                                       data-select-all-target="#products" id="defaultCheck1">
-                            </th>
-                            <th>ID</th>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#1</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/1.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>A</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$499,90</td>
-                            <td>1</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#2</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/2.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>B</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$500,30</td>
-                            <td>2</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#3</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/3.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>C</td>
-                            <td>
-                                <span class="text-danger">Out of Stock</span>
-                            </td>
-                            <td>$1.190,90</td>
-                            <td>0</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#4</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/4.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>D</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$50,90</td>
-                            <td>3</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#5</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/5.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>E</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$50,90</td>
-                            <td>4</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#6</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/6.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>F</td>
-                            <td>
-                                <span class="text-danger">Out of Stock</span>
-                            </td>
-                            <td>$10,50</td>
-                            <td>0</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#7</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/7.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>G</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$70,20</td>
-                            <td>7</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#8</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/8.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>H</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$870,50</td>
-                            <td>8</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#9</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/9.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>I</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$170,50</td>
-                            <td>9</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input" type="checkbox">
-                            </td>
-                            <td>
-                                <a href="#">#10</a>
-                            </td>
-                            <td>
-                                <a href="#">
-                                    <img src="../../assets/images/products/10.jpg" class="rounded" width="40"
-                                         alt="...">
-                                </a>
-                            </td>
-                            <td>J</td>
-                            <td>
-                                <span class="text-success">In Stock</span>
-                            </td>
-                            <td>$15,00</td>
-                            <td>10</td>
-                            <td class="text-end">
-                                <div class="d-flex">
-                                    <div class="dropdown ms-auto">
-                                        <a href="#" data-bs-toggle="dropdown"
-                                           class="btn btn-floating"
-                                           aria-haspopup="true" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item">Show</a>
-                                            <a href="#" class="dropdown-item">Edit</a>
-                                            <a href="#" class="dropdown-item">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <nav class="mt-4" aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
-        <!-- filter -->
-        <div class="col-md-4">
-            <h5 class="mb-4">Filter Products</h5>
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                         aria-expanded="true" data-bs-target="#keywordsCollapseExample" role="button">
-                        <div>Keywords</div>
-                        <div class="bi bi-chevron-down"></div>
-                    </div>
-                    <div class="collapse show mt-4" id="keywordsCollapseExample">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Pot, Japanese...">
-                            <button class="btn btn-outline-light" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- category -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                         aria-expanded="true" data-bs-target="#categoriesCollapseExample" role="button">
-                        <div>Categories</div>
-                        <div class="bi bi-chevron-down"></div>
-                    </div>
-                    <div class="collapse show mt-4" id="categoriesCollapseExample">
-                        <div class="d-flex flex-column gap-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="categoryCheck1">
-                                <label class="form-check-label" for="categoryCheck1">
-                                    All
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="categoryCheck2">
-                                <label class="form-check-label" for="categoryCheck2">
-                                    Pet Frienfly
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="categoryCheck3">
-                                <label class="form-check-label" for="categoryCheck3">
-                                    Feng shui
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="categoryCheck4">
-                                <label class="form-check-label" for="categoryCheck4">
-                                    Low light
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="card mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
-                         aria-expanded="true" data-bs-target="#colorsCollapseExample" role="button">
-                        <div>Colors</div>
-                        <div class="bi bi-chevron-down"></div>
-                    </div>
-                    <div class="collapse show mt-4" id="colorsCollapseExample">
-                        <div class="color-filter-group d-flex gap-3">
-                            <input class="form-check-input" type="checkbox" value="#1fa0c6" aria-label="...">
-                            <input class="form-check-input" type="checkbox" checked value="green" aria-label="...">
-                            <input class="form-check-input" type="checkbox" checked value="#c61faa" aria-label="...">
-                            <input class="form-check-input" type="checkbox" value="#1fc662" aria-label="...">
-                            <input class="form-check-input" type="checkbox" value="#9dc61f" aria-label="...">
-                            <input class="form-check-input" type="checkbox" checked value="#c67b1f" aria-label="...">
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-    </div>
+    </form>
 </div>
 <!-- ./ content -->
+<script>
+    const LIMIT = 6;
+
+    const handleClick = (event) => {
+        const hiddenOffsetInput = document.createElement("input");
+        hiddenOffsetInput.type = "hidden";
+        hiddenOffsetInput.name = "offset";
+        hiddenOffsetInput.value = (Number.parseInt(event.target.value) - 1) * LIMIT;
+        form.appendChild(hiddenOffsetInput);
+        const hiddenLimitInput = document.createElement("input");
+        hiddenLimitInput.type = "hidden";
+        hiddenLimitInput.name = "limit";
+        hiddenLimitInput.value = LIMIT;
+        form.appendChild(hiddenLimitInput);
+        form.submit();
+    }
+
+    const form = document.getElementById("main-form");
+    const paginationItems = document.getElementsByClassName("pagination-item");
+    for (let i = 0; i < paginationItems.length; i++) {
+        paginationItems[i].addEventListener("click", handleClick);
+    }
+</script>

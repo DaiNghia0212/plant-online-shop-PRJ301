@@ -89,8 +89,9 @@
                                                 <li class="d-block"><a class="dropdown-item font-weight-bolderer" href="<c:url value="/home/contact-us.do"/>">contact us</a></li>
                                             </ul>
                                         </li>
-
-                                    </ul></div>
+                                        <c:if test="${account.role == 1}"><li><a href="<c:url value="/admin/index.do"/>">Admin</a></li></c:if>
+                                    </ul>
+                                </div>
                                 <div class="col-xl-4 col-lg-5 head-right text-right">
                                     <ul class="top_cart">
                                         <li class="dropdown right1 md_acc md_acco">
@@ -120,7 +121,7 @@
                                                 <span class="d-lg-inline-block d-md-none d-sm-none d-none align-middle font-weight-bolderer"></span>
                                                 <c:if test="${cartSize != null}">
                                                     <span class="price_cart d-md-inline-block align-middle font-weight-bolderer">${cartSize}</span>
-                                                    </c:if>
+                                                </c:if>
                                                 <span class="dropdown-toggle Price-amount" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 </span>
                                             </a>
