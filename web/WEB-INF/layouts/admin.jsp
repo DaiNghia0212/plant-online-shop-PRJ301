@@ -134,7 +134,7 @@
         <!-- ./ layout-wrapper -->
 
         <!-- Bundle scripts -->
-        <script src="<c:url value="/assets/libs/bundle.js"/>"></script>
+        <script src="<c:url value="/assets/js/bundle.js"/>"></script>
         <!-- Main Javascript file -->
         <script src="<c:url value="/assets/js/app.min.js"/>"></script>
         <script src="<c:url value="/assets/js/dashboard.js"/>"></script>
