@@ -6,6 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="en_US" />
+<fmt:setBundle basename="org.apache.taglibs.standard.tag.common.fmt.Bundle" />
 <c:if test="${addToCartStatus == 'success'}">
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Successfully add product to cart</strong>
@@ -63,7 +66,7 @@
                     <div class="sp_ri_leftpart">
                         <div class="sp_product_detail">
                             <h1 class="">${product.name}</h1>
-                            <span class="sp_price font-weight-bold">$${product.price}</span>
+                            <span class="sp_price font-weight-bold"><fmt:formatNumber type="currency" value="${product.price}" currencySymbol="$" /></span>
                             <div class="text-secondary sp_tax">Tax included.</div>
                             <div class="sp_add_info my-3">
                                 <ul>
@@ -170,7 +173,7 @@
                                                 ${relatedProduct.name}
                                             </a>
                                         </h2>
-                                        <span class="text-center prices font-weight-bolder price">$${relatedProduct.price}</span>
+                                        <span class="text-center prices font-weight-bolder price"><fmt:formatNumber type="currency" value="${product.price}" currencySymbol="$" /></span>
                                         <c:if test="${relatedProduct.quantity > 0}">
                                             <form action="<c:url value="/cart/add.do"/>" method="post">
                                                 <input type="number" value="${relatedProduct.id}" name="id" hidden/>

@@ -10,8 +10,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
-import javax.servlet.ServletContext;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -64,7 +64,7 @@ public class ProductController extends HttpServlet {
             case "index": {
                 ArrayList<Integer> checkedCategories = new ArrayList<>();
                 CategoryFacade categoryFacade = new CategoryFacade();
-                TreeMap<String, String> orders = new TreeMap<>();
+                Map<String, String> orders = new LinkedHashMap<>();
                 orders.put("updated_at-desc", "Latest");
                 orders.put("name-asc", "Name, A to Z");
                 orders.put("name-desc", "Name, Z to A");

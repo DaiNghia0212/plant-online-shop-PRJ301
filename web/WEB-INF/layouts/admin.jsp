@@ -52,7 +52,7 @@
                                  class="rounded-circle" alt="image"/>
                         </div>
                         <div>
-                            <div class="fw-bold">Arthur Nguyen</div>
+                            <div class="fw-bold">${account.name}</div>
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -63,10 +63,9 @@
                     </div>
                 </div>
                 <ul>
-                    <li class="menu-divider">E-Commerce</li>
                     <!-- 1. dashboard -->
                     <li>
-                        <a  class="active"
+                        <a  class="${action.equals("index") ? "active" : ""}"
                             href="<c:url value="/admin/index.do"/>">
                             <span class="nav-link-icon">
                                 <i class="bi bi-bar-chart"></i>
@@ -93,7 +92,7 @@
                                         </li>-->
                     <!-- 3. product -->
                     <li>
-                        <a href="<c:url value="/admin/products.do"/>">
+                        <a class="${action.equals("products") ? "active" : ""}" href="<c:url value="/admin/products.do"/>">
                             <span class="nav-link-icon">
                                 <i class="bi bi-truck"></i>
                             </span>
@@ -102,22 +101,12 @@
                     </li>
                     <!-- 4. invoices -->
                     <li>
-                        <a href="#">
+                        <a href="<c:url value="/admin/orders.do"/>" class="${action.equals("orders") ? "active" : ""}">
                             <span class="nav-link-icon">
                                 <i class="bi bi-receipt"></i>
                             </span>
-                            <span>Invoices</span>
+                            <span>Orders</span>
                         </a>
-                        <ul>
-                            <li>
-                                <a href="<c:url value="/admin/invoices.do"/>"
-                                   >List</a>
-                            </li>
-                            <li>
-                                <a href="<c:url value="/admin/invoice-detail.do"/>"
-                                   >Detail</a>
-                            </li>
-                        </ul>
                     </li>
                 </ul>
             </div>
@@ -148,7 +137,7 @@
         <script src="<c:url value="/assets/libs/bundle.js"/>"></script>
         <!-- Main Javascript file -->
         <script src="<c:url value="/assets/js/app.min.js"/>"></script>
-                <script src="<c:url value="/assets/js/dashboard.js"/>"></script>
+        <script src="<c:url value="/assets/js/dashboard.js"/>"></script>
         <script src="<c:url value="/assets/js/products.js"/>"></script>
         <script src="<c:url value="/assets/js/invoices.js"/>"></script>
     </body>

@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="en_US" />
+<fmt:setBundle basename="org.apache.taglibs.standard.tag.common.fmt.Bundle" />
 <!-- Home Page -->
 <!-- services -->
 <c:if test="${checkoutStatus == 'success'}">
@@ -112,7 +115,7 @@
                                                             </h2>
                                                             <span class="text-center prices">
                                                                 <span
-                                                                    class="font-weight-bolderer price">$${product.price}
+                                                                    class="font-weight-bolderer price"><fmt:formatNumber type="currency" value="${product.price}" currencySymbol="$" />
                                                                 </span>
                                                             </span>
                                                             <c:if test="${product.quantity > 0}">

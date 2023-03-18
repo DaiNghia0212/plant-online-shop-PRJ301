@@ -6,6 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="en_US" />
+<fmt:setBundle basename="org.apache.taglibs.standard.tag.common.fmt.Bundle" />
 <!-- Shop Page-->
 <div id="shop_page" class="shop-page animate__animated animate__fadeInUp">
     <div class="sp_header bg-white p-3">
@@ -111,7 +114,7 @@
                                         <h2 class="pro-heading  font-weight-bolder mb-1	">
                                             <a href="<c:url value="/product/product-detail.do?id=${product.id}"/>">${product.name}</a>
                                         </h2>
-                                        <span class="text-center prices">$${product.price}</span>
+                                        <span class="text-center prices"><fmt:formatNumber type="currency" value="${product.price}" currencySymbol="$" /></span>
                                         <p class="description mt-1 text-muted">${product.description}</p>
                                         <c:if test="${product.quantity > 0}">
                                             <form action="<c:url value="/cart/add.do"/>" method="post">

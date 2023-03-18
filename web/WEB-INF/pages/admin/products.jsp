@@ -6,6 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="en_US" />
+<fmt:setBundle basename="org.apache.taglibs.standard.tag.common.fmt.Bundle" />
 <!-- content -->
 <div class="content ">
     <div class="mb-4">
@@ -22,6 +25,13 @@
     </div>
 
 
+
+    <a href="<c:url value="/admin/create-product.do"/>">    
+        <button class="btn btn-primary btn-icon">
+            <i class="bi bi-plus-circle"></i>Add Product
+        </button>
+    </a>
+
     <form id="main-form" class="mb-3 mb-md-0">
         <div class="row">
             <div class="col-md-8">
@@ -29,21 +39,20 @@
                     <table class="table table-custom table-lg mb-0" id="products">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>Photo</th>
                                 <th>Name</th>
-                                <th>Status</th>
+                                <th>Category</th>
                                 <th>Price</th>
-                                <th>Quantity</th>
+                                <th class="text-end">Quantity</th>
                                 <th class="text-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${products}">
+                            <c:forEach var="product" items="${products}" varStatus="loop">
                                 <tr>
-
                                     <td>
-                                        <a href="#">${product.id}</a>
+                                        <a href="#">${loop.count}</a>
                                     </td>
                                     <td>
                                         <a href="#">
@@ -53,14 +62,9 @@
                                     </td>
                                     <td>${product.name}</td>
                                     <td>
-                                        <c:if test="${product.quantity > 0}">
-                                            <span class="text-success">In Stock</span>
-                                        </c:if>
-                                        <c:if test="${product.quantity == 0}">
-                                            <span class="text-danger">Out of Stock</span>
-                                        </c:if>
+                                        ${categoryMap.get(product.categoryId)}
                                     </td>
-                                    <td>$${product.price}</td>
+                                    <td><fmt:formatNumber type="currency" value="${product.price}" currencySymbol="$" /></td>
                                     <td class="text-end">${product.quantity}</td>
                                     <td class="text-end">
                                         <div class="d-flex">
@@ -71,8 +75,8 @@
                                                     <i class="bi bi-three-dots"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <a href="#" class="dropdown-item">Edit</a>
-                                                    <a href="#" class="dropdown-item">Delete</a>
+                                                    <a href="<c:url value="/admin/edit-product.do?id=${product.id}"/>" class="dropdown-item">Edit</a>
+                                                    <a href="<c:url value="/admin/delete-product.do?id=${product.id}"/>" class="dropdown-item">Delete</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,12 +93,12 @@
                                 <c:choose>
                                     <c:when test="${pageNumber == 0}">
                                         <li class="pagination-item page-item page-link" value="1">
-                                            <span aria-hidden="true">&laquo;</span>
+                                            &laquo;
                                         </li>
                                     </c:when>
                                     <c:when test="${pageNumber == totalPage + 1}">
                                         <li class="pagination-item page-item page-link" value="${totalPage}">
-                                            <span aria-hidden="true">&raquo;</span>
+                                            &raquo;
                                         </li>
                                     </c:when>
                                     <c:otherwise>

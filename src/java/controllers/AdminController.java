@@ -6,10 +6,11 @@ package controllers;
  * and open the template in the editor.
  */
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -74,7 +75,7 @@ public class AdminController extends HttpServlet {
                     ProductFacade productFacade = new ProductFacade();
                     ArrayList<Integer> checkedCategories = new ArrayList<>();
                     CategoryFacade categoryFacade = new CategoryFacade();
-                    TreeMap<String, String> orders = new TreeMap<>();
+                    Map<String, String> orders = new LinkedHashMap<>();
                     orders.put("updated_at-desc", "Latest");
                     orders.put("name-asc", "Name, A to Z");
                     orders.put("name-desc", "Name, Z to A");
@@ -104,6 +105,10 @@ public class AdminController extends HttpServlet {
                             productsMap = productFacade.getProducts(orderBy, orderType, offset, limit, search, checkedCategories);
                         }
                         ArrayList<Product> products = (ArrayList<Product>) productsMap.get("products");
+                        Map<Integer, String> categoryMap = new HashMap();
+                        for (Category category : categories) {
+                            categoryMap.put(category.getId(), category.getName());
+                        }
                         for (Product product : products) {
                             Item addedItem = cart.getItem(product.getId());
                             if (addedItem != null) {
@@ -120,6 +125,7 @@ public class AdminController extends HttpServlet {
                         request.setAttribute("currentPage", currentPage);
                         request.setAttribute("search", search);
                         request.setAttribute("categories", categories);
+                        request.setAttribute("categoryMap", categoryMap);
                         request.setAttribute("checkedCategories", checkedCategories);
                         request.setAttribute("orders", orders);
                         request.setAttribute("selectedOrder", selectedOrder);
@@ -129,11 +135,48 @@ public class AdminController extends HttpServlet {
                     }
                     break;
                 }
-                case "invoices": {
+                case "create-product": {
+                    CategoryFacade categoryFacade = new CategoryFacade();
+                    try {
+                        ArrayList<Category> categories = categoryFacade.selectAll();
+                        request.setAttribute("categories", categories);
+                        request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
+                    break;
+                }
+                case "edit-product": {
+                    CategoryFacade categoryFacade = new CategoryFacade();
+                    ProductFacade productFacade = new ProductFacade();
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    try {
+                        ArrayList<Category> categories = categoryFacade.selectAll();
+                        Product product = productFacade.getProductById(id);
+                        request.setAttribute("categories", categories);
+                        request.setAttribute("product", product);
+                        request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
+                    break;
+                }
+                case "delete-product": {
+                    ProductFacade productFacade = new ProductFacade();
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    try {
+                        productFacade.delete(id);
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
+                    response.sendRedirect(request.getContextPath() + "/admin/products.do");
+                    break;
+                }
+                case "orders": {
                     request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
                     break;
                 }
-                case "invoice-detail": {
+                case "order-detail": {
                     request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
                     break;
                 }
@@ -153,6 +196,52 @@ public class AdminController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String action = (String) request.getAttribute("action");
+        HttpSession session = request.getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (account == null || account.getRole() != 1) {
+            response.sendRedirect(request.getContextPath() + "/home/index.do");
+        } else {
+            switch (action) {
+                case "create-product": {
+                    String name = request.getParameter("name");
+                    Double price = Double.parseDouble(request.getParameter("price"));
+                    int quantity = Integer.parseInt(request.getParameter("quantity"));
+                    int categoryId = Integer.parseInt(request.getParameter("category"));
+                    String description = request.getParameter("description");
+                    String imagePath = "/assets/images/product/new_product.webp";
+
+                    ProductFacade productFacade = new ProductFacade();
+                    Product product = new Product(name, price, quantity, imagePath, description, categoryId);
+                    try {
+                        productFacade.insert(product);
+                        response.sendRedirect(request.getContextPath() + "/admin/products.do");
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
+                    break;
+                }
+                case "edit-product": {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    String name = request.getParameter("name");
+                    Double price = Double.parseDouble(request.getParameter("price"));
+                    int quantity = Integer.parseInt(request.getParameter("quantity"));
+                    int categoryId = Integer.parseInt(request.getParameter("category"));
+                    String description = request.getParameter("description");
+                    String imagePath = "/assets/images/product/new_product.webp";
+
+                    ProductFacade productFacade = new ProductFacade();
+                    Product product = new Product(id, name, price, quantity, imagePath, description, categoryId);
+                    try {
+                        productFacade.updateProduct(product);
+                        response.sendRedirect(request.getContextPath() + "/admin/products.do");
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     /**

@@ -45,7 +45,7 @@ public class FrontController extends HttpServlet {
         ServletContext context = request.getServletContext();
         if (context.getAttribute("account") != null) {
             Account account = (Account) context.getAttribute("account");
-            request.setAttribute("account", account);
+            session.setAttribute("account", account);
         }
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
