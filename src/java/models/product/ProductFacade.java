@@ -217,6 +217,7 @@ public class ProductFacade {
 
     public Product getProductById(int id) throws SQLException {
         Connection cn = DBContext.getConnection();
+        Product product = null;
         String sql = "SELECT *\n"
                 + "FROM products\n"
                 + "WHERE products.id = ?";
@@ -224,12 +225,10 @@ public class ProductFacade {
         pst.setInt(1, id);
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
-            Product product = getProductFromRs(rs);
-            cn.close();
-            return product;
+            product = getProductFromRs(rs);
         }
         cn.close();
-        return null;
+        return product;
     }
 
     public ArrayList<Product> getRelatedProducts(int id, int categoryId) throws SQLException {

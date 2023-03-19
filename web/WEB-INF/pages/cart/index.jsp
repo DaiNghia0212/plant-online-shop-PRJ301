@@ -61,7 +61,7 @@
                                             <h4 class="product-name font-weight-bolder mb-2 mb-sm-3 mb-xl-3 mt-sm-2 mt-md-2">
                                                 <a href="<c:url value="/product/product-detail.do?id=${item.product.id}"/>">${item.product.name}</a>
                                             </h4>
-                                            <span class="sp_price font-weight-bold">$${item.product.price}</span>
+                                            <span class="sp_price font-weight-bold"><fmt:formatNumber type="currency" value="${item.product.price}" currencySymbol="$" /></span>
                                             <div class="text-secondary sp_tax">Tax included.</div>
                                             <div class="sp_add_info my-3">
                                                 <ul>

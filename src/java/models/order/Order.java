@@ -5,7 +5,7 @@
  */
 package models.order;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
@@ -27,7 +27,7 @@ public class Order {
         this.accId = accId;
     }
 
-    public Order(int id, Date orderDate, Date deliverDate, int status, String address, int accId) {
+    public Order(int id, Date orderDate, int status, String address, int accId) {
         this.id = id;
         this.orderDate = orderDate;
         this.status = status;
