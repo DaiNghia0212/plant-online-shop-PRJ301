@@ -14,12 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import models.DBContext;
 import models.cart.Cart;
 import models.cart.Item;
 import models.order_detail.OrderDetail;
 import models.product.Product;
-
 
 /**
  *
@@ -88,28 +89,52 @@ public class OrderFacade {
         }
         con.close();
     }
-        public static ArrayList<Order> getOrderByTime() throws SQLException {
-                ArrayList<Order> list = new ArrayList<>();
+
+    public Map<String, Object> getOrders() throws SQLException {
+        Map<String, Object> map = new HashMap<>();
+        return map;
+    }
+
+    public Order getOrderById(int id) throws SQLException {
+        Connection cn = DBContext.getConnection();
+        Order order = null;
+        String sql = "SELECT *\n"
+                + "FROM order_details\n"
+                + "WHERE id = ?";
+        PreparedStatement pst = cn.prepareStatement(sql);
+        pst.setInt(1, id);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            Date orderDate = rs.getDate("orderDate");
+            int status = rs.getInt("status");
+            String address = rs.getString("address");
+            int accId = rs.getInt("accId");
+            order = new Order(id, orderDate, status, address, accId);
+        }
+        cn.close();
+        return order;
+    }
+
+    public ArrayList<Order> getOrderByTime(Date start, Date end) throws SQLException {
+        ArrayList<Order> list = new ArrayList<>();
 
         Connection cn = DBContext.getConnection();
-        if (cn != null) {
-            String sql = "SELECT id from orders WHERE order_date > ? AND order_date <? \n"
-                    + "SELECT SUM(price) from order_details where order_id = ? \n";
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            if(rs!=null){
-                while (rs.next()){
-                    int id=rs.getInt("id");
-                    Date orderDate=rs.getDate("orderDate");
-                    int status=rs.getInt("status");
-                    String address=rs.getString("address");
-                    int accId=rs.getInt("accId");
-                    Order order=new Order(id, (java.sql.Date) orderDate, status, address, accId);
-                    list.add(order);
-                }
-            }
-            cn.close();
+        String sql = "SELECT * from orders WHERE order_date > ? AND order_date < ?";
+        PreparedStatement st = cn.prepareStatement(sql);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        st.setString(1, sdf.format(start));
+        st.setString(2, sdf.format(end));
+        ResultSet rs = st.executeQuery(sql);
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            Date orderDate = rs.getDate("orderDate");
+            int status = rs.getInt("status");
+            String address = rs.getString("address");
+            int accId = rs.getInt("accId");
+            Order order = new Order(id, orderDate, status, address, accId);
+            list.add(order);
         }
-    return list;
+        cn.close();
+        return list;
     }
 }

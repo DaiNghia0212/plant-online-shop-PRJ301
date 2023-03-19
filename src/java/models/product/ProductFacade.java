@@ -97,6 +97,7 @@ public class ProductFacade {
 
     public Product getProductById(int id) throws SQLException {
         Connection cn = DBContext.getConnection();
+        Product product = null;
         String sql = "SELECT *\n"
                 + "FROM products\n"
                 + "WHERE products.id = ?";
@@ -112,11 +113,10 @@ public class ProductFacade {
             Date createdAt = rs.getDate("created_at");
             Date updatedAt = rs.getDate("updated_at");
             int cateid = rs.getInt("category_id");
-            Product product = new Product(id, name, price, quantity, imgpath, description, createdAt, updatedAt, cateid);
-            return product;
+            product = new Product(id, name, price, quantity, imgpath, description, createdAt, updatedAt, cateid);
         }
         cn.close();
-        return null;
+        return product;
     }
 
     public ArrayList<Product> getRelatedProducts(int id, int categoryId) throws SQLException {
