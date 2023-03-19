@@ -58,38 +58,41 @@ public class HomeController extends HttpServlet {
         String action = (String) request.getAttribute("action");
         switch (action) {
             case "index": {
-                ProductFacade productFacade = new ProductFacade();
-                HashMap<String, Object> productsMap = new HashMap<>();
-                try {
-                    productsMap = productFacade.getProducts("", null, "updated_at", "descending", 0, 12);
-                } catch (SQLException ex) {
-                    System.out.println(ex);
-                }
-                ArrayList popularProducts = new ArrayList();
-                int count = 0;
-                ArrayList<Product> list = new ArrayList<>();
                 HttpSession session = request.getSession();
                 Cart cart = (Cart) session.getAttribute("cart");
-                for (Product product : (ArrayList<Product>) productsMap.get("products")) {
-                    Item addedItem = cart.getItem(product.getId());
-                    if (addedItem != null) {
-                        product.setQuantity(product.getQuantity() - addedItem.getQuantity());
+                try {
+                    ProductFacade productFacade = new ProductFacade();
+                    int offset = 0;
+                    int limit = 12;
+                    String orderBy = "updated_at";
+                    String orderType = "desc";
+                    HashMap<String, Object> productsMap = productFacade.getProducts(orderBy, orderType, offset, limit);
+                    ArrayList<Product> products = (ArrayList<Product>) productsMap.get("products");
+                    ArrayList popularProducts = new ArrayList();
+                    int count = 0;
+                    ArrayList<Product> list = new ArrayList<>();
+                    for (Product product : products) {
+                        Item addedItem = cart.getItem(product.getId());
+                        if (addedItem != null) {
+                            product.setQuantity(product.getQuantity() - addedItem.getQuantity());
+                        }
+                        list.add(product);
+                        count++;
+                        if (count >= 2) {
+                            count = 0;
+                            popularProducts.add(list);
+                            list = new ArrayList<>();
+                        }
                     }
-                    list.add(product);
-                    count++;
-                    if (count >= 2) {
-                        count = 0;
-                        popularProducts.add(list);
-                        list = new ArrayList<>();
-                    }
+                    request.setAttribute("popularProducts", popularProducts);
+                } catch (SQLException ex) {
+                    System.out.println(ex);
                 }
                 String checkoutStatus = (String) session.getAttribute("checkoutStatus");
                 if (checkoutStatus != null) {
                     session.removeAttribute("checkoutStatus");
                     request.setAttribute("checkoutStatus", checkoutStatus);
                 }
-                request.setAttribute("products", productsMap.get("products"));
-                request.setAttribute("popularProducts", popularProducts);
                 request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 break;
             }

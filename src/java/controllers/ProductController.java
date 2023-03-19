@@ -10,7 +10,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,41 +62,39 @@ public class ProductController extends HttpServlet {
         ProductFacade productFacade = new ProductFacade();
         switch (action) {
             case "index": {
-                String offset = request.getParameter("offset");
-                String limit = request.getParameter("limit");
-                String search = request.getParameter("search");
-                String[] categoriesFilter = request.getParameterValues("categories");
-                String selectedOrder = request.getParameter("order");
-                TreeMap<String, String> orders = new TreeMap<>();
-                orders.put("name-ascending", "Name, A to Z");
-                orders.put("name-descending", "Name, Z to A");
-                orders.put("price-ascending", "Price, low to high");
-                orders.put("price-descending", "Price, high to low");
-                if (offset == null) {
-                    offset = "0";
-                }
-                if (limit == null) {
-                    limit = "6";
-                }
-                String orderBy = "updated_at";
-                String orderType = "descending";
-                if (selectedOrder != null && orders.containsKey(selectedOrder)) {
-                    orderBy = selectedOrder.substring(0, selectedOrder.indexOf("-"));
-                    orderType = selectedOrder.substring(selectedOrder.indexOf("-") + 1, selectedOrder.length());
-                }
                 ArrayList<Integer> checkedCategories = new ArrayList<>();
-                if (categoriesFilter != null) {
-                    for (String categoriesFilter1 : categoriesFilter) {
-                        checkedCategories.add(Integer.parseInt(categoriesFilter1));
-                    }
-                }
-                HashMap<String, Object> productsMap = new HashMap<>();
-                ArrayList<Category> categories = new ArrayList<>();
                 CategoryFacade categoryFacade = new CategoryFacade();
+                Map<String, String> orders = new LinkedHashMap<>();
+                orders.put("updated_at-desc", "Latest");
+                orders.put("name-asc", "Name, A to Z");
+                orders.put("name-desc", "Name, Z to A");
+                orders.put("price-asc", "Price, low to high");
+                orders.put("price-desc", "Price, high to low");
                 HttpSession session = request.getSession();
                 Cart cart = (Cart) session.getAttribute("cart");
+
+                int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
+                int limit = Integer.parseInt(request.getParameter("limit") != null ? request.getParameter("limit") : "6");
+                String search = request.getParameter("search") != null ? request.getParameter("search") : "";
+                String[] categoriesFilter = request.getParameterValues("categories");
+                String selectedOrder = request.getParameter("order") != null && orders.containsKey(request.getParameter("order")) ? request.getParameter("order") : "updated_at-desc";
+                String orderBy = selectedOrder.substring(0, selectedOrder.indexOf("-"));
+                String orderType = selectedOrder.substring(selectedOrder.indexOf("-") + 1, selectedOrder.length());
+                int minQuantity = 1;
+                if (categoriesFilter != null) {
+                    for (String category : categoriesFilter) {
+                        checkedCategories.add(Integer.parseInt(category));
+                    }
+                }
+
                 try {
-                    productsMap = productFacade.getProducts(search, checkedCategories, orderBy, orderType, Integer.parseInt(offset), Integer.parseInt(limit));
+                    ArrayList<Category> categories = categoryFacade.selectAll();
+                    HashMap<String, Object> productsMap;
+                    if (checkedCategories.isEmpty()) {
+                        productsMap = productFacade.getProducts(minQuantity, orderBy, orderType, offset, limit, search);
+                    } else {
+                        productsMap = productFacade.getProducts(minQuantity, orderBy, orderType, offset, limit, search, checkedCategories);
+                    }
                     ArrayList<Product> products = (ArrayList<Product>) productsMap.get("products");
                     for (Product product : products) {
                         Item addedItem = cart.getItem(product.getId());
@@ -103,22 +102,22 @@ public class ProductController extends HttpServlet {
                             product.setQuantity(product.getQuantity() - addedItem.getQuantity());
                         }
                     }
-                    categories = categoryFacade.selectAll();
+                    int totalProduct = (int) productsMap.get("total");
+                    int totalPage = (int) Math.ceil(totalProduct * 1.0 / limit);
+                    int currentPage = (offset / limit) + 1;
+                    request.setAttribute("products", products);
+                    request.setAttribute("totalProduct", totalProduct);
+                    request.setAttribute("totalPage", totalPage);
+                    request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("search", search);
+                    request.setAttribute("categories", categories);
+                    request.setAttribute("checkedCategories", checkedCategories);
+                    request.setAttribute("orders", orders);
+                    request.setAttribute("selectedOrder", selectedOrder);
+                    request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }
-                int totalPage = (int) Math.ceil((int) productsMap.get("total") / Double.parseDouble(limit));
-                int currentPage = (Integer.parseInt(offset) / Integer.parseInt(limit)) + 1;
-                request.setAttribute("currentPage", currentPage);
-                request.setAttribute("search", search);
-                request.setAttribute("checkedCategories", checkedCategories);
-                request.setAttribute("orders", orders);
-                request.setAttribute("selectedOrder", selectedOrder);
-                request.setAttribute("products", productsMap.get("products"));
-                request.setAttribute("totalProduct", (int) productsMap.get("total"));
-                request.setAttribute("totalPage", totalPage);
-                request.setAttribute("categories", categories);
-                request.getRequestDispatcher(Config.LAYOUT).forward(request, response);
                 break;
             }
             case "product-detail": {
