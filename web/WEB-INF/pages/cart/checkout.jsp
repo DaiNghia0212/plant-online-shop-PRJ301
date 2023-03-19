@@ -6,6 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="en_US" />
+<fmt:setBundle basename="org.apache.taglibs.standard.tag.common.fmt.Bundle" />
 <!-- checkout page -->
 <div id="checkout_page" class="checkout-page animate__animated animate__fadeInUp">
     <div class="sp_header bg-white p-3 ">
@@ -80,7 +83,7 @@
                                                 <h4 class="product-name font-weight-bolder mb-2 mb-sm-3 mb-xl-3 mt-sm-2 mt-md-2">
                                                     <a href="<c:url value="/product/product-detail.do?id=${item.product.id}"/>">${item.product.name}</a>
                                                 </h4>
-                                                <span class="sp_price font-weight-bold">$${item.product.price}</span>
+                                                <span class="sp_price font-weight-bold"><fmt:formatNumber type="currency" value="${item.product.price}" currencySymbol="$" /></span>
                                                 <div class="text-secondary sp_tax">Tax included.</div>
                                             </div>
                                         </div>
@@ -91,7 +94,7 @@
                                                 <p><strong>Quantity: </strong>${item.quantity}</p>
                                             </div>
                                             <div class="mr-4">
-                                                <p><strong>Cost: </strong>$${item.cost}</span></p>
+                                                <p><strong>Cost: </strong><fmt:formatNumber type="currency" value="${item.cost}" currencySymbol="$" /></span></p>
                                             </div>  
                                         </div>
                                     </div>
@@ -100,7 +103,7 @@
                             <c:if test="${cartSize != null}">
                                 <div class="card-footer row d-flex justify-content-end mb-3">
                                     <div class="col-md-3 p-0 mr-4">
-                                        <p><strong>Total: </strong>$${total}</span></p>
+                                        <p><strong>Total: </strong><fmt:formatNumber type="currency" value="${total}" currencySymbol="$" /></span></p>
                                     </div>
                                 </div>
                                 <div class="row checkout-btn">

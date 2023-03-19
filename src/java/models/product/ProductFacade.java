@@ -39,7 +39,7 @@ public class ProductFacade {
     public int insert(Product product) throws SQLException {
         Connection con = DBContext.getConnection();
         String sql = "INSERT INTO products(name, price, quantity, image_path, description, category_id)\n"
-                + "VALUES(?, ?, ?, ?, ?, ?)";
+                + "VALUES(N?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, product.getName());
         preparedStatement.setDouble(2, product.getPrice());
@@ -267,7 +267,7 @@ public class ProductFacade {
         int result = 0;
         Connection cn = DBContext.getConnection();
         if (cn != null) {
-            String sql = "update dbo.products set  name=?, price=?, quantity=?, image_path=?, description=?, updated_at = ?, category_id=? FROM products  where [id] = ?;";
+            String sql = "update dbo.products set  name=N?, price=?, quantity=?, image_path=?, description=?, updated_at = ?, category_id=? FROM products  where [id] = ?;";
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setString(1, product.getName());
             pst.setDouble(2, product.getPrice());

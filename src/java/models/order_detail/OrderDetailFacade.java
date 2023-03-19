@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import models.DBContext;
-import models.dashBoard.dashBoard;
 import models.order.Order;
 
 /*
@@ -23,16 +23,17 @@ import models.order.Order;
  */
 public class OrderDetailFacade {
 
-    public static ArrayList<OrderDetail> getOrderDetailsByOrderId(int orderId) throws Exception {
+    public ArrayList<OrderDetail> getOrderDetailsByOrderId(int orderId) throws SQLException {
         ArrayList<OrderDetail> list = new ArrayList<>();
 
         Connection cn = DBContext.getConnection();
         if (cn != null) {
-            String sql = "SELECT * FROM order_details where order_id";
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            String sql = "SELECT * FROM order_details where order_id = ?";
+            PreparedStatement st = cn.prepareStatement(sql);
+            st.setInt(1, orderId);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int productId = rs.getInt("productId");
+                int productId = rs.getInt("product_id");
                 int quantity = rs.getInt("quantity");
                 double price = rs.getDouble("price");
                 OrderDetail orD = new OrderDetail(orderId, productId, quantity, price);

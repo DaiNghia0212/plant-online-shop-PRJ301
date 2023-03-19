@@ -16,10 +16,9 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="#">
-                        <i class="bi bi-globe2 small me-2"></i> Dashboard
+                        <i class="bi bi-globe2 small me-2"></i>Products
                     </a>
                 </li>
-                <li class="breadcrumb-item active">Products</li>
             </ol>
         </nav>
     </div>
@@ -39,7 +38,6 @@
                     <table class="table table-custom table-lg mb-0" id="products">
                         <thead>
                             <tr>
-                                <th>No</th>
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Category</th>
@@ -49,11 +47,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${products}" varStatus="loop">
+                            <c:forEach var="product" items="${products}">
                                 <tr>
-                                    <td>
-                                        <a href="#">${loop.count}</a>
-                                    </td>
                                     <td>
                                         <a href="#">
                                             <img src="<c:url value="${product.imagePath}"/>" class="rounded" width="40"
@@ -134,7 +129,7 @@
                         <div class="collapse show mt-4" id="keywordsCollapseExample">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="search" placeholder="Pot, Japanese..." value="${search}">
-                                <button class="btn btn-outline-light" type="button">
+                                <button class="btn btn-outline-light" type="submit">
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
@@ -242,7 +237,7 @@
 </div>
 <!-- ./ content -->
 <script>
-    const LIMIT = 6;
+    const LIMIT = ${pageSize};
 
     const handleClick = (event) => {
         const hiddenOffsetInput = document.createElement("input");

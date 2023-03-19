@@ -7,11 +7,16 @@ package controllers;
  */
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +24,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.account.Account;
+import models.account.AccountFacade;
 import models.cart.Cart;
 import models.cart.Item;
 import models.category.Category;
 import models.category.CategoryFacade;
+import models.order.Order;
+import models.order.OrderFacade;
+import models.order_detail.OrderDetail;
+import models.order_detail.OrderDetailFacade;
 import models.product.Product;
 import models.product.ProductFacade;
+import models.revenue.Revenue;
+import models.revenue.RevenueFacade;
 
 /**
  *
@@ -68,7 +80,35 @@ public class AdminController extends HttpServlet {
         } else {
             switch (action) {
                 case "index": {
-                    request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String startDate = request.getParameter("startDate");
+                    String endDate = request.getParameter("endDate");
+                    int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
+                    int limit = Integer.parseInt(request.getParameter("limit") != null ? request.getParameter("limit") : "10");
+                    if (startDate == null) {
+                        startDate = sdf.format(new Date().getTime());
+                    }
+                    if (endDate == null) {
+                        endDate = sdf.format(new Date().getTime());
+                    }
+                    RevenueFacade revenueFacade = new RevenueFacade();
+                    try {
+                        Map map = revenueFacade.getRevenue(sdf.parse(startDate), sdf.parse(endDate), offset, limit);
+                        Revenue revenue = (Revenue) map.get("revenue");
+                        request.setAttribute("revenue", revenue.getList());
+                        request.setAttribute("startDate", startDate);
+                        request.setAttribute("endDate", endDate);
+                        int totalItem = (int) map.get("total");
+                        int totalPage = (int) Math.ceil(totalItem * 1.0 / limit);
+                        int currentPage = (offset / limit) + 1;
+                        request.setAttribute("pageSize", limit);
+                        request.setAttribute("totalPage", totalPage);
+                        request.setAttribute("currentPage", currentPage);
+                        request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
+                    } catch (ParseException | SQLException ex) {
+                        log(ex.getMessage());
+                    }
+
                     break;
                 }
                 case "products": {
@@ -119,8 +159,7 @@ public class AdminController extends HttpServlet {
                         int totalPage = (int) Math.ceil(totalProduct * 1.0 / limit);
                         int currentPage = (offset / limit) + 1;
                         request.setAttribute("products", products);
-                        request.setAttribute("totalProduct", totalProduct);
-                        request.setAttribute("pageSize", 6);
+                        request.setAttribute("pageSize", limit);
                         request.setAttribute("totalPage", totalPage);
                         request.setAttribute("currentPage", currentPage);
                         request.setAttribute("search", search);
@@ -131,7 +170,7 @@ public class AdminController extends HttpServlet {
                         request.setAttribute("selectedOrder", selectedOrder);
                         request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
                     } catch (SQLException ex) {
-                        System.out.println(ex);
+                        log(ex.getMessage());
                     }
                     break;
                 }
@@ -173,10 +212,57 @@ public class AdminController extends HttpServlet {
                     break;
                 }
                 case "orders": {
-                    request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
+                    OrderFacade orderFacade = new OrderFacade();
+                    AccountFacade accountFacade = new AccountFacade();
+
+                    int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
+                    int limit = Integer.parseInt(request.getParameter("limit") != null ? request.getParameter("limit") : "6");
+
+                    try {
+                        Map map = orderFacade.getOrders(offset, limit);
+                        List<Account> accounts = accountFacade.selectAll();
+                        ArrayList<Product> orders = (ArrayList<Product>) map.get("orders");
+                        Map<Integer, String> accountMap = new HashMap();
+                        for (Account acc : accounts) {
+                            accountMap.put(acc.getId(), acc.getName());
+                        }
+
+                        int totalOrder = (int) map.get("total");
+                        int totalPage = (int) Math.ceil(totalOrder * 1.0 / limit);
+                        int currentPage = (offset / limit) + 1;
+                        request.setAttribute("orders", orders);
+                        request.setAttribute("pageSize", limit);
+                        request.setAttribute("totalPage", totalPage);
+                        request.setAttribute("currentPage", currentPage);
+                        request.setAttribute("accountMap", accountMap);
+                        request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
                     break;
                 }
                 case "order-detail": {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    OrderFacade orderFacade = new OrderFacade();
+                    OrderDetailFacade orderDetaiFa = new OrderDetailFacade();
+                    ProductFacade productFacade = new ProductFacade();
+                    try {
+                        Map<Integer, Object> productMap = new HashMap();
+                        double total = 0;
+                        Order order = orderFacade.getOrderById(id);
+                        List<OrderDetail> orderDetails = orderDetaiFa.getOrderDetailsByOrderId(id);
+                        for (OrderDetail orderDetail : orderDetails) {
+                            Product product = productFacade.getProductById(id);
+                            productMap.put(orderDetail.getProductId(), product);
+                            total += orderDetail.getPrice();
+                        }
+                        request.setAttribute("order", order);
+                        request.setAttribute("orderDetails", orderDetails);
+                        request.setAttribute("productMap", productMap);
+                        request.setAttribute("total", total);
+                    } catch (SQLException ex) {
+                        log(ex.getMessage());
+                    }
                     request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);
                     break;
                 }

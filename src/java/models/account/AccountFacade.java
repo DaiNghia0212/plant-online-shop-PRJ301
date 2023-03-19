@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import models.DBContext;
 import models.utils.Hasher;
 
@@ -45,6 +47,26 @@ public class AccountFacade {
         }
     }
 
+    public List<Account> selectAll() throws SQLException {
+        String sql = "select * from accounts";
+        Connection con = DBContext.getConnection();
+        Statement stm = con.createStatement();
+        ResultSet result = stm.executeQuery(sql);
+        List<Account> accounts = new ArrayList();
+        while (result.next()) {
+            Account account = new Account();
+            account.setId(result.getInt("id"));
+            account.setEmail(result.getString("email"));
+            account.setName(result.getString("name"));
+            account.setPassword(result.getString("password"));
+            account.setPhone(result.getString("phone"));
+            account.setRole(result.getInt("role"));
+            accounts.add(account);
+        }
+        con.close();
+        return accounts;
+    }
+
     public Account selectByEmail(String email) throws SQLException {
         Connection con = DBContext.getConnection();
         String sql = "select * from accounts where email = ?";
@@ -69,7 +91,7 @@ public class AccountFacade {
     public int insert(Account account) throws SQLException, NoSuchAlgorithmException {
         Connection con = DBContext.getConnection();
         String sql = "INSERT INTO accounts(email, password, name, phone, role)\n"
-                + "VALUES(?, ?, ?, ?, ?)";
+                + "VALUES(?, ?, N?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, account.getEmail());
         preparedStatement.setString(2, Hasher.hash(account.getPassword()));

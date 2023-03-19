@@ -60,7 +60,7 @@ public class OrderFacade {
         Connection con = DBContext.getConnection();
         con.setAutoCommit(false);
         try {
-            String sql = "INSERT into orders(status, address, account_id) VALUES(?, ?, ?)";
+            String sql = "INSERT into orders(status, address, account_id) VALUES(?, N?, ?)";
             PreparedStatement preparedStmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStmt.setInt(1, order.getStatus());
             preparedStmt.setString(2, order.getAddress());
@@ -90,51 +90,55 @@ public class OrderFacade {
         con.close();
     }
 
-    public Map<String, Object> getOrders() throws SQLException {
+    public Map<String, Object> getOrders(int offset, int limit) throws SQLException {
         Map<String, Object> map = new HashMap<>();
+        ArrayList<Order> list = new ArrayList<>();
+        int total = 0;
+        String productsSql = "SELECT * FROM orders ORDER BY id OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
+        String countSql = "SELECT COUNT(*) as total FROM orders";
+
+        Connection con = DBContext.getConnection();
+        PreparedStatement preparedStatement = con.prepareStatement(productsSql);
+        preparedStatement.setInt(1, offset);
+        preparedStatement.setInt(2, limit);
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            int id = result.getInt("id");
+            Date orderDate = result.getDate("order_date");
+            int status = result.getInt("status");
+            String address = result.getString("address");
+            int accId = result.getInt("account_id");
+            Order order = new Order(id, orderDate, status, address, accId);
+            list.add(order);
+        }
+
+        countSql = String.format(countSql);
+        Statement statement = con.createStatement();
+        result = statement.executeQuery(countSql);
+        if (result.next()) {
+            total = result.getInt("total");
+        }
+        con.close();
+        map.put("orders", list);
+        map.put("total", total);
         return map;
     }
 
     public Order getOrderById(int id) throws SQLException {
         Connection cn = DBContext.getConnection();
         Order order = null;
-        String sql = "SELECT *\n"
-                + "FROM order_details\n"
-                + "WHERE id = ?";
+        String sql = "SELECT * FROM orders WHERE id = ?";
         PreparedStatement pst = cn.prepareStatement(sql);
         pst.setInt(1, id);
         ResultSet rs = pst.executeQuery();
         if (rs.next()) {
-            Date orderDate = rs.getDate("orderDate");
+            Date orderDate = rs.getDate("order_date");
             int status = rs.getInt("status");
             String address = rs.getString("address");
-            int accId = rs.getInt("accId");
+            int accId = rs.getInt("account_id");
             order = new Order(id, orderDate, status, address, accId);
         }
         cn.close();
         return order;
-    }
-
-    public ArrayList<Order> getOrderByTime(Date start, Date end) throws SQLException {
-        ArrayList<Order> list = new ArrayList<>();
-
-        Connection cn = DBContext.getConnection();
-        String sql = "SELECT * from orders WHERE order_date > ? AND order_date < ?";
-        PreparedStatement st = cn.prepareStatement(sql);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        st.setString(1, sdf.format(start));
-        st.setString(2, sdf.format(end));
-        ResultSet rs = st.executeQuery(sql);
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            Date orderDate = rs.getDate("orderDate");
-            int status = rs.getInt("status");
-            String address = rs.getString("address");
-            int accId = rs.getInt("accId");
-            Order order = new Order(id, orderDate, status, address, accId);
-            list.add(order);
-        }
-        cn.close();
-        return list;
     }
 }

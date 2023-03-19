@@ -6,6 +6,9 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="en_US" />
+<fmt:setBundle basename="org.apache.taglibs.standard.tag.common.fmt.Bundle" />
 <!-- cart page -->
 <div id="cart_page" class="cart-page animate__animated animate__fadeInUp">
     <div class="sp_header bg-white p-2 ">
@@ -78,7 +81,7 @@
                                 <div class="col-12 col-md-6 mt-4">
                                     <div class="d-flex">
                                         <div class="col-md-3 col-sm-4 col-5 text-left text-md-right my-2 ">
-                                            <span class="font-weight-bolder">$${item.cost}</span>
+                                            <span class="font-weight-bolder"><fmt:formatNumber type="currency" value="${item.cost}" currencySymbol="$" /></span>
                                         </div>
                                         <div class="col-md-9 col-sm-4 col-5">
                                             <form id="update_cart-form-${item.product.id}" action="<c:url value="/cart/update.do"/>" method="post">
@@ -104,7 +107,7 @@
                                     <div class="col-6 col-sm-7 text-right">
                                         <div class="my-2 font-weight-bolder">
                                             <span>total:</span>
-                                            <span>$${total}</span>
+                                            <span><fmt:formatNumber type="currency" value="${total}" currencySymbol="$" /></span>
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-5 checkout-btn">
