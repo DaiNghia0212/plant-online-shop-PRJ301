@@ -39,7 +39,7 @@ public class ProductFacade {
     public int insert(Product product) throws SQLException {
         Connection con = DBContext.getConnection();
         String sql = "INSERT INTO products(name, price, quantity, image_path, description, category_id)\n"
-                + "VALUES(N?, ?, ?, ?, ?, ?)";
+                + "VALUES(?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, product.getName());
         preparedStatement.setDouble(2, product.getPrice());

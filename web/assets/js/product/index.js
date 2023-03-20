@@ -49,5 +49,10 @@ function handleClick(event) {
   hiddenOrderInput.name = "order";
   hiddenOrderInput.value = orderSelection.value;
   categoriesForm.appendChild(hiddenOrderInput);
+  const hiddenSearchInput = document.createElement("input");
+  hiddenSearchInput.type = "hidden";
+  hiddenSearchInput.name = "search";
+  hiddenSearchInput.value = searchForm.elements["search"].value;
+  categoriesForm.appendChild(hiddenSearchInput);
   categoriesForm.submit();
 }
