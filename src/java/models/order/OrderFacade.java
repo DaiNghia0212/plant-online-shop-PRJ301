@@ -60,7 +60,7 @@ public class OrderFacade {
         Connection con = DBContext.getConnection();
         con.setAutoCommit(false);
         try {
-            String sql = "INSERT into orders(status, address, account_id) VALUES(?, N?, ?)";
+            String sql = "INSERT into orders(status, address, account_id) VALUES(?, ?, ?)";
             PreparedStatement preparedStmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStmt.setInt(1, order.getStatus());
             preparedStmt.setString(2, order.getAddress());

@@ -267,7 +267,7 @@ public class ProductFacade {
         int result = 0;
         Connection cn = DBContext.getConnection();
         if (cn != null) {
-            String sql = "update dbo.products set  name=N?, price=?, quantity=?, image_path=?, description=?, updated_at = ?, category_id=? FROM products  where [id] = ?;";
+            String sql = "update dbo.products set  name = ?, price=?, quantity=?, image_path=?, description=?, updated_at = ?, category_id=? FROM products  where [id] = ?;";
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setString(1, product.getName());
             pst.setDouble(2, product.getPrice());

@@ -91,7 +91,7 @@ public class AccountFacade {
     public int insert(Account account) throws SQLException, NoSuchAlgorithmException {
         Connection con = DBContext.getConnection();
         String sql = "INSERT INTO accounts(email, password, name, phone, role)\n"
-                + "VALUES(?, ?, N?, ?, ?)";
+                + "VALUES(?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, account.getEmail());
         preparedStatement.setString(2, Hasher.hash(account.getPassword()));
