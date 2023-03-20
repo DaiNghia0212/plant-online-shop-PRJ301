@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -111,7 +112,6 @@ public class AdminController extends HttpServlet {
                 }
                 case "products": {
                     ProductFacade productFacade = new ProductFacade();
-                    ArrayList<Integer> checkedCategories = new ArrayList<>();
                     CategoryFacade categoryFacade = new CategoryFacade();
                     Map<String, String> orders = new LinkedHashMap<>();
                     orders.put("updated_at-desc", "Latest");
@@ -124,23 +124,19 @@ public class AdminController extends HttpServlet {
                     int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
                     int limit = Integer.parseInt(request.getParameter("limit") != null ? request.getParameter("limit") : "6");
                     String search = request.getParameter("search") != null ? request.getParameter("search") : "";
-                    String[] categoriesFilter = request.getParameterValues("categories");
+                    String[] checkedCategories = request.getParameterValues("categories");
                     String selectedOrder = request.getParameter("order") != null && orders.containsKey(request.getParameter("order")) ? request.getParameter("order") : "updated_at-desc";
                     String orderBy = selectedOrder.substring(0, selectedOrder.indexOf("-"));
                     String orderType = selectedOrder.substring(selectedOrder.indexOf("-") + 1, selectedOrder.length());
-                    if (categoriesFilter != null) {
-                        for (String category : categoriesFilter) {
-                            checkedCategories.add(Integer.parseInt(category));
-                        }
-                    }
 
                     try {
                         ArrayList<Category> categories = categoryFacade.selectAll();
                         HashMap<String, Object> productsMap;
-                        if (checkedCategories.isEmpty()) {
+                        if (checkedCategories == null) {
                             productsMap = productFacade.getProducts(orderBy, orderType, offset, limit, search);
                         } else {
                             productsMap = productFacade.getProducts(orderBy, orderType, offset, limit, search, checkedCategories);
+                            request.setAttribute("checkedCategories", Arrays.asList(checkedCategories));
                         }
                         ArrayList<Product> products = (ArrayList<Product>) productsMap.get("products");
                         Map<Integer, String> categoryMap = new HashMap();
@@ -163,7 +159,6 @@ public class AdminController extends HttpServlet {
                         request.setAttribute("search", search);
                         request.setAttribute("categories", categories);
                         request.setAttribute("categoryMap", categoryMap);
-                        request.setAttribute("checkedCategories", checkedCategories);
                         request.setAttribute("orders", orders);
                         request.setAttribute("selectedOrder", selectedOrder);
                         request.getRequestDispatcher(Config.ADMIN_LAYOUT).forward(request, response);

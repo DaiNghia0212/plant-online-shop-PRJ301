@@ -38,7 +38,7 @@
                                 <c:forEach var="category" items="${categories}">
                                     <label class="form-check">
                                         <c:choose>
-                                            <c:when test="${checkedCategories.contains(category.id)}">
+                                            <c:when test="${checkedCategories.contains(Integer.toString(category.id))}">
                                                 <input type="checkbox" name="categories" value="${category.id}" checked/>
                                             </c:when>
                                             <c:otherwise>

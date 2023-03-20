@@ -12,8 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import models.DBContext;
 
 /**
@@ -114,14 +116,14 @@ public class ProductFacade {
         return map;
     }
 
-    public HashMap<String, Object> getProducts(String orderBy, String orderType, int offset, int fetch, String search, ArrayList categoriesList) throws SQLException {
+    public HashMap<String, Object> getProducts(String orderBy, String orderType, int offset, int fetch, String search, String[] categoryArray) throws SQLException {
         HashMap<String, Object> map = new HashMap<>();
         ArrayList<Product> list = new ArrayList<>();
         int total = 0;
         String productsSql = "SELECT * FROM products WHERE name LIKE ? AND category_id in (%s) ORDER BY %s %s OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
         String countSql = "SELECT COUNT(*) as total FROM products WHERE name LIKE ? AND category_id in (%s)";
-        String categories = categoriesList.toString();
-        productsSql = String.format(productsSql, categories.substring(1, categories.length() - 1), orderBy, orderType);
+        List<String> categories = Arrays.asList(categoryArray);
+        productsSql = String.format(productsSql, categories.toString().substring(1, categories.toString().length() - 1), orderBy, orderType);
 
         Connection con = DBContext.getConnection();
         PreparedStatement preparedStatement = con.prepareStatement(productsSql);
@@ -134,7 +136,7 @@ public class ProductFacade {
             list.add(product);
         }
 
-        countSql = String.format(countSql, categories.substring(1, categories.length() - 1));
+        countSql = String.format(countSql, categories.toString().substring(1, categories.toString().length() - 1));
         preparedStatement = con.prepareStatement(countSql);
         preparedStatement.setString(1, "%" + search.trim() + "%");
         result = preparedStatement.executeQuery();
@@ -180,14 +182,15 @@ public class ProductFacade {
         return map;
     }
 
-    public HashMap<String, Object> getProducts(int minQuantity, String orderBy, String orderType, int offset, int fetch, String search, ArrayList categoriesList) throws SQLException {
+    public HashMap<String, Object> getProducts(int minQuantity, String orderBy, String orderType, int offset, int fetch, String search, String[] categoryArray) throws SQLException {
         HashMap<String, Object> map = new HashMap<>();
         ArrayList<Product> list = new ArrayList<>();
         int total = 0;
         String productsSql = "SELECT * FROM products WHERE quantity >= ? AND name LIKE ? AND category_id in (%s) ORDER BY %s %s OFFSET ? ROWS FETCH FIRST ? ROWS ONLY";
         String countSql = "SELECT COUNT(*) as total FROM products WHERE quantity >= ? AND name LIKE ? AND category_id in (%s)";
-        String categories = categoriesList.toString();
-        productsSql = String.format(productsSql, categories.substring(1, categories.length() - 1), orderBy, orderType);
+
+        List<String> categories = Arrays.asList(categoryArray);
+        productsSql = String.format(productsSql, categories.toString().substring(1, categories.toString().length() - 1), orderBy, orderType);
 
         Connection con = DBContext.getConnection();
         PreparedStatement preparedStatement = con.prepareStatement(productsSql);
@@ -201,7 +204,7 @@ public class ProductFacade {
             list.add(product);
         }
 
-        countSql = String.format(countSql, categories.substring(1, categories.length() - 1));
+        countSql = String.format(countSql, categories.toString().substring(1, categories.toString().length() - 1));
         preparedStatement = con.prepareStatement(countSql);
         preparedStatement.setInt(1, minQuantity);
         preparedStatement.setString(2, "%" + search.trim() + "%");

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -62,38 +63,36 @@ public class ProductController extends HttpServlet {
         ProductFacade productFacade = new ProductFacade();
         switch (action) {
             case "index": {
-                ArrayList<Integer> checkedCategories = new ArrayList<>();
-                CategoryFacade categoryFacade = new CategoryFacade();
                 Map<String, String> orders = new LinkedHashMap<>();
                 orders.put("updated_at-desc", "Latest");
                 orders.put("name-asc", "Name, A to Z");
                 orders.put("name-desc", "Name, Z to A");
                 orders.put("price-asc", "Price, low to high");
                 orders.put("price-desc", "Price, high to low");
-                HttpSession session = request.getSession();
-                Cart cart = (Cart) session.getAttribute("cart");
 
-                int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
-                int limit = Integer.parseInt(request.getParameter("limit") != null ? request.getParameter("limit") : "6");
-                String search = request.getParameter("search") != null ? request.getParameter("search") : "";
-                String[] categoriesFilter = request.getParameterValues("categories");
+                int minQuantity = 1;
+
                 String selectedOrder = request.getParameter("order") != null && orders.containsKey(request.getParameter("order")) ? request.getParameter("order") : "updated_at-desc";
                 String orderBy = selectedOrder.substring(0, selectedOrder.indexOf("-"));
                 String orderType = selectedOrder.substring(selectedOrder.indexOf("-") + 1, selectedOrder.length());
-                int minQuantity = 1;
-                if (categoriesFilter != null) {
-                    for (String category : categoriesFilter) {
-                        checkedCategories.add(Integer.parseInt(category));
-                    }
-                }
+
+                int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
+
+                int limit = Integer.parseInt(request.getParameter("limit") != null ? request.getParameter("limit") : "6");
+
+                String search = request.getParameter("search") != null ? request.getParameter("search") : "";
+
+                String[] checkedCategories = request.getParameterValues("categories");
 
                 try {
-                    ArrayList<Category> categories = categoryFacade.selectAll();
+                    HttpSession session = request.getSession();
+                    Cart cart = (Cart) session.getAttribute("cart");
                     HashMap<String, Object> productsMap;
-                    if (checkedCategories.isEmpty()) {
+                    if (checkedCategories == null) {
                         productsMap = productFacade.getProducts(minQuantity, orderBy, orderType, offset, limit, search);
                     } else {
                         productsMap = productFacade.getProducts(minQuantity, orderBy, orderType, offset, limit, search, checkedCategories);
+                        request.setAttribute("checkedCategories", Arrays.asList(checkedCategories));
                     }
                     ArrayList<Product> products = (ArrayList<Product>) productsMap.get("products");
                     for (Product product : products) {
@@ -102,6 +101,10 @@ public class ProductController extends HttpServlet {
                             product.setQuantity(product.getQuantity() - addedItem.getQuantity());
                         }
                     }
+
+                    CategoryFacade categoryFacade = new CategoryFacade();
+                    ArrayList<Category> categories = categoryFacade.selectAll();
+
                     int totalProduct = (int) productsMap.get("total");
                     int totalPage = (int) Math.ceil(totalProduct * 1.0 / limit);
                     int currentPage = (offset / limit) + 1;
@@ -111,7 +114,6 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("currentPage", currentPage);
                     request.setAttribute("search", search);
                     request.setAttribute("categories", categories);
-                    request.setAttribute("checkedCategories", checkedCategories);
                     request.setAttribute("orders", orders);
                     request.setAttribute("selectedOrder", selectedOrder);
                     request.getRequestDispatcher(Config.LAYOUT).forward(request, response);

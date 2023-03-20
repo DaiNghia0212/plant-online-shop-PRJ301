@@ -190,7 +190,7 @@
                                 <c:forEach var="category" items="${categories}">
                                     <div class="form-check">
                                         <c:choose>
-                                            <c:when test="${checkedCategories.contains(category.id)}">
+                                            <c:when test="${checkedCategories.contains(Integer.toString(category.id))}">
                                                 <input class="form-check-input" name="categories" type="checkbox" value="${category.id}" checked id="category-${catgory.id}">
                                                 <label class="form-check-label" for="category-${catgory.id}">
                                                     ${category.name}
