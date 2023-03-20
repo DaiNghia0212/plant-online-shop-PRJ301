@@ -111,7 +111,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-5 checkout-btn">
-                                        <a href="<c:url value="/cart/checkout.do"/>" class="btn btn-block f_13 font-weight-bolder">Buy</a>
+                                        <a href="<c:url value="/cart/checkout.do"/>" class="btn btn-block f_13 font-weight-bolder">Continue</a>
                                     </div>
                                 </div>
                             </div>

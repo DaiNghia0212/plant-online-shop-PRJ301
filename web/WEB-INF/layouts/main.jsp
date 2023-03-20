@@ -90,16 +90,14 @@
                                             </ul>
                                         </li>
                                         <c:if test="${account.role == 1}"><li><a href="<c:url value="/admin/index.do"/>">Admin</a></li></c:if>
-                                    </ul>
-                                </div>
-                                <div class="col-xl-4 col-lg-5 head-right text-right">
-                                    <ul class="top_cart">
-                                        <li class="dropdown right1 md_acc md_acco">
-                                            <span class="account-block">
-                                            </span>
-                                            <span class="dropdown-toggle my_account" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <a href="#"></a>
-                                            </span>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-5 head-right text-right">
+                                        <ul class="top_cart">
+                                            <li class="dropdown right1 md_acc md_acco">
+                                                <span class="dropdown-toggle my_account" role="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <a href="#"></a>
+                                                </span>
                                             <c:choose>
                                                 <c:when test="${account != null}">
                                                     <span class="dropdown-menu r_menu dropdown-menu-right">
@@ -109,10 +107,13 @@
                                                 <c:otherwise>
                                                     <span class="dropdown-menu r_menu dropdown-menu-right">
                                                         <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/login.do"/>">log in</a>
-                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/register.do"/>">Registration</a>
+                                                        <a class="dropdown-item font-weight-bolderer" href="<c:url value="/authentication/register.do"/>">Register</a>
                                                     </span>
                                                 </c:otherwise>
                                             </c:choose>
+                                            <span class="account-block">
+                                                ${account.name}
+                                            </span>
                                         </li>
                                         <li class="dropdown d-inline-block my-cart md_acco">
                                             <a href="<c:url value="/cart/index.do"/>" class="cart-qty">

@@ -26,9 +26,9 @@
             <form class="needs-validation" method="post" action="<c:url value="/authentication/register.do"/>" novalidate >
                 <p>Already have an account?<a href="login.do"> Log in instead!</a></p>
                 <div class="form-group">
-                    <label for="f_name" class="font-weight-bolder">Name</label>
+                    <label for="f_name" class="font-weight-bolder">Full name</label>
                     <input type="text" class="form-control" id="f_name" name="name" required>
-                    <div class="invalid-feedback">Please Enter your Name.</div>
+                    <div class="invalid-feedback">Please Enter your Full name.</div>
                 </div>
                 <div class="form-group">
                     <label for="r_email" class="font-weight-bolder">Email address</label>
